@@ -259,12 +259,25 @@ export default function DashboardPage() {
                         })()}
                         
                         {/* Main folder/deck image */}
-                        <Image
-                          src={item.image}
-                          alt={item.name}
-                          fill
-                          className="object-contain hover:drop-shadow-xl transition-all duration-300 relative z-10"
-                        />
+                        <motion.div
+                          className="relative z-10 w-full h-full"
+                          animate={{
+                            y: isSelected ? 200 : 0, // Move image down 40px when selected
+                          }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 100,
+                            damping: 20,
+                            delay: isSelected ? 0.3 : 0, // Slight delay when opening
+                          }}
+                        >
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fill
+                            className="object-contain hover:drop-shadow-xl transition-all duration-300"
+                          />
+                        </motion.div>
                       </div>
                     )}
                     
@@ -273,7 +286,7 @@ export default function DashboardPage() {
                       <motion.div 
                         className="text-center mt-4"
                         initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 20 }} // Move info down a bit too
+                        animate={{ opacity: 1, y: 0 }} // Keep info aligned with folder
                         transition={{ delay: 0.6 }}
                       >
                         <h3 className="text-xl font-semibold text-gray-900">
