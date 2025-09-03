@@ -11,53 +11,39 @@ export default function DashboardPage() {
   const { signOut } = useAuthActions();
   const currentUser = useQuery(api.users.getCurrentUser);
 
-  // Check user access permissions
-  const hasGeneralAccess = useQuery(api.users.checkUserAccess, { accessType: "general" });
-  const hasCompanyDocsAccess = useQuery(api.users.checkUserAccess, { accessType: "companyDocuments" });
-  const hasDeckAccess = useQuery(api.users.checkUserAccess, { accessType: "deck" });
-  const hasProductTechAccess = useQuery(api.users.checkUserAccess, { accessType: "productTechnology" });
-  const hasBrandStrategyAccess = useQuery(api.users.checkUserAccess, { accessType: "brandStrategy" });
-
   const handleSignOut = async () => {
     await signOut();
   };
 
-  // Data room items (deck + folders) - shown if user has general access
+  // Simple 4 buttons - deck + 3 folders
   const dataRoomItems = [
     { 
       id: 1, 
       name: "Investor Deck", 
       count: 15, 
-      type: "deck" as const,
-      accessRequired: "deck" as const,
-      isClickable: hasDeckAccess 
+      type: "folder" as const,
+      image: "/Deck.png"
     },
     { 
       id: 2, 
       name: "Company Documents", 
       count: 8, 
       type: "folder" as const,
-      image: "/Company-documents.png",
-      accessRequired: "companyDocuments" as const,
-      isClickable: hasCompanyDocsAccess 
+      image: "/Company-documents.png"
     },
     { 
       id: 3, 
       name: "Product & Technology", 
       count: 32, 
       type: "folder" as const,
-      image: "/Product-Technology.png",
-      accessRequired: "productTechnology" as const,
-      isClickable: hasProductTechAccess 
+      image: "/Product-Technology.png"
     },
     { 
       id: 4, 
       name: "Brand & Strategy", 
       count: 18, 
       type: "folder" as const,
-      image: "/Brand-Strategy.png",
-      accessRequired: "brandStrategy" as const,
-      isClickable: hasBrandStrategyAccess 
+      image: "/Brand-Strategy.png"
     },
   ];
 
@@ -81,35 +67,6 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
-      {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-200/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-3">
-              <Image
-                src="/tiquo logo.svg"
-                alt="tiquo"
-                width={32}
-                height={32}
-                className="w-8 h-8"
-              />
-              <h1 className="text-xl font-semibold text-gray-900">DataRoom</h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-700">
-                Welcome, {currentUser?.email || "User"}
-              </span>
-              <button
-                onClick={handleSignOut}
-                className="text-sm bg-gray-100/80 hover:bg-gray-200/80 text-gray-700 px-3 py-1 rounded-md transition-colors backdrop-blur-sm"
-              >
-                Sign Out
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
       {/* Main Content */}
       <main className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
@@ -118,9 +75,9 @@ export default function DashboardPage() {
             <Image
               src="/tiquo logo.svg"
               alt="tiquo"
-              width={64}
-              height={64}
-              className="w-16 h-16"
+              width={96}
+              height={96}
+              className="w-24 h-24"
             />
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
@@ -132,97 +89,27 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        {/* Data Room Items Grid - Show if user has general access */}
-        {hasGeneralAccess && (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            {dataRoomItems.map((item) => (
-              <div
-                key={item.id}
-                className={`group relative bg-white/40 backdrop-blur-md border border-white/20 rounded-3xl p-6 shadow-xl transition-all duration-300 ${
-                  item.isClickable 
-                    ? 'hover:shadow-2xl cursor-pointer hover:scale-105' 
-                    : 'opacity-60 cursor-not-allowed'
-                }`}
-              >
-              {/* Glass effect overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-white/10 rounded-3xl"></div>
-              
-              {/* Content */}
-              <div className="relative z-10">
-                {/* Deck or Folder Display */}
-                <div className="mb-4 flex justify-center">
-                  {item.type === "deck" ? (
-                    // Deck - Rectangle with rounded corners
-                    <div className="w-24 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
-                      <svg
-                        className="w-8 h-8 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                        />
-                      </svg>
-                    </div>
-                  ) : (
-                    // Folder - Use actual images
-                    item.image && (
-                      <div className="w-24 h-20 relative">
-                        <Image
-                          src={item.image}
-                          alt={item.name}
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
-                    )
-                  )}
-                </div>
-
-                {/* Item Info */}
-                <div className="text-center">
-                  <h3 className="text-sm font-semibold text-gray-900 mb-1">
-                    {item.name}
-                  </h3>
-                  <p className="text-xs text-gray-600">
-                    {item.count} items
-                  </p>
-                </div>
-              </div>
-
-              {/* Hover effect - only show if clickable */}
-              {item.isClickable && (
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              )}
-              
-              {/* Access indicator overlay */}
-              {!item.isClickable && (
-                <div className="absolute top-2 right-2 bg-gray-500/80 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm">
-                  No Access
+        {/* Data Room Items Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 max-w-6xl mx-auto">
+          {dataRoomItems.map((item) => (
+            <div
+              key={item.id}
+              className="group cursor-pointer transition-all duration-300 hover:scale-105"
+            >
+              {/* All items now use images - same size */}
+              {item.image && (
+                <div className="w-72 h-60 relative">
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    className="object-contain hover:drop-shadow-xl transition-all duration-300"
+                  />
                 </div>
               )}
             </div>
-            ))}
-          </div>
-        )}
-
-        {/* No General Access Message */}
-        {!hasGeneralAccess && (
-          <div className="text-center py-12">
-            <div className="bg-white/40 backdrop-blur-md border border-white/20 rounded-3xl p-8 shadow-lg max-w-md mx-auto">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                No data room access
-              </h3>
-              <p className="text-gray-600 text-sm">
-                Contact your administrator to request access to data room sections.
-              </p>
-            </div>
-          </div>
-        )}
+          ))}
+        </div>
       </main>
     </div>
   );
