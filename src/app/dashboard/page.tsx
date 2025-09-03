@@ -186,13 +186,15 @@ export default function DashboardPage() {
                       scale: shouldFadeOut ? 0.8 : 1,
                       // Move to center of the container
                       x: isSelected ? (() => {
-                        if (item.id === 1) return "calc(150% + 36px)"; // Deck (first item) moves right to center
-                        if (item.id === 2) return "calc(50% + 12px)";  // Company Docs moves slightly right
-                        if (item.id === 3) return "calc(-50% - 12px)"; // Product Tech moves slightly left  
-                        if (item.id === 4) return "calc(-150% - 36px)"; // Brand Strategy moves left to center
-                        return 0;
+                        // Calculate movement needed to center within the grid
+                        // Grid is 4 columns, so center is between columns 2 and 3
+                        const currentCol = item.id === 1 ? 0 : item.id === 2 ? 1 : item.id === 3 ? 2 : 3;
+                        const targetCol = 1.5; // Between columns 2 and 3 (center)
+                        const colsToMove = targetCol - currentCol;
+                        // Each column is roughly 25% of container width plus gap
+                        return `calc(${colsToMove * 25}% + ${colsToMove * 12}px)`;
                       })() : 0,
-                      y: isSelected ? "400px" : 0, // Move down 400px from original position
+                      y: isSelected ? 200 : 0, // Move down exactly 200px when selected
                       zIndex: isSelected ? 40 : shouldFadeOut ? 1 : 10,
                     }}
                     style={{
@@ -231,11 +233,11 @@ export default function DashboardPage() {
                                       animate={isSelected ? {
                                         // Move to grid position when this folder is selected  
                                         x: (() => {
-                                          // Calculate center of container, then offset by grid position
-                                          const folderCenterOffset = item.id === 1 ? "calc(150% + 36px)" : 
-                                                                     item.id === 2 ? "calc(50% + 12px)" :
-                                                                     item.id === 3 ? "calc(-50% - 12px)" : 
-                                                                     "calc(-150% - 36px)";
+                                          // Calculate folder's center movement, then add grid offset
+                                          const currentCol = item.id === 1 ? 0 : item.id === 2 ? 1 : item.id === 3 ? 2 : 3;
+                                          const targetCol = 1.5;
+                                          const colsToMove = targetCol - currentCol;
+                                          const folderCenterOffset = `calc(${colsToMove * 25}% + ${colsToMove * 12}px)`;
                                           return `calc(${folderCenterOffset} + ${gridX}px - 64px)`;
                                         })(),
                                         y: `${gridY + 150}px`, // Position relative to container
@@ -276,25 +278,14 @@ export default function DashboardPage() {
                         })()}
                         
                         {/* Main folder/deck image */}
-                        <motion.div
-                          className="relative z-10 w-full h-full"
-                          animate={{
-                            y: isSelected ? 200 : 0, // Move image down 200px when selected
-                          }}
-                          transition={{
-                            type: "spring",
-                            stiffness: 100,
-                            damping: 20,
-                            delay: isSelected ? 0.3 : 0, // Slight delay when opening
-                          }}
-                        >
+                        <div className="relative z-10 w-full h-full">
                           <Image
                             src={item.image}
                             alt={item.name}
                             fill
                             className="object-contain hover:drop-shadow-xl transition-all duration-300"
                           />
-                        </motion.div>
+                        </div>
                       </div>
                     )}
 
