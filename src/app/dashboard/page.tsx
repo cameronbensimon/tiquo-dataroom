@@ -139,7 +139,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Data Room Items Grid */}
-        <div className="relative max-w-6xl mx-auto min-h-screen">
+        <div className="relative max-w-6xl mx-auto min-h-8">
           {/* Close button when folder is selected */}
           <AnimatePresence>
             {selectedFolderId && (
@@ -168,9 +168,9 @@ export default function DashboardPage() {
           </AnimatePresence>
 
           {/* Single container - all items always mounted to prevent teleporting */}
-          <div className="relative min-h-screen">
+          <div className="relative min-h-8">
             {/* Main grid layout */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-12">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-12" id="folders-grid">
               {dataRoomItems.map((item) => {
                 const isSelected = selectedFolderId === item.id;
                 const shouldFadeOut = selectedFolderId && selectedFolderId !== item.id;
@@ -184,9 +184,19 @@ export default function DashboardPage() {
                     animate={{
                       opacity: shouldFadeOut ? 0 : 1,
                       scale: shouldFadeOut ? 0.8 : 1,
-                      x: isSelected ? "calc(50vw - 50% - 192px)" : 0, // Move to viewport center
-                      y: isSelected ? "calc(70vh - 50%)" : 0, // Move down relative to viewport
+                      // Move to center of the container
+                      x: isSelected ? (() => {
+                        if (item.id === 1) return "calc(150% + 36px)"; // Deck (first item) moves right to center
+                        if (item.id === 2) return "calc(50% + 12px)";  // Company Docs moves slightly right
+                        if (item.id === 3) return "calc(-50% - 12px)"; // Product Tech moves slightly left  
+                        if (item.id === 4) return "calc(-150% - 36px)"; // Brand Strategy moves left to center
+                        return 0;
+                      })() : 0,
+                      y: isSelected ? "400px" : 0, // Move down 400px from original position
                       zIndex: isSelected ? 40 : shouldFadeOut ? 1 : 10,
+                    }}
+                    style={{
+                      pointerEvents: shouldFadeOut ? "none" : "auto", // Disable clicks when faded out
                     }}
                     transition={{
                       type: "spring",
@@ -219,9 +229,16 @@ export default function DashboardPage() {
                                       key={`card-${item.id}-${card.id}`}
                                       className="absolute"
                                       animate={isSelected ? {
-                                        // Move to grid position when this folder is selected
-                                        x: `calc(50vw + ${gridX}px - 50% - 64px)`, // Center grid relative to viewport
-                                        y: `calc(30vh + ${gridY}px)`, // Position relative to viewport
+                                        // Move to grid position when this folder is selected  
+                                        x: (() => {
+                                          // Calculate center of container, then offset by grid position
+                                          const folderCenterOffset = item.id === 1 ? "calc(150% + 36px)" : 
+                                                                     item.id === 2 ? "calc(50% + 12px)" :
+                                                                     item.id === 3 ? "calc(-50% - 12px)" : 
+                                                                     "calc(-150% - 36px)";
+                                          return `calc(${folderCenterOffset} + ${gridX}px - 64px)`;
+                                        })(),
+                                        y: `${gridY + 150}px`, // Position relative to container
                                         rotate: 0,
                                         scale: 1.2,
                                         zIndex: 30,
@@ -262,7 +279,7 @@ export default function DashboardPage() {
                         <motion.div
                           className="relative z-10 w-full h-full"
                           animate={{
-                            y: isSelected ? 200 : 0, // Move image down 40px when selected
+                            y: isSelected ? 200 : 0, // Move image down 200px when selected
                           }}
                           transition={{
                             type: "spring",
@@ -280,23 +297,7 @@ export default function DashboardPage() {
                         </motion.div>
                       </div>
                     )}
-                    
-                    {/* Folder info that appears when selected */}
-                    {isSelected && (
-                      <motion.div 
-                        className="text-center mt-4"
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }} // Keep info aligned with folder
-                        transition={{ delay: 0.6 }}
-                      >
-                        <h3 className="text-xl font-semibold text-gray-900">
-                          {item.name}
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                          {getStackForFolder(item.name).length} files
-                        </p>
-                      </motion.div>
-                    )}
+
                   </motion.div>
                 );
               })}
