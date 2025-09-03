@@ -12,7 +12,6 @@ export default function DashboardPage() {
   const currentUser = useQuery(api.users.getCurrentUser);
 
   // Check user access permissions
-  const hasGeneralAccess = useQuery(api.users.checkUserAccess, { accessType: "general" });
   const hasCompanyDocsAccess = useQuery(api.users.checkUserAccess, { accessType: "companyDocuments" });
   const hasDeckAccess = useQuery(api.users.checkUserAccess, { accessType: "deck" });
   const hasProductTechAccess = useQuery(api.users.checkUserAccess, { accessType: "productTechnology" });
@@ -28,35 +27,35 @@ export default function DashboardPage() {
       id: 1, 
       name: "Investor Deck", 
       count: 15, 
-      type: "deck",
-      accessRequired: "deck",
+      type: "deck" as const,
+      accessRequired: "deck" as const,
       hasAccess: hasDeckAccess 
     },
     { 
       id: 2, 
       name: "Company Documents", 
       count: 8, 
-      type: "folder",
+      type: "folder" as const,
       image: "/Company-documents.png",
-      accessRequired: "companyDocuments",
+      accessRequired: "companyDocuments" as const,
       hasAccess: hasCompanyDocsAccess 
     },
     { 
       id: 3, 
       name: "Product & Technology", 
       count: 32, 
-      type: "folder",
+      type: "folder" as const,
       image: "/Product-Technology.png",
-      accessRequired: "productTechnology",
+      accessRequired: "productTechnology" as const,
       hasAccess: hasProductTechAccess 
     },
     { 
       id: 4, 
       name: "Brand & Strategy", 
       count: 18, 
-      type: "folder",
+      type: "folder" as const,
       image: "/Brand-Strategy.png",
-      accessRequired: "brandStrategy",
+      accessRequired: "brandStrategy" as const,
       hasAccess: hasBrandStrategyAccess 
     },
   ];
@@ -168,14 +167,16 @@ export default function DashboardPage() {
                     </div>
                   ) : (
                     // Folder - Use actual images
-                    <div className="w-24 h-20 relative">
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
+                    item.image && (
+                      <div className="w-24 h-20 relative">
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
+                    )
                   )}
                 </div>
 
