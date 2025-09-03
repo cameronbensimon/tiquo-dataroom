@@ -6,7 +6,7 @@ export default function Home() {
       <main className="flex flex-col gap-8 items-center text-center max-w-4xl mx-auto p-8">
         <div className="space-y-4">
           <h1 className="text-6xl font-bold text-gray-900 tracking-tight">
-            DataRoom
+            tiquo DataRoom
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl">
             A secure, modern data room platform for document sharing and collaboration.
