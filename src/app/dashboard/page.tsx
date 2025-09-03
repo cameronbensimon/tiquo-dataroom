@@ -12,6 +12,7 @@ export default function DashboardPage() {
   const currentUser = useQuery(api.users.getCurrentUser);
 
   // Check user access permissions
+  const hasGeneralAccess = useQuery(api.users.checkUserAccess, { accessType: "general" });
   const hasCompanyDocsAccess = useQuery(api.users.checkUserAccess, { accessType: "companyDocuments" });
   const hasDeckAccess = useQuery(api.users.checkUserAccess, { accessType: "deck" });
   const hasProductTechAccess = useQuery(api.users.checkUserAccess, { accessType: "productTechnology" });
@@ -21,7 +22,7 @@ export default function DashboardPage() {
     await signOut();
   };
 
-  // Data room items (deck + folders) with access requirements
+  // Data room items (deck + folders) - shown if user has general access
   const dataRoomItems = [
     { 
       id: 1, 
@@ -29,7 +30,7 @@ export default function DashboardPage() {
       count: 15, 
       type: "deck" as const,
       accessRequired: "deck" as const,
-      hasAccess: hasDeckAccess 
+      isClickable: hasDeckAccess 
     },
     { 
       id: 2, 
@@ -38,7 +39,7 @@ export default function DashboardPage() {
       type: "folder" as const,
       image: "/Company-documents.png",
       accessRequired: "companyDocuments" as const,
-      hasAccess: hasCompanyDocsAccess 
+      isClickable: hasCompanyDocsAccess 
     },
     { 
       id: 3, 
@@ -47,7 +48,7 @@ export default function DashboardPage() {
       type: "folder" as const,
       image: "/Product-Technology.png",
       accessRequired: "productTechnology" as const,
-      hasAccess: hasProductTechAccess 
+      isClickable: hasProductTechAccess 
     },
     { 
       id: 4, 
@@ -56,12 +57,9 @@ export default function DashboardPage() {
       type: "folder" as const,
       image: "/Brand-Strategy.png",
       accessRequired: "brandStrategy" as const,
-      hasAccess: hasBrandStrategyAccess 
+      isClickable: hasBrandStrategyAccess 
     },
   ];
-
-  // Filter items based on user access
-  const accessibleItems = dataRoomItems.filter(item => item.hasAccess);
 
   if (!token) {
     return (
@@ -134,13 +132,18 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        {/* Data Room Items Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
-          {accessibleItems.map((item) => (
-            <div
-              key={item.id}
-              className="group relative bg-white/40 backdrop-blur-md border border-white/20 rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer hover:scale-105"
-            >
+        {/* Data Room Items Grid - Show if user has general access */}
+        {hasGeneralAccess && (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            {dataRoomItems.map((item) => (
+              <div
+                key={item.id}
+                className={`group relative bg-white/40 backdrop-blur-md border border-white/20 rounded-3xl p-6 shadow-xl transition-all duration-300 ${
+                  item.isClickable 
+                    ? 'hover:shadow-2xl cursor-pointer hover:scale-105' 
+                    : 'opacity-60 cursor-not-allowed'
+                }`}
+              >
               {/* Glass effect overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-white/10 rounded-3xl"></div>
               
@@ -191,14 +194,24 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              {/* Hover effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              {/* Hover effect - only show if clickable */}
+              {item.isClickable && (
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              )}
+              
+              {/* Access indicator overlay */}
+              {!item.isClickable && (
+                <div className="absolute top-2 right-2 bg-gray-500/80 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm">
+                  No Access
+                </div>
+              )}
             </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
-        {/* No Access Message */}
-        {accessibleItems.length === 0 && (
+        {/* No General Access Message */}
+        {!hasGeneralAccess && (
           <div className="text-center py-12">
             <div className="bg-white/40 backdrop-blur-md border border-white/20 rounded-3xl p-8 shadow-lg max-w-md mx-auto">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
