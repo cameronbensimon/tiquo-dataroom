@@ -139,7 +139,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Data Room Items Grid */}
-        <div className="relative max-w-6xl mx-auto">
+        <div className="relative max-w-6xl mx-auto min-h-screen">
           {/* Close button when folder is selected */}
           <AnimatePresence>
             {selectedFolderId && (
@@ -167,23 +167,35 @@ export default function DashboardPage() {
             )}
           </AnimatePresence>
 
-          {/* Normal grid view */}
-          <AnimatePresence mode="wait">
-            {!selectedFolderId && (
-              <motion.div
-                key="grid"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="grid grid-cols-2 lg:grid-cols-4 gap-12"
-              >
-                {dataRoomItems.map((item) => (
+          {/* Single container - all items always mounted to prevent teleporting */}
+          <div className="relative min-h-screen">
+            {/* Main grid layout */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-12">
+              {dataRoomItems.map((item) => {
+                const isSelected = selectedFolderId === item.id;
+                const shouldFadeOut = selectedFolderId && selectedFolderId !== item.id;
+                
+                return (
                   <motion.div
                     key={item.id}
-                    className="group cursor-pointer"
-                    onClick={() => item.id !== 1 && handleFolderClick(item.id)} // Don't allow clicking deck
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.98 }}
+                    layoutId={`folder-${item.id}`}
+                    className="group cursor-pointer relative"
+                    onClick={() => item.id !== 1 && handleFolderClick(item.id)}
+                    animate={{
+                      opacity: shouldFadeOut ? 0 : 1,
+                      scale: shouldFadeOut ? 0.8 : 1,
+                      x: isSelected ? "calc(50vw - 50% - 192px)" : 0, // Move to viewport center
+                      y: isSelected ? "calc(70vh - 50%)" : 0, // Move down relative to viewport
+                      zIndex: isSelected ? 40 : shouldFadeOut ? 1 : 10,
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 100,
+                      damping: 20,
+                      duration: 0.8
+                    }}
+                    whileHover={!selectedFolderId ? { scale: 1.05 } : {}}
+                    whileTap={!selectedFolderId ? { scale: 0.98 } : {}}
                   >
                     {item.image && (
                       <div className="w-72 h-60 relative">
@@ -195,22 +207,52 @@ export default function DashboardPage() {
                             <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 z-0">
                               {/* Randomized file card stack */}
                               <div className="relative w-48 h-48">
-                                {stack.map((card) => (
-                                  <Image
-                                    key={card.id}
-                                    src="/file.png"
-                                    alt="file"
-                                    width={128}
-                                    height={160}
-                                    className="absolute"
-                                    style={{
-                                      top: `${card.top}px`,
-                                      left: `${card.left}px`,
-                                      transform: `rotate(${card.rotation}deg)`,
-                                      opacity: card.opacity,
-                                    }}
-                                  />
-                                ))}
+                                {stack.map((card, index) => {
+                                  // Calculate grid position for when this folder is selected
+                                  const gridCol = index % 3;
+                                  const gridRow = Math.floor(index / 3);
+                                  const gridX = (gridCol - 1) * 200; // Relative to center
+                                  const gridY = gridRow * 200 - 300; // Move up from folder position
+
+                                  return (
+                                    <motion.div
+                                      key={`card-${item.id}-${card.id}`}
+                                      className="absolute"
+                                      animate={isSelected ? {
+                                        // Move to grid position when this folder is selected
+                                        x: `calc(50vw + ${gridX}px - 50% - 64px)`, // Center grid relative to viewport
+                                        y: `calc(30vh + ${gridY}px)`, // Position relative to viewport
+                                        rotate: 0,
+                                        scale: 1.2,
+                                        zIndex: 30,
+                                        opacity: 1,
+                                      } : {
+                                        // Original position behind folder
+                                        x: card.left,
+                                        y: card.top,
+                                        rotate: card.rotation,
+                                        scale: 1,
+                                        zIndex: 0,
+                                        opacity: shouldFadeOut ? 0 : card.opacity,
+                                      }}
+                                      transition={{
+                                        type: "spring",
+                                        stiffness: 80,
+                                        damping: 20,
+                                        delay: isSelected ? 0.3 + (index * 0.1) : 0,
+                                        duration: 0.8
+                                      }}
+                                    >
+                                      <Image
+                                        src="/file.png"
+                                        alt="file"
+                                        width={128}
+                                        height={160}
+                                        className="object-contain drop-shadow-lg"
+                                      />
+                                    </motion.div>
+                                  );
+                                })}
                               </div>
                             </div>
                           );
@@ -225,113 +267,28 @@ export default function DashboardPage() {
                         />
                       </div>
                     )}
+                    
+                    {/* Folder info that appears when selected */}
+                    {isSelected && (
+                      <motion.div 
+                        className="text-center mt-4"
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 20 }} // Move info down a bit too
+                        transition={{ delay: 0.6 }}
+                      >
+                        <h3 className="text-xl font-semibold text-gray-900">
+                          {item.name}
+                        </h3>
+                        <p className="text-sm text-gray-600">
+                          {getStackForFolder(item.name).length} files
+                        </p>
+                      </motion.div>
+                    )}
                   </motion.div>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Selected folder view */}
-          <AnimatePresence>
-            {selectedFolderId && (() => {
-              const selectedFolder = dataRoomItems.find(item => item.id === selectedFolderId);
-              if (!selectedFolder) return null;
-              
-              const cards = getStackForFolder(selectedFolder.name);
-              const gridCols = cards.length <= 4 ? cards.length : Math.ceil(Math.sqrt(cards.length));
-
-              return (
-                <motion.div
-                  key="selected-view"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="relative min-h-screen flex flex-col"
-                >
-                  {/* Cards grid at the top */}
-                  <motion.div 
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3, duration: 0.5 }}
-                    className="flex-1 flex items-center justify-center"
-                  >
-                    <div 
-                      className={`grid gap-8 max-w-4xl mx-auto`}
-                      style={{
-                        gridTemplateColumns: `repeat(${Math.min(gridCols, 4)}, minmax(0, 1fr))`
-                      }}
-                    >
-                      {cards.map((card, index) => (
-                        <motion.div
-                          key={card.id}
-                          initial={{ 
-                            opacity: 0,
-                            x: -100, // Start from left (where the folder was)
-                            y: 200, // Start from bottom
-                            rotate: card.rotation,
-                            scale: 0.8
-                          }}
-                          animate={{ 
-                            opacity: 1,
-                            x: 0,
-                            y: 0,
-                            rotate: 0,
-                            scale: 1
-                          }}
-                          transition={{ 
-                            delay: 0.4 + (index * 0.1),
-                            duration: 0.6,
-                            type: "spring",
-                            stiffness: 100,
-                            damping: 15
-                          }}
-                          className="w-32 h-40 relative hover:scale-105 transition-transform cursor-pointer"
-                        >
-                          <Image
-                            src="/file.png"
-                            alt="file"
-                            fill
-                            className="object-contain drop-shadow-lg"
-                          />
-                        </motion.div>
-                      ))}
-                    </div>
-                  </motion.div>
-
-                  {/* Selected folder at bottom center */}
-                  <motion.div
-                    initial={{ 
-                      opacity: 1,
-                      scale: 1,
-                    }}
-                    animate={{ 
-                      opacity: 1,
-                      scale: 0.6,
-                    }}
-                    transition={{ duration: 0.5 }}
-                    className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-                  >
-                    <div className="w-72 h-60 relative">
-                      <Image
-                        src={selectedFolder.image}
-                        alt={selectedFolder.name}
-                        fill
-                        className="object-contain drop-shadow-xl"
-                      />
-                    </div>
-                    <div className="text-center mt-4">
-                      <h3 className="text-xl font-semibold text-gray-900">
-                        {selectedFolder.name}
-                      </h3>
-                      <p className="text-sm text-gray-600">
-                        {cards.length} files
-                      </p>
-                    </div>
-                  </motion.div>
-                </motion.div>
-              );
-            })()}
-          </AnimatePresence>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </main>
     </div>
