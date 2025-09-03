@@ -22,52 +22,47 @@ export default function DashboardPage() {
     await signOut();
   };
 
-  // All possible folders with access requirements
-  const allFolders = [
+  // Data room items (deck + folders) with access requirements
+  const dataRoomItems = [
     { 
       id: 1, 
-      name: "General Files", 
-      count: 24, 
-      color: "bg-gray-500",
-      accessRequired: "general",
-      hasAccess: hasGeneralAccess 
+      name: "Investor Deck", 
+      count: 15, 
+      type: "deck",
+      accessRequired: "deck",
+      hasAccess: hasDeckAccess 
     },
     { 
       id: 2, 
       name: "Company Documents", 
       count: 8, 
-      color: "bg-blue-500",
+      type: "folder",
+      image: "/Company-documents.png",
       accessRequired: "companyDocuments",
       hasAccess: hasCompanyDocsAccess 
     },
     { 
       id: 3, 
-      name: "Investor Deck", 
-      count: 15, 
-      color: "bg-green-500",
-      accessRequired: "deck",
-      hasAccess: hasDeckAccess 
-    },
-    { 
-      id: 4, 
       name: "Product & Technology", 
       count: 32, 
-      color: "bg-purple-500",
+      type: "folder",
+      image: "/Product-Technology.png",
       accessRequired: "productTechnology",
       hasAccess: hasProductTechAccess 
     },
     { 
-      id: 5, 
+      id: 4, 
       name: "Brand & Strategy", 
       count: 18, 
-      color: "bg-orange-500",
+      type: "folder",
+      image: "/Brand-Strategy.png",
       accessRequired: "brandStrategy",
       hasAccess: hasBrandStrategyAccess 
     },
   ];
 
-  // Filter folders based on user access
-  const accessibleFolders = allFolders.filter(folder => folder.hasAccess);
+  // Filter items based on user access
+  const accessibleItems = dataRoomItems.filter(item => item.hasAccess);
 
   if (!token) {
     return (
@@ -140,45 +135,57 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        {/* Folders Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {accessibleFolders.map((folder) => (
+        {/* Data Room Items Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
+          {accessibleItems.map((item) => (
             <div
-              key={folder.id}
-              className="group relative bg-white/40 backdrop-blur-md border border-white/20 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer hover:scale-105"
+              key={item.id}
+              className="group relative bg-white/40 backdrop-blur-md border border-white/20 rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer hover:scale-105"
             >
               {/* Glass effect overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-white/10 rounded-3xl"></div>
               
               {/* Content */}
               <div className="relative z-10">
-                {/* Folder Icon */}
-                <div className="mb-6">
-                  <div className={`w-16 h-16 ${folder.color} rounded-2xl flex items-center justify-center shadow-lg`}>
-                    <svg
-                      className="w-8 h-8 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+                {/* Deck or Folder Display */}
+                <div className="mb-4 flex justify-center">
+                  {item.type === "deck" ? (
+                    // Deck - Rectangle with rounded corners
+                    <div className="w-24 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+                      <svg
+                        className="w-8 h-8 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                      </svg>
+                    </div>
+                  ) : (
+                    // Folder - Use actual images
+                    <div className="w-24 h-20 relative">
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        className="object-contain"
                       />
-                    </svg>
-                  </div>
+                    </div>
+                  )}
                 </div>
 
-                {/* Folder Info */}
+                {/* Item Info */}
                 <div className="text-center">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    {folder.name}
+                  <h3 className="text-sm font-semibold text-gray-900 mb-1">
+                    {item.name}
                   </h3>
-                  <p className="text-sm text-gray-600">
-                    {folder.count} items
+                  <p className="text-xs text-gray-600">
+                    {item.count} items
                   </p>
                 </div>
               </div>
@@ -190,42 +197,18 @@ export default function DashboardPage() {
         </div>
 
         {/* No Access Message */}
-        {accessibleFolders.length === 0 && (
+        {accessibleItems.length === 0 && (
           <div className="text-center py-12">
             <div className="bg-white/40 backdrop-blur-md border border-white/20 rounded-3xl p-8 shadow-lg max-w-md mx-auto">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                No folders available
+                No data room access
               </h3>
               <p className="text-gray-600 text-sm">
-                Contact your administrator to request access to data room folders.
+                Contact your administrator to request access to data room sections.
               </p>
             </div>
           </div>
         )}
-
-        {/* Add New Folder Button */}
-        <div className="mt-8 text-center">
-          <button className="bg-white/40 backdrop-blur-md border border-white/20 rounded-2xl px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gray-500 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-5 h-5 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
-              </div>
-              <span className="text-gray-700 font-medium">Create New Folder</span>
-            </div>
-          </button>
-        </div>
       </main>
     </div>
   );
