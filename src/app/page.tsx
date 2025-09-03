@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#f2f2f2'}}>
       <main className="flex flex-col gap-8 items-center text-center max-w-4xl mx-auto p-8">
         <div className="space-y-4">
           <h1 className="text-6xl font-bold text-gray-900 tracking-tight">
