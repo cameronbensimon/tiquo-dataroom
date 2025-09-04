@@ -424,6 +424,8 @@ export default function DashboardPage() {
                                               card.name === "Cap table" ? "/captableicon.png" :
                                               card.name === "Feature Usecases" ? "/spreadsheeticon.png" :
                                               card.name === "Feature Competitor Comparison" ? "/spreadsheeticon.png" :
+                                              card.name === "Feature Roadmap" ? "/timeline.png" :
+                                              card.name === "Unique selling points" ? "/staricon.png" :
                                               "/file.png"
                                             }
                                             alt={
@@ -431,6 +433,8 @@ export default function DashboardPage() {
                                               card.name === "Cap table" ? "cap table" :
                                               card.name === "Feature Usecases" ? "spreadsheet" :
                                               card.name === "Feature Competitor Comparison" ? "spreadsheet" :
+                                              card.name === "Feature Roadmap" ? "timeline" :
+                                              card.name === "Unique selling points" ? "star" :
                                               "file"
                                             }
                                             width={128}
