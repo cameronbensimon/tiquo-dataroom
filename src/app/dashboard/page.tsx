@@ -30,20 +30,53 @@ export default function DashboardPage() {
     alt: `Tiquo Brand Identity ${index + 1}`
   }));
 
-  // Pricing model spreadsheet data
-  const pricingModelData = {
-    title: "TIQUO Pricing Model",
-    headers: ["Package", "Monthly Price", "Annual Price", "Features", "Users", "Storage"],
+  // Pricing model spreadsheet data - 3 tables layout
+  const leftTableData = {
+    title: "Sub-Location Examples",
+    headers: ["Sub-Location Examples", "Products", "Services"],
     rows: [
-      ["Starter", 29, 290, "Basic Features", "Up to 5", "10 GB"],
-      ["Professional", 79, 790, "Advanced Features", "Up to 25", "100 GB"],
-      ["Enterprise", 199, 1990, "Premium Features", "Up to 100", "1 TB"],
-      ["Custom", "Contact Sales", "Contact Sales", "All Features", "Unlimited", "Unlimited"],
-      ["", "", "", "", "", ""],
-      ["Add-ons", "", "", "", "", ""],
-      ["Priority Support", 19, 190, "24/7 Support", "All Plans", "N/A"],
-      ["Advanced Analytics", 39, 390, "Detailed Insights", "Pro & Enterprise", "N/A"],
-      ["API Access", 49, 490, "Full API", "Enterprise Only", "N/A"]
+      ["Restaurant", true, true],
+      ["Spa & Treatments", true, true],
+      ["Hotel Rooms", true, true],
+      ["Exhibition", false, true],
+      ["Meeting Rooms", false, true],
+      ["Cinemas", true, true],
+      ["Gym", true, true],
+      ["Single Event", false, true],
+      ["Tennis Courts", false, true],
+      ["Doctor", false, true],
+      ["Venue Hire", false, true],
+      ["Retail Store", true, false],
+      ["Bar", true, false],
+      ["Concerts", true, true],
+      ["Recording Studio", false, true],
+      ["Reception Desk", false, false]
+    ]
+  };
+
+  const rightTableData1 = {
+    title: "Property Size and Revenue",
+    headers: ["Property Type", "Sub Locations", "£300/month", "500k Revenue (1%)", "1M Revenue (0.5%)", "Revenue per Year"],
+    editableColumns: [1], // Sub Locations column is editable
+    rows: [
+      ["Very Large Property", 25, "=B*300", "", "=B*1000000*0.005", "=(C*12)+SUM(D:E)"],
+      ["Large Property", 10, "=B*300", "", "=B*1000000*0.005", "=(C*12)+SUM(D:E)"],
+      ["Medium Property", 5, "=B*300", "=B*500000*0.01", "", "=(C*12)+SUM(D:E)"],
+      ["Small Property", 2, "=B*300", "=B*500000*0.01", "", "=(C*12)+SUM(D:E)"]
+    ]
+  };
+
+  const rightTableData2 = {
+    title: "Example Tiquo Revenue",
+    headers: ["Property Type", "Year 1", "Year 2", "Year 3", "Year 4", "Year 5", "Year 6", "Year 7"],
+    editableColumns: [1, 2, 3, 4, 5, 6, 7], // All year columns are editable
+    rows: [
+      ["Very Large Property", 1, 20, 35, 55, 80, 110, 145],
+      ["Large Property", 5, 50, 85, 130, 185, 250, 325],
+      ["Medium Property", 10, 200, 320, 460, 620, 800, 1000],
+      ["Small Property", 15, 200, 300, 420, 560, 720, 900],
+      ["", "", "", "", "", "", "", ""],
+      ["Revenue", "=SUMREVENUE(B)", "=SUMREVENUE(C)", "=SUMREVENUE(D)", "=SUMREVENUE(E)", "=SUMREVENUE(F)", "=SUMREVENUE(G)", "=SUMREVENUE(H)"]
     ]
   };
 
@@ -465,8 +498,9 @@ export default function DashboardPage() {
       <SpreadsheetModal
         isOpen={isPricingModelModalOpen}
         onClose={() => setIsPricingModelModalOpen(false)}
-        data={pricingModelData}
-        title="Financial Planning"
+        leftTable={leftTableData}
+        rightTables={[rightTableData1, rightTableData2]}
+        title="Pricing & Strategy"
       />
     </div>
   );
