@@ -66,7 +66,7 @@ export default function DashboardPage() {
       name: "Investor Deck", 
       count: 15, 
       type: "folder" as const,
-      image: "/Deck.png",
+      image: "/deck.png",
       description: "Comprehensive investor presentation materials including company overview, financial projections, and strategic roadmap.",
       files: []
     },
