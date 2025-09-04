@@ -25,7 +25,7 @@ export const ResendOTP = Email({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "DataRoom <onboarding@resend.dev>",
+        from: "Tiquo <noreply@tiquo.app>",
         to: [email],
         subject: "Your DataRoom Login Code",
         html: `
