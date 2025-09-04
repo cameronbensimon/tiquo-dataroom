@@ -1,0 +1,30 @@
+{
+  "name": "tiquo Data Room",
+  "short_name": "TIQUO DataRoom",
+  "description": "The Universal Booking, Loyalty & Point of Sale Platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f2f2f2",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 32x32 48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/tiquo logo.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": [
+    "business",
+    "finance", 
+    "productivity"
+  ],
+  "lang": "en",
+  "dir": "ltr"
+}

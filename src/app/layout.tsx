@@ -67,6 +67,7 @@ export const metadata: Metadata = {
     maximumScale: 1,
   },
   category: 'business',
+  manifest: "/manifest.json",
   other: {
     "theme-color": "#6366f1",
     "color-scheme": "light",
