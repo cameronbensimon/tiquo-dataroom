@@ -1,5 +1,6 @@
-import { query } from "./_generated/server";
+import { query, mutation } from "./_generated/server";
 import { auth } from "./auth";
+import { v } from "convex/values";
 
 // Get current user
 export const getCurrentUser = query({
@@ -29,6 +30,32 @@ export const getAllUsers = query({
       _id: user._id,
       email: user.email,
     }));
+  },
+});
+
+// Update user access permission
+export const updateUserAccess = mutation({
+  args: {
+    email: v.string(),
+    accessAllowed: v.boolean(),
+  },
+  handler: async (ctx, args) => {
+    // Find user by email
+    const user = await ctx.db
+      .query("users")
+      .filter((q) => q.eq(q.field("email"), args.email))
+      .first();
+
+    if (!user) {
+      throw new Error(`User with email ${args.email} not found`);
+    }
+
+    // Update the user's AccessAllowed field
+    await ctx.db.patch(user._id, {
+      AccessAllowed: args.accessAllowed,
+    });
+
+    return { success: true, message: `Access updated for ${args.email}` };
   },
 });
 
