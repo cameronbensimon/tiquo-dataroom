@@ -9,6 +9,7 @@ import DeckCarouselModal from "@/components/DeckCarouselModal";
 import PricingModelModal from "@/components/PricingModelModal";
 import SingleImageModal from "@/components/SingleImageModal";
 import CapTableModal from "@/components/CapTableModal";
+import FeatureUsecasesModal from "@/components/FeatureUsecasesModal";
 
 export default function DashboardPage() {
   const token = useAuthToken();
@@ -19,6 +20,7 @@ export default function DashboardPage() {
   const [isPricingModelModalOpen, setIsPricingModelModalOpen] = useState(false);
   const [isIncorporationModalOpen, setIsIncorporationModalOpen] = useState(false);
   const [isCapTableModalOpen, setIsCapTableModalOpen] = useState(false);
+  const [isFeatureUsecasesModalOpen, setIsFeatureUsecasesModalOpen] = useState(false);
 
   // TIQUO deck slides configuration
   const tiquoDeckImages = Array.from({ length: 17 }, (_, index) => ({
@@ -150,6 +152,11 @@ export default function DashboardPage() {
     setIsCapTableModalOpen(true);
   };
 
+  // Handle feature usecases file click
+  const handleFeatureUsecasesClick = () => {
+    setIsFeatureUsecasesModalOpen(true);
+  };
+
   // Simple 4 buttons - deck + 3 folders
   const dataRoomItems = [
     { 
@@ -168,7 +175,7 @@ export default function DashboardPage() {
       type: "folder" as const,
       image: "/Company-documents.png",
       description: "Essential company documentation including incorporation papers, legal agreements, and corporate governance materials.",
-      files: ["Certificate of incorporation", "Cap table"]
+      files: ["Cap table", "Certificate of incorporation"]
     },
     { 
       id: 3, 
@@ -370,6 +377,8 @@ export default function DashboardPage() {
                                           handleIncorporationClick();
                                         } else if (card.name === "Cap table") {
                                           handleCapTableClick();
+                                        } else if (card.name === "Feature Usecases") {
+                                          handleFeatureUsecasesClick();
                                         }
                                       }}
                                       style={{
@@ -410,8 +419,20 @@ export default function DashboardPage() {
                                       <div className="text-center">
                                         <div className="w-32 h-40 flex items-center justify-center">
                                           <Image
-                                            src="/file.png"
-                                            alt="file"
+                                            src={
+                                              card.name === "Certificate of incorporation" ? "/incorporation.png" :
+                                              card.name === "Cap table" ? "/captableicon.png" :
+                                              card.name === "Feature Usecases" ? "/spreadsheeticon.png" :
+                                              card.name === "Feature Competitor Comparison" ? "/spreadsheeticon.png" :
+                                              "/file.png"
+                                            }
+                                            alt={
+                                              card.name === "Certificate of incorporation" ? "incorporation" :
+                                              card.name === "Cap table" ? "cap table" :
+                                              card.name === "Feature Usecases" ? "spreadsheet" :
+                                              card.name === "Feature Competitor Comparison" ? "spreadsheet" :
+                                              "file"
+                                            }
                                             width={128}
                                             height={160}
                                             className="object-contain drop-shadow-lg max-w-full max-h-full"
@@ -532,6 +553,13 @@ export default function DashboardPage() {
         isOpen={isCapTableModalOpen}
         onClose={() => setIsCapTableModalOpen(false)}
         title="Company Ownership Structure"
+      />
+
+      {/* Feature Usecases Modal */}
+      <FeatureUsecasesModal
+        isOpen={isFeatureUsecasesModalOpen}
+        onClose={() => setIsFeatureUsecasesModalOpen(false)}
+        title="Feature Usecases by Industry"
       />
     </div>
   );
