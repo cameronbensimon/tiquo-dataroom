@@ -147,20 +147,24 @@ export default function AuthPage() {
                 </p>
               </div>
               <div className="flex space-x-3">
-                <button
+                <Button
                   onClick={handleBackToEmail}
                   disabled={isLoading}
-                  className="group relative flex-1 flex justify-center py-3 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                  variant="outline"
+                  size="lg"
+                  className="flex-1"
                 >
                   Back
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={handleVerifyCode}
                   disabled={isLoading}
-                  className="group relative flex-1 flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                  variant="default"
+                  size="lg"
+                  className="flex-1"
                 >
                   {isLoading ? "Verifying..." : "Sign In"}
-                </button>
+                </Button>
               </div>
               <div className="text-center">
                 <button
