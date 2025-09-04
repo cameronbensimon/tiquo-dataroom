@@ -66,28 +66,32 @@ export default function DashboardPage() {
       name: "Investor Deck", 
       count: 15, 
       type: "folder" as const,
-      image: "/Deck.png"
+      image: "/Deck.png",
+      description: "Comprehensive investor presentation materials including company overview, financial projections, and strategic roadmap."
     },
     { 
       id: 2, 
       name: "Company Documents", 
       count: 8, 
       type: "folder" as const,
-      image: "/Company-documents.png"
+      image: "/Company-documents.png",
+      description: "Essential company documentation including incorporation papers, legal agreements, and corporate governance materials."
     },
     { 
       id: 3, 
       name: "Product & Technology", 
       count: 32, 
       type: "folder" as const,
-      image: "/Product-Technology.png"
+      image: "/Product-Technology.png",
+      description: "Technical specifications, product roadmaps, architecture documentation, and development resources."
     },
     { 
       id: 4, 
       name: "Brand & Strategy", 
       count: 18, 
       type: "folder" as const,
-      image: "/Brand-Strategy.png"
+      image: "/Brand-Strategy.png",
+      description: "Brand guidelines, marketing materials, strategic positioning documents, and visual identity assets."
     },
   ];
 
@@ -113,9 +117,9 @@ export default function DashboardPage() {
     <div className="min-h-screen" style={{backgroundColor: '#f2f2f2'}}>
       {/* Main Content */}
       <main className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        {/* Header Section */}
-        <div className="text-center mb-12">
-          <div className="flex justify-center mb-6">
+        {/* Header Section - Logo Only */}
+        <div className="text-center mb-8">
+          <div className="flex justify-center mb-4">
             <Image
               src="/tiquo logo.svg"
               alt="tiquo"
@@ -124,64 +128,51 @@ export default function DashboardPage() {
               className="w-24 h-24"
             />
           </div>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            tiquo is a technology company building modern solutions for business infrastructure and workflow automation. 
-            We create tools that streamline operations, enhance productivity, and enable seamless collaboration across teams.{" "}
-            <a 
-              href="https://tiquo.co" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors"
-            >
-              Visit tiquo.co
-              <svg 
-                className="w-4 h-4 ml-1" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
-                />
-              </svg>
-            </a>
-          </p>
         </div>
+
+        {/* Folder Description Card */}
+        <AnimatePresence>
+          {selectedFolderId && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="fixed top-32 left-1/2 transform -translate-x-1/2 z-50 bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-lg max-w-md mx-4"
+            >
+              <div className="relative">
+                <button
+                  onClick={() => setSelectedFolderId(null)}
+                  className="absolute top-0 right-0 -mt-2 -mr-2 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors"
+                >
+                  <svg
+                    className="w-4 h-4 text-gray-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+                
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  {dataRoomItems.find(item => item.id === selectedFolderId)?.name}
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  {dataRoomItems.find(item => item.id === selectedFolderId)?.description}
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Data Room Items Grid */}
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-6xl min-h-8">
-          {/* Close button when folder is selected */}
-          <AnimatePresence>
-            {selectedFolderId && (
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setSelectedFolderId(null)}
-                className="fixed top-8 right-8 z-50 bg-white/80 backdrop-blur-sm rounded-full p-3 hover:bg-white/90 transition-colors shadow-lg"
-              >
-                <svg
-                  className="w-6 h-6 text-gray-800"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </motion.button>
-            )}
-          </AnimatePresence>
-
-          {/* Single container - all items always mounted to prevent teleporting */}
-          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-6xl min-h-8">
             {/* Main grid layout */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 px-4 sm:px-6 lg:px-8" id="folders-grid">
               {dataRoomItems.map((item) => {
@@ -314,9 +305,49 @@ export default function DashboardPage() {
                 );
               })}
             </div>
-          </div>
         </div>
       </main>
+
+      {/* Bottom Text Section with fade animation */}
+      <AnimatePresence>
+        {!selectedFolderId && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-10"
+          >
+            <div className="text-center">
+              <p className="text-sm text-gray-400 max-w-xl mx-auto leading-relaxed">
+                tiquo is a technology company building modern solutions for business infrastructure and workflow automation. 
+                We create tools that streamline operations, enhance productivity, and enable seamless collaboration across teams.{" "}
+                <a 
+                  href="https://tiquo.co" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-blue-500 hover:text-blue-600 transition-colors"
+                >
+                  Visit tiquo.co
+                  <svg 
+                    className="w-3 h-3 ml-1" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth={2} 
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
+                    />
+                  </svg>
+                </a>
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
