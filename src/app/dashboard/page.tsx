@@ -12,12 +12,11 @@ import PricingModelModal from "@/components/PricingModelModal";
 import SingleImageModal from "@/components/SingleImageModal";
 import CapTableModal from "@/components/CapTableModal";
 import FeatureUsecasesModal from "@/components/FeatureUsecasesModal";
-import AccessDenied from "@/components/AccessDenied";
 
 export default function DashboardPage() {
   const token = useAuthToken();
   const router = useRouter();
-  const hasAccess = useQuery(api.users.checkUserAccess);
+  const user = useQuery(api.users.getCurrentUser);
   const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
@@ -275,13 +274,14 @@ export default function DashboardPage() {
     return null;
   }
 
-  // Show access denied page if user doesn't have access
-  if (hasAccess === false) {
-    return <AccessDenied />;
+  // Redirect to auth if not authenticated
+  if (user === null) {
+    router.push("/auth");
+    return null;
   }
 
-  // Show loading while checking access
-  if (hasAccess === undefined) {
+  // Show loading while checking authentication
+  if (user === undefined) {
     return null;
   }
 
