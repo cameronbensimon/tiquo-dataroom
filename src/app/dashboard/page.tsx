@@ -4,6 +4,7 @@ import { useAuthToken } from "@convex-dev/auth/react";
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import DeckCarouselModal from "@/components/DeckCarouselModal";
 import PricingModelModal from "@/components/PricingModelModal";
@@ -13,6 +14,7 @@ import FeatureUsecasesModal from "@/components/FeatureUsecasesModal";
 
 export default function DashboardPage() {
   const token = useAuthToken();
+  const router = useRouter();
   const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
@@ -131,6 +133,14 @@ export default function DashboardPage() {
     ]
   };
 
+  // Redirect to auth page if not logged in
+  useEffect(() => {
+    if (token === undefined) return; // Still loading
+    if (!token) {
+      router.push("/auth");
+    }
+  }, [token, router]);
+
   // Detect mobile and tablet screen sizes
   useEffect(() => {
     const checkScreenSize = () => {
@@ -221,7 +231,7 @@ export default function DashboardPage() {
       count: 2, 
       type: "folder" as const,
       image: "/Company-documents.png",
-      description: "Essential company documentation including incorporation papers, legal agreements, and corporate governance materials.",
+      description: "Our certificate of incorporation, cap table, and other company records are organized here.",
       files: ["Cap table", "Certificate of incorporation"]
     },
     { 
@@ -257,22 +267,9 @@ export default function DashboardPage() {
     return [];
   };
 
+  // Show loading or nothing while redirecting
   if (!token) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#f2f2f2'}}>
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
-            Please sign in to access the dashboard
-          </h1>
-          <Link
-            href="/auth"
-            className="inline-block rounded-lg bg-indigo-600 text-white px-6 py-3 text-lg font-medium hover:bg-indigo-700 transition-colors"
-          >
-            Sign In
-          </Link>
-        </div>
-      </div>
-    );
+    return null;
   }
 
   return (
@@ -630,8 +627,10 @@ export default function DashboardPage() {
                   </a>
                 </span>
                 <span className="hidden md:block">
-                  tiquo is a technology company building modern solutions for business infrastructure and workflow automation. 
-                  We create tools that streamline operations, enhance productivity, and enable seamless collaboration across teams.{" "}
+                Running a hotel, restaurant, spa, or venue shouldn’t require 20+ different tools.
+With Tiquo, every service, booking, and transaction flows through a single system — built for adaptability, scale, and AI.
+Simpler for staff, seamless for customers, smarter for the business. 
+                   {" "}
                   <a 
                     href="https://tiquo.co" 
                     target="_blank" 
