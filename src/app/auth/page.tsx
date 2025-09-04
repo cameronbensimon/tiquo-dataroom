@@ -80,16 +80,28 @@ export default function AuthPage() {
 
   // Navigate based on access level after successful authentication
   useEffect(() => {
-    if (!justSignedIn || !user) return;
+    if (!justSignedIn) return;
+    
+    console.log("Navigation check - justSignedIn:", justSignedIn, "user:", user, "token:", token);
 
-    if (user.AccessAllowed === true) {
-      // User has access, redirect to dashboard
-      router.push("/dashboard");
-    } else {
-      // User doesn't have access, redirect to request access page
-      router.push("/request-access");
+    // Wait for both authentication token and user data to be available
+    if (token && user) {
+      console.log("Navigating based on AccessAllowed:", user.AccessAllowed);
+      
+      if (user.AccessAllowed === true) {
+        // User has access, redirect to dashboard
+        console.log("Redirecting to dashboard");
+        router.push("/dashboard");
+      } else {
+        // User doesn't have access, redirect to request access page
+        console.log("Redirecting to request-access");
+        router.push("/request-access");
+      }
+      
+      // Reset the flag to prevent multiple navigations
+      setJustSignedIn(false);
     }
-  }, [user, justSignedIn, router]);
+  }, [user, justSignedIn, token, router]);
 
   return (
     <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#f2f2f2'}}>
