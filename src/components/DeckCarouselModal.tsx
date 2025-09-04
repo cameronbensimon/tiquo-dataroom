@@ -103,7 +103,7 @@ export default function DeckCarouselModal({ isOpen, onClose }: DeckCarouselModal
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
-          className="relative w-[95vw] h-[90vh] max-w-6xl bg-white rounded-lg overflow-hidden"
+          className="relative w-[95vw] h-[90vh] max-w-6xl bg-white rounded-lg overflow-hidden flex flex-col"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Close button */}
@@ -119,7 +119,7 @@ export default function DeckCarouselModal({ isOpen, onClose }: DeckCarouselModal
           {/* Carousel container using CSS scroll-snap (Blossom Carousel principles) */}
           <div
             ref={carouselRef}
-            className="flex overflow-x-auto h-full scroll-smooth"
+            className="flex overflow-x-auto flex-1 scroll-smooth"
             style={{
               scrollSnapType: "x mandatory",
               scrollbarWidth: "none",
@@ -139,13 +139,13 @@ export default function DeckCarouselModal({ isOpen, onClose }: DeckCarouselModal
                 className="flex-none w-full h-full relative"
                 style={{ scrollSnapAlign: "start" }}
               >
-                <div className="relative w-full h-full flex items-center justify-center p-4">
-                  <div className="relative w-full h-full max-h-[calc(100%-80px)] overflow-hidden rounded-lg">
+                <div className="relative w-full h-full flex items-center justify-center p-6">
+                  <div className="relative w-full h-full">
                     <Image
                       src={image.src}
                       alt={image.alt}
                       fill
-                      className="object-cover rounded-lg"
+                      className="object-contain rounded-lg"
                       priority={index < 2}
                     />
                   </div>
