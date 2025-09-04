@@ -184,16 +184,9 @@ export default function DashboardPage() {
                     animate={{
                       opacity: shouldFadeOut ? 0 : 1,
                       scale: shouldFadeOut ? 0.8 : 1,
-                      // Move to center of the container
-                      x: isSelected ? (() => {
-                        // Calculate movement needed to center within the grid
-                        // Grid is 4 columns, so center is between columns 2 and 3
-                        const currentCol = item.id === 1 ? 0 : item.id === 2 ? 1 : item.id === 3 ? 2 : 3;
-                        const targetCol = 1.5; // Between columns 2 and 3 (center)
-                        const colsToMove = targetCol - currentCol;
-                        // Each column is roughly 25% of container width plus gap
-                        return `calc(${colsToMove * 25}% + ${colsToMove * 12}px)`;
-                      })() : 0,
+                      // Move to center of container when selected
+                      x: isSelected ? "50%" : 0,
+                      translateX: isSelected ? "-50%" : "0%",
                       y: isSelected ? 200 : 0, // Move down exactly 200px when selected
                       zIndex: isSelected ? 40 : shouldFadeOut ? 1 : 10,
                     }}
@@ -231,15 +224,8 @@ export default function DashboardPage() {
                                       key={`card-${item.id}-${card.id}`}
                                       className="absolute"
                                       animate={isSelected ? {
-                                        // Move to grid position when this folder is selected  
-                                        x: (() => {
-                                          // Calculate folder's center movement, then add grid offset
-                                          const currentCol = item.id === 1 ? 0 : item.id === 2 ? 1 : item.id === 3 ? 2 : 3;
-                                          const targetCol = 1.5;
-                                          const colsToMove = targetCol - currentCol;
-                                          const folderCenterOffset = `calc(${colsToMove * 25}% + ${colsToMove * 12}px)`;
-                                          return `calc(${folderCenterOffset} + ${gridX}px - 64px)`;
-                                        })(),
+                                        // Move to grid position centered with folder
+                                        x: `calc(50% + ${gridX}px - 64px)`,
                                         y: `${gridY + 150}px`, // Position relative to container
                                         rotate: 0,
                                         scale: 1.2,
