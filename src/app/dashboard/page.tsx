@@ -284,12 +284,12 @@ export default function DashboardPage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebPage",
-            "name": "TIQUO Investor Dashboard",
+            "name": "TIQUO Data Room",
             "description": "Secure investor data room containing TIQUO's company documents, financial projections, product roadmaps, and strategic business materials",
             "url": "https://dataroom.tiquo.co/dashboard",
             "isPartOf": {
               "@type": "WebSite",
-              "name": "TIQUO DataRoom",
+              "name": "TIQUO Data Room",
               "url": "https://dataroom.tiquo.co"
             },
             "provider": {
