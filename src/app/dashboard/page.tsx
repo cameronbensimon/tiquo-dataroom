@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import DeckCarouselModal from "@/components/DeckCarouselModal";
 import PricingModelModal from "@/components/PricingModelModal";
 import SingleImageModal from "@/components/SingleImageModal";
+import CapTableModal from "@/components/CapTableModal";
 
 export default function DashboardPage() {
   const token = useAuthToken();
@@ -17,6 +18,7 @@ export default function DashboardPage() {
   const [isBrandKitModalOpen, setIsBrandKitModalOpen] = useState(false);
   const [isPricingModelModalOpen, setIsPricingModelModalOpen] = useState(false);
   const [isIncorporationModalOpen, setIsIncorporationModalOpen] = useState(false);
+  const [isCapTableModalOpen, setIsCapTableModalOpen] = useState(false);
 
   // TIQUO deck slides configuration
   const tiquoDeckImages = Array.from({ length: 17 }, (_, index) => ({
@@ -141,6 +143,11 @@ export default function DashboardPage() {
   // Handle certificate of incorporation file click
   const handleIncorporationClick = () => {
     setIsIncorporationModalOpen(true);
+  };
+
+  // Handle cap table file click
+  const handleCapTableClick = () => {
+    setIsCapTableModalOpen(true);
   };
 
   // Simple 4 buttons - deck + 3 folders
@@ -361,6 +368,8 @@ export default function DashboardPage() {
                                           handlePricingModelClick();
                                         } else if (card.name === "Certificate of incorporation") {
                                           handleIncorporationClick();
+                                        } else if (card.name === "Cap table") {
+                                          handleCapTableClick();
                                         }
                                       }}
                                       style={{
@@ -516,6 +525,13 @@ export default function DashboardPage() {
         onClose={() => setIsIncorporationModalOpen(false)}
         imageSrc="/incorporationtiquo.jpg"
         imageAlt="Certificate of Incorporation - TIQUO"
+      />
+
+      {/* Cap Table Modal */}
+      <CapTableModal
+        isOpen={isCapTableModalOpen}
+        onClose={() => setIsCapTableModalOpen(false)}
+        title="Company Ownership Structure"
       />
     </div>
   );
