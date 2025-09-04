@@ -426,6 +426,10 @@ export default function DashboardPage() {
                                               card.name === "Feature Competitor Comparison" ? "/spreadsheeticon.png" :
                                               card.name === "Feature Roadmap" ? "/timeline.png" :
                                               card.name === "Unique selling points" ? "/staricon.png" :
+                                              card.name === "Brand kit" ? "/brandicon.png" :
+                                              card.name === "Use of funds" ? "/spreadsheeticon.png" :
+                                              card.name === "Pricing Model" ? "/moneyicon.png" :
+                                              card.name === "Go-to-market strategy" ? "/arrowicon.png" :
                                               "/file.png"
                                             }
                                             alt={
@@ -435,6 +439,10 @@ export default function DashboardPage() {
                                               card.name === "Feature Competitor Comparison" ? "spreadsheet" :
                                               card.name === "Feature Roadmap" ? "timeline" :
                                               card.name === "Unique selling points" ? "star" :
+                                              card.name === "Brand kit" ? "brand" :
+                                              card.name === "Use of funds" ? "spreadsheet" :
+                                              card.name === "Pricing Model" ? "money" :
+                                              card.name === "Go-to-market strategy" ? "arrow" :
                                               "file"
                                             }
                                             width={128}
