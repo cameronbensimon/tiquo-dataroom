@@ -24,18 +24,62 @@ export default function DashboardPage() {
   const [isFeatureUsecasesModalOpen, setIsFeatureUsecasesModalOpen] = useState(false);
 
   // TIQUO deck slides configuration
-  const tiquoDeckImages = Array.from({ length: 17 }, (_, index) => ({
-    id: index + 1,
-    src: `/slides/TIQUO DECK V5 - ${String(index + 1).padStart(2, '0')}.jpg`,
-    alt: `TIQUO Deck Slide ${index + 1}`
-  }));
+  const tiquoDeckImages = Array.from({ length: 17 }, (_, index) => {
+    const slideDescriptions = [
+      "TIQUO Company Overview and Mission Statement",
+      "Market Opportunity and Business Problem",
+      "Product Solution and Technology Platform", 
+      "Business Model and Revenue Strategy",
+      "Market Size and Target Audience",
+      "Competitive Analysis and Differentiation",
+      "Financial Projections and Growth Metrics",
+      "Technology Architecture and Infrastructure",
+      "Team Background and Expertise",
+      "Product Roadmap and Development Timeline",
+      "Go-to-Market Strategy and Sales Plan",
+      "Partnership and Distribution Channels",
+      "Investment Requirements and Use of Funds",
+      "Risk Analysis and Mitigation Strategies",
+      "Exit Strategy and Investor Returns",
+      "Company Milestones and Achievements",
+      "Contact Information and Next Steps"
+    ];
+    
+    return {
+      id: index + 1,
+      src: `/slides/TIQUO DECK V5 - ${String(index + 1).padStart(2, '0')}.jpg`,
+      alt: `TIQUO Investor Presentation Slide ${index + 1}: ${slideDescriptions[index] || `Slide ${index + 1}`}`
+    };
+  });
 
   // Brand identity images configuration
-  const brandIdentityImages = Array.from({ length: 17 }, (_, index) => ({
-    id: index + 1,
-    src: `/brand-identity/Tiquo brand identity - ${String(index + 1).padStart(2, '0')}.jpg`,
-    alt: `Tiquo Brand Identity ${index + 1}`
-  }));
+  const brandIdentityImages = Array.from({ length: 17 }, (_, index) => {
+    const brandDescriptions = [
+      "TIQUO Logo Design and Typography Guidelines",
+      "Primary Brand Colors and Color Palette",
+      "Secondary Brand Colors and Usage",
+      "Logo Variations and Applications",
+      "Typography Hierarchy and Font Selection",
+      "Brand Voice and Messaging Guidelines",
+      "Visual Identity Standards and Rules",
+      "Marketing Collateral Templates",
+      "Business Card and Stationery Design",
+      "Digital Asset Guidelines and Usage",
+      "Photography Style and Image Treatment",
+      "Icon Set and Graphic Elements",
+      "Brand Application Examples",
+      "Print Material Guidelines",
+      "Web and Digital Brand Standards",
+      "Brand Protection and Usage Rights",
+      "Complete Brand Style Guide Summary"
+    ];
+    
+    return {
+      id: index + 1,
+      src: `/brand-identity/Tiquo brand identity - ${String(index + 1).padStart(2, '0')}.jpg`,
+      alt: `TIQUO Brand Identity Guide Page ${index + 1}: ${brandDescriptions[index] || `Brand Identity ${index + 1}`}`
+    };
+  });
 
   // Pricing model spreadsheet data - 3 tables layout
   const leftTableData = {
@@ -232,17 +276,47 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen" style={{backgroundColor: '#f2f2f2'}}>
-      {/* Fixed Logo at Top Center */}
-      <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
-        <Image
-          src="/tiquo logo.svg"
-          alt="tiquo"
-          width={96}
-          height={96}
-          className="w-20 h-20 md:w-24 md:h-24"
-        />
-      </div>
+    <>
+      {/* Dashboard-specific structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "TIQUO Investor Dashboard",
+            "description": "Secure investor data room containing TIQUO's company documents, financial projections, product roadmaps, and strategic business materials",
+            "url": "https://dataroom.tiquo.co/dashboard",
+            "isPartOf": {
+              "@type": "WebSite",
+              "name": "TIQUO DataRoom",
+              "url": "https://dataroom.tiquo.co"
+            },
+            "provider": {
+              "@type": "Organization",
+              "name": "TIQUO"
+            },
+            "mainEntity": {
+              "@type": "Dataset",
+              "name": "TIQUO Investor Materials",
+              "description": "Comprehensive collection of business documents including investor presentation, company documentation, product specifications, and brand materials",
+              "keywords": ["investor deck", "company documents", "product roadmap", "brand guidelines", "financial projections", "business strategy"]
+            }
+          })
+        }}
+      />
+      
+      <div className="min-h-screen" style={{backgroundColor: '#f2f2f2'}}>
+        {/* Fixed Logo at Top Center */}
+        <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
+          <Image
+            src="/tiquo logo.svg"
+            alt="TIQUO - Modern Technology Solutions for Business Infrastructure"
+            width={96}
+            height={96}
+            className="w-20 h-20 md:w-24 md:h-24"
+          />
+        </div>
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
@@ -450,24 +524,26 @@ export default function DashboardPage() {
                                     }
                                     alt={
                                       card.name === "Certificate of incorporation"
-                                        ? "incorporation"
+                                        ? "TIQUO Certificate of Incorporation - Official company registration document showing legal entity status and corporate structure"
                                         : card.name === "Cap table"
-                                        ? "cap table"
-                                        : card.name === "Feature Usecases" ||
-                                          card.name === "Feature Competitor Comparison" ||
-                                          card.name === "Use of funds"
-                                        ? "spreadsheet"
+                                        ? "TIQUO Capitalization Table - Detailed breakdown of company ownership, equity distribution, and shareholder information"
+                                        : card.name === "Feature Usecases"
+                                        ? "TIQUO Feature Use Cases - Comprehensive analysis of product applications across different industries and business scenarios"
+                                        : card.name === "Feature Competitor Comparison"
+                                        ? "TIQUO Competitive Analysis - Feature comparison matrix showing advantages over competitors in the market"
+                                        : card.name === "Use of funds"
+                                        ? "TIQUO Investment Use of Funds - Strategic allocation plan for investor capital and business growth initiatives"
                                         : card.name === "Feature Roadmap"
-                                        ? "timeline"
+                                        ? "TIQUO Product Roadmap - Timeline showing planned feature development, milestones, and strategic product evolution"
                                         : card.name === "Unique selling points"
-                                        ? "star"
+                                        ? "TIQUO Unique Selling Propositions - Key differentiators and competitive advantages in the technology market"
                                         : card.name === "Brand kit"
-                                        ? "brand"
+                                        ? "TIQUO Brand Kit - Complete visual identity package including logos, colors, typography, and brand guidelines"
                                         : card.name === "Pricing Model"
-                                        ? "money"
+                                        ? "TIQUO Pricing Strategy - Revenue model, pricing tiers, and financial projections for business growth"
                                         : card.name === "Go-to-market strategy"
-                                        ? "arrow"
-                                        : "file"
+                                        ? "TIQUO Go-to-Market Strategy - Strategic plan for product launch, customer acquisition, and market penetration"
+                                        : "TIQUO Business Document - Important company file for investor review and due diligence"
                                     }
                                     width={128}
                                     height={160}
@@ -502,7 +578,7 @@ export default function DashboardPage() {
                 >
                   <Image
                     src={item.image}
-                    alt={item.name}
+                    alt={`${item.name} - ${item.description}`}
                     fill
                     className="object-contain hover:drop-shadow-xl transition-all duration-300"
                   />
@@ -628,6 +704,7 @@ export default function DashboardPage() {
         onClose={() => setIsFeatureUsecasesModalOpen(false)}
         title="Feature Usecases by Industry"
       />
-    </div>
+      </div>
+    </>
   );
 }

@@ -79,7 +79,7 @@ export default function AuthPage() {
           <div className="flex justify-center">
             <Image
               src="/tiquo logo.svg"
-              alt="Tiquo Logo"
+              alt="TIQUO Logo - Secure Business Infrastructure Technology Solutions"
               width={96}
               height={96}
               className="w-20 h-20 md:w-24 md:h-24"
