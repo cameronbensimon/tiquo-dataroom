@@ -16,18 +16,10 @@ export const getCurrentUser = query({
   },
 });
 
-// Check if user has specific access permission
+// Check if user has access permission
 export const checkUserAccess = query({
-  args: {
-    accessType: v.union(
-      v.literal("general"),
-      v.literal("companyDocuments"), 
-      v.literal("deck"),
-      v.literal("productTechnology"),
-      v.literal("brandStrategy")
-    ),
-  },
-  handler: async (ctx, args) => {
+  args: {},
+  handler: async (ctx) => {
     const userId = await auth.getUserId(ctx);
     if (!userId) {
       return false;
@@ -38,16 +30,7 @@ export const checkUserAccess = query({
       return false;
     }
 
-    // Map access types to user fields
-    const accessMap = {
-      general: user.generalAccess ?? false,
-      companyDocuments: user.companyDocumentsAccess ?? false,
-      deck: user.deckAccess ?? false,
-      productTechnology: user.productTechnologyAccess ?? false,
-      brandStrategy: user.brandStrategyAccess ?? false,
-    };
-
-    return accessMap[args.accessType];
+    return user.AccessAllowed ?? false;
   },
 });
 
@@ -55,11 +38,7 @@ export const checkUserAccess = query({
 export const updateUserAccess = mutation({
   args: {
     userId: v.id("users"),
-    generalAccess: v.optional(v.boolean()),
-    companyDocumentsAccess: v.optional(v.boolean()),
-    deckAccess: v.optional(v.boolean()),
-    productTechnologyAccess: v.optional(v.boolean()),
-    brandStrategyAccess: v.optional(v.boolean()),
+    AccessAllowed: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
     // Note: Add admin check here when you implement admin roles
@@ -68,14 +47,11 @@ export const updateUserAccess = mutation({
       throw new Error("Not authenticated");
     }
 
-    const { userId, ...accessFields } = args;
+    const { userId, AccessAllowed } = args;
     
-    // Filter out undefined values
-    const updateFields = Object.fromEntries(
-      Object.entries(accessFields).filter(([_, value]) => value !== undefined)
-    );
-
-    await ctx.db.patch(userId, updateFields);
+    if (AccessAllowed !== undefined) {
+      await ctx.db.patch(userId, { AccessAllowed });
+    }
   },
 });
 
@@ -93,11 +69,7 @@ export const getAllUsersWithAccess = query({
     return users.map(user => ({
       _id: user._id,
       email: user.email,
-      generalAccess: user.generalAccess ?? false,
-      companyDocumentsAccess: user.companyDocumentsAccess ?? false,
-      deckAccess: user.deckAccess ?? false,
-      productTechnologyAccess: user.productTechnologyAccess ?? false,
-      brandStrategyAccess: user.brandStrategyAccess ?? false,
+      AccessAllowed: user.AccessAllowed ?? false,
     }));
   },
 });
@@ -109,17 +81,13 @@ export const initializeUserAccess = mutation({
   },
   handler: async (ctx, args) => {
     await ctx.db.patch(args.userId, {
-      generalAccess: true, // Give general access by default
-      companyDocumentsAccess: false,
-      deckAccess: false,
-      productTechnologyAccess: false,
-      brandStrategyAccess: false,
+      AccessAllowed: false, // No access by default
     });
   },
 });
 
-// Grant full access to a user (admin utility)
-export const grantFullAccess = mutation({
+// Grant access to a user (admin utility)
+export const grantAccess = mutation({
   args: {
     userId: v.id("users"),
   },
@@ -130,16 +98,12 @@ export const grantFullAccess = mutation({
     }
 
     await ctx.db.patch(args.userId, {
-      generalAccess: true,
-      companyDocumentsAccess: true,
-      deckAccess: true,
-      productTechnologyAccess: true,
-      brandStrategyAccess: true,
+      AccessAllowed: true,
     });
   },
 });
 
-// Revoke all access except general (admin utility)
+// Revoke access from a user (admin utility)
 export const revokeAccess = mutation({
   args: {
     userId: v.id("users"),
@@ -151,11 +115,7 @@ export const revokeAccess = mutation({
     }
 
     await ctx.db.patch(args.userId, {
-      generalAccess: true, // Keep general access
-      companyDocumentsAccess: false,
-      deckAccess: false,
-      productTechnologyAccess: false,
-      brandStrategyAccess: false,
+      AccessAllowed: false,
     });
   },
 });

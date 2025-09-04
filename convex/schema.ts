@@ -16,11 +16,7 @@ export default defineSchema({
     isAnonymous: v.optional(v.boolean()),
     
     // Custom access control fields
-    generalAccess: v.optional(v.boolean()),
-    companyDocumentsAccess: v.optional(v.boolean()),
-    deckAccess: v.optional(v.boolean()),
-    productTechnologyAccess: v.optional(v.boolean()),
-    brandStrategyAccess: v.optional(v.boolean()),
+    AccessAllowed: v.optional(v.boolean()),
   }).index("email", ["email"]),
   
   // Your application tables can be added here

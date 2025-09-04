@@ -1,6 +1,8 @@
 "use client";
 
 import { useAuthToken } from "@convex-dev/auth/react";
+import { useQuery } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
@@ -11,10 +13,12 @@ import PricingModelModal from "@/components/PricingModelModal";
 import SingleImageModal from "@/components/SingleImageModal";
 import CapTableModal from "@/components/CapTableModal";
 import FeatureUsecasesModal from "@/components/FeatureUsecasesModal";
+import AccessDenied from "@/components/AccessDenied";
 
 export default function DashboardPage() {
   const token = useAuthToken();
   const router = useRouter();
+  const hasAccess = useQuery(api.users.checkUserAccess);
   const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
@@ -269,6 +273,16 @@ export default function DashboardPage() {
 
   // Show loading or nothing while redirecting
   if (!token) {
+    return null;
+  }
+
+  // Show access denied page if user doesn't have access
+  if (hasAccess === false) {
+    return <AccessDenied />;
+  }
+
+  // Show loading while checking access
+  if (hasAccess === undefined) {
     return null;
   }
 
