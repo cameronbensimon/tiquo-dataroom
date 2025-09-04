@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import DeckCarouselModal from "@/components/DeckCarouselModal";
 import PricingModelModal from "@/components/PricingModelModal";
+import SingleImageModal from "@/components/SingleImageModal";
 
 export default function DashboardPage() {
   const token = useAuthToken();
@@ -15,6 +16,7 @@ export default function DashboardPage() {
   const [isDeckModalOpen, setIsDeckModalOpen] = useState(false);
   const [isBrandKitModalOpen, setIsBrandKitModalOpen] = useState(false);
   const [isPricingModelModalOpen, setIsPricingModelModalOpen] = useState(false);
+  const [isIncorporationModalOpen, setIsIncorporationModalOpen] = useState(false);
 
   // TIQUO deck slides configuration
   const tiquoDeckImages = Array.from({ length: 17 }, (_, index) => ({
@@ -134,6 +136,11 @@ export default function DashboardPage() {
   // Handle pricing model file click
   const handlePricingModelClick = () => {
     setIsPricingModelModalOpen(true);
+  };
+
+  // Handle certificate of incorporation file click
+  const handleIncorporationClick = () => {
+    setIsIncorporationModalOpen(true);
   };
 
   // Simple 4 buttons - deck + 3 folders
@@ -352,6 +359,8 @@ export default function DashboardPage() {
                                           handleBrandKitClick();
                                         } else if (card.name === "Pricing Model") {
                                           handlePricingModelClick();
+                                        } else if (card.name === "Certificate of incorporation") {
+                                          handleIncorporationClick();
                                         }
                                       }}
                                       style={{
@@ -499,6 +508,14 @@ export default function DashboardPage() {
         leftTable={leftTableData}
         rightTables={[rightTableData1, rightTableData2]}
         title="Pricing & Strategy"
+      />
+
+      {/* Certificate of Incorporation Modal */}
+      <SingleImageModal
+        isOpen={isIncorporationModalOpen}
+        onClose={() => setIsIncorporationModalOpen(false)}
+        imageSrc="/incorporationtiquo.jpg"
+        imageAlt="Certificate of Incorporation - TIQUO"
       />
     </div>
   );
