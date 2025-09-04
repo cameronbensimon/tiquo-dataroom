@@ -157,8 +157,7 @@ export default function CapTableModal({ isOpen, onClose, title = "Cap Table" }: 
           >
             {/* Header */}
             <div className="bg-gray-50 border-b border-gray-200 p-6">
-              <h2 className="text-2xl font-semibold text-gray-900">Cap Table</h2>
-              <p className="text-sm text-gray-600 mt-1">{title}</p>
+              <h2 className="text-2xl font-semibold text-gray-900">Company Ownership</h2>
             </div>
 
             {/* Chart and table layout */}
@@ -166,7 +165,6 @@ export default function CapTableModal({ isOpen, onClose, title = "Cap Table" }: 
               <div className="flex gap-8 items-center justify-center h-full">
                 {/* Donut chart */}
                 <div className="flex flex-col items-center">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-6">Ownership Distribution</h3>
                   {createDonutChart()}
                   
                   {/* Legend */}
@@ -190,7 +188,6 @@ export default function CapTableModal({ isOpen, onClose, title = "Cap Table" }: 
 
                 {/* Shareholding table */}
                 <div className="flex flex-col">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4">Share Distribution</h3>
                   <div className="border border-gray-200 rounded-lg overflow-hidden">
                     <table className="w-full border-collapse">
                       <thead>

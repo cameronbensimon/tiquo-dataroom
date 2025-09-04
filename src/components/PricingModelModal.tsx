@@ -232,8 +232,7 @@ export default function PricingModelModal({ isOpen, onClose, leftTable, rightTab
           >
             {/* Header */}
             <div className="bg-gray-50 border-b border-gray-200 p-6">
-              <h2 className="text-2xl font-semibold text-gray-900">TIQUO Pricing & Strategy</h2>
-              <p className="text-sm text-gray-600 mt-1">{title}</p>
+              <h2 className="text-2xl font-semibold text-gray-900">Pricing & Strategy</h2>
             </div>
 
             {/* Three-table layout */}
