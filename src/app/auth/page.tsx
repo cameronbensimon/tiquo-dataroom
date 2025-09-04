@@ -125,7 +125,19 @@ export default function AuthPage() {
                 size="lg"
                 className="w-full"
               >
-                {isLoading ? "Sending Code..." : "Send Login Code"}
+                {isLoading ? (
+                  <div className="flex items-center gap-2">
+                    <Image
+                      src="/Black.gif"
+                      alt="Loading..."
+                      width={20}
+                      height={20}
+                    />
+                    Sending Code...
+                  </div>
+                ) : (
+                  "Send Login Code"
+                )}
               </Button>
             </>
           ) : (
@@ -163,17 +175,43 @@ export default function AuthPage() {
                   size="lg"
                   className="flex-1"
                 >
-                  {isLoading ? "Verifying..." : "Sign In"}
+                  {isLoading ? (
+                    <div className="flex items-center gap-2">
+                      <Image
+                        src="/Black.gif"
+                        alt="Loading..."
+                        width={20}
+                        height={20}
+                      />
+                      Verifying...
+                    </div>
+                  ) : (
+                    "Sign In"
+                  )}
                 </Button>
               </div>
               <div className="text-center">
-                <button
+                <Button
                   onClick={handleSendCode}
                   disabled={isLoading}
-                  className="text-sm text-indigo-600 hover:text-indigo-500 disabled:opacity-50"
+                  variant="ghost"
+                  size="sm"
+                  className="text-gray-500 hover:text-gray-700"
                 >
-                  Resend code
-                </button>
+                  {isLoading ? (
+                    <div className="flex items-center gap-2">
+                      <Image
+                        src="/Black.gif"
+                        alt="Loading..."
+                        width={16}
+                        height={16}
+                      />
+                      Resending...
+                    </div>
+                  ) : (
+                    "Resend code"
+                  )}
+                </Button>
               </div>
             </>
           )}
