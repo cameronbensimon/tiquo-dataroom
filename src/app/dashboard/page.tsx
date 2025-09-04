@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import DeckCarouselModal from "@/components/DeckCarouselModal";
+import SpreadsheetModal from "@/components/SpreadsheetModal";
 
 export default function DashboardPage() {
   const token = useAuthToken();
@@ -13,6 +14,7 @@ export default function DashboardPage() {
   const [isMobile, setIsMobile] = useState(false);
   const [isDeckModalOpen, setIsDeckModalOpen] = useState(false);
   const [isBrandKitModalOpen, setIsBrandKitModalOpen] = useState(false);
+  const [isPricingModelModalOpen, setIsPricingModelModalOpen] = useState(false);
 
   // TIQUO deck slides configuration
   const tiquoDeckImages = Array.from({ length: 17 }, (_, index) => ({
@@ -27,6 +29,23 @@ export default function DashboardPage() {
     src: `/brand-identity/Tiquo brand identity - ${String(index + 1).padStart(2, '0')}.jpg`,
     alt: `Tiquo Brand Identity ${index + 1}`
   }));
+
+  // Pricing model spreadsheet data
+  const pricingModelData = {
+    title: "TIQUO Pricing Model",
+    headers: ["Package", "Monthly Price", "Annual Price", "Features", "Users", "Storage"],
+    rows: [
+      ["Starter", 29, 290, "Basic Features", "Up to 5", "10 GB"],
+      ["Professional", 79, 790, "Advanced Features", "Up to 25", "100 GB"],
+      ["Enterprise", 199, 1990, "Premium Features", "Up to 100", "1 TB"],
+      ["Custom", "Contact Sales", "Contact Sales", "All Features", "Unlimited", "Unlimited"],
+      ["", "", "", "", "", ""],
+      ["Add-ons", "", "", "", "", ""],
+      ["Priority Support", 19, 190, "24/7 Support", "All Plans", "N/A"],
+      ["Advanced Analytics", 39, 390, "Detailed Insights", "Pro & Enterprise", "N/A"],
+      ["API Access", 49, 490, "Full API", "Enterprise Only", "N/A"]
+    ]
+  };
 
   // Detect mobile screen size
   useEffect(() => {
@@ -77,6 +96,11 @@ export default function DashboardPage() {
   // Handle brand kit file click
   const handleBrandKitClick = () => {
     setIsBrandKitModalOpen(true);
+  };
+
+  // Handle pricing model file click
+  const handlePricingModelClick = () => {
+    setIsPricingModelModalOpen(true);
   };
 
   // Simple 4 buttons - deck + 3 folders
@@ -293,6 +317,8 @@ export default function DashboardPage() {
                                         e.stopPropagation();
                                         if (card.name === "Brand kit") {
                                           handleBrandKitClick();
+                                        } else if (card.name === "Pricing Model") {
+                                          handlePricingModelClick();
                                         }
                                       }}
                                       style={{
@@ -433,6 +459,14 @@ export default function DashboardPage() {
         onClose={() => setIsBrandKitModalOpen(false)}
         images={brandIdentityImages}
         title="Tiquo Brand Identity"
+      />
+
+      {/* Pricing Model Spreadsheet Modal */}
+      <SpreadsheetModal
+        isOpen={isPricingModelModalOpen}
+        onClose={() => setIsPricingModelModalOpen(false)}
+        data={pricingModelData}
+        title="Financial Planning"
       />
     </div>
   );
