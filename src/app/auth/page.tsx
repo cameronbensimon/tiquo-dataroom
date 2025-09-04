@@ -3,6 +3,8 @@
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 export default function AuthPage() {
   const { signIn } = useAuthActions();
@@ -74,12 +76,18 @@ export default function AuthPage() {
     <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#f2f2f2'}}>
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to tiquo DataRoom
-          </h2>
+          <div className="flex justify-center">
+            <Image
+              src="/tiquo logo.svg"
+              alt="Tiquo Logo"
+              width={96}
+              height={96}
+              className="w-20 h-20 md:w-24 md:h-24"
+            />
+          </div>
           <p className="mt-2 text-center text-sm text-gray-600">
             {step === "email" 
-              ? "Enter your email to receive a login code"
+              ? "Enter your email to access Tiquo's Data Room"
               : "Enter the 6-digit code sent to your email"
             }
           </p>
@@ -110,13 +118,15 @@ export default function AuthPage() {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
-              <button
+              <Button
                 onClick={handleSendCode}
                 disabled={isLoading}
-                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                variant="default"
+                size="lg"
+                className="w-full"
               >
                 {isLoading ? "Sending Code..." : "Send Login Code"}
-              </button>
+              </Button>
             </>
           ) : (
             <>
