@@ -38,7 +38,7 @@ export default function AccessDenied({ onRequestAccess }: AccessDeniedProps) {
           </h1>
           
           <p className="text-lg text-gray-600 leading-relaxed">
-            Access is restricted to Tiquo's data room. Request access here.
+            Access is restricted to Tiquo&apos;s data room. Request access here.
           </p>
           
           {/* Request Access Button */}
@@ -56,7 +56,7 @@ export default function AccessDenied({ onRequestAccess }: AccessDeniedProps) {
         {/* Additional Info */}
         <div className="pt-8">
           <p className="text-sm text-gray-400">
-            If you believe you should have access, please contact us and we'll review your request.
+            If you believe you should have access, please contact us and we&apos;ll review your request.
           </p>
         </div>
       </div>
