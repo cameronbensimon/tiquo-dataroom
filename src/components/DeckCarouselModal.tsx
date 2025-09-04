@@ -179,7 +179,7 @@ export default function DeckCarouselModal({ isOpen, onClose }: DeckCarouselModal
                       src={image.src}
                       alt={image.alt}
                       fill
-                      className="object-contain rounded-xl"
+                      className="object-cover rounded-xl"
                       priority={index < 2}
                     />
                   </div>
