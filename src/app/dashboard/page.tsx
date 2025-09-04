@@ -23,22 +23,17 @@ export default function DashboardPage() {
     return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
-  // Generate random positions for file cards in each stack (changes on each load)
-  const generateRandomStack = () => {
-    const cardCount = Math.floor(Math.random() * 2) + 2; // Random 2 or 3 cards
-    return Array.from({ length: cardCount }, (_, i) => ({
+  // Generate random positions for file cards in each stack
+  const generateRandomStack = (fileNames: string[]) => {
+    return fileNames.map((fileName, i) => ({
       id: i,
+      name: fileName,
       top: Math.floor(Math.random() * 32) - 16, // -16 to 16px (more vertical spread)
       left: Math.floor(Math.random() * 40) - 20, // -20 to 20px (wider horizontal fan-out)
       rotation: Math.floor(Math.random() * 30) - 15, // -15 to 15 degrees
       opacity: Math.random() * 0.4 + 0.5, // 0.5 to 0.9
     }));
   };
-
-  // Generate different random stacks for each folder
-  const companyDocsStack = generateRandomStack();
-  const productTechStack = generateRandomStack(); 
-  const brandStrategyStack = generateRandomStack();
 
   // Handle folder click
   const handleFolderClick = (folderId: number) => {
@@ -51,14 +46,6 @@ export default function DashboardPage() {
     }
   };
 
-  // Get the stack for a specific folder
-  const getStackForFolder = (folderName: string) => {
-    if (folderName === "Company Documents") return companyDocsStack;
-    if (folderName === "Product & Technology") return productTechStack;
-    if (folderName === "Brand & Strategy") return brandStrategyStack;
-    return [];
-  };
-
   // Simple 4 buttons - deck + 3 folders
   const dataRoomItems = [
     { 
@@ -67,33 +54,50 @@ export default function DashboardPage() {
       count: 15, 
       type: "folder" as const,
       image: "/Deck.png",
-      description: "Comprehensive investor presentation materials including company overview, financial projections, and strategic roadmap."
+      description: "Comprehensive investor presentation materials including company overview, financial projections, and strategic roadmap.",
+      files: []
     },
     { 
       id: 2, 
       name: "Company Documents", 
-      count: 8, 
+      count: 2, 
       type: "folder" as const,
       image: "/Company-documents.png",
-      description: "Essential company documentation including incorporation papers, legal agreements, and corporate governance materials."
+      description: "Essential company documentation including incorporation papers, legal agreements, and corporate governance materials.",
+      files: ["Certificate of incorporation", "Cap table"]
     },
     { 
       id: 3, 
       name: "Product & Technology", 
-      count: 32, 
+      count: 4, 
       type: "folder" as const,
       image: "/Product-Technology.png",
-      description: "Technical specifications, product roadmaps, architecture documentation, and development resources."
+      description: "Technical specifications, product roadmaps, architecture documentation, and development resources.",
+      files: ["Feature Roadmap", "Feature Usecases", "Feature Competitor Comparison", "Unique selling points"]
     },
     { 
       id: 4, 
       name: "Brand & Strategy", 
-      count: 18, 
+      count: 3, 
       type: "folder" as const,
       image: "/Brand-Strategy.png",
-      description: "Brand guidelines, marketing materials, strategic positioning documents, and visual identity assets."
+      description: "Brand guidelines, marketing materials, strategic positioning documents, and visual identity assets.",
+      files: ["Brand kit", "Use of funds", "Go-to-market strategy"]
     },
   ];
+
+  // Generate different stacks for each folder based on their files
+  const companyDocsStack = generateRandomStack(dataRoomItems.find(item => item.name === "Company Documents")?.files || []);
+  const productTechStack = generateRandomStack(dataRoomItems.find(item => item.name === "Product & Technology")?.files || []); 
+  const brandStrategyStack = generateRandomStack(dataRoomItems.find(item => item.name === "Brand & Strategy")?.files || []);
+
+  // Get the stack for a specific folder
+  const getStackForFolder = (folderName: string) => {
+    if (folderName === "Company Documents") return companyDocsStack;
+    if (folderName === "Product & Technology") return productTechStack;
+    if (folderName === "Brand & Strategy") return brandStrategyStack;
+    return [];
+  };
 
   if (!token) {
     return (
@@ -224,11 +228,23 @@ export default function DashboardPage() {
                               {/* Randomized file card stack */}
                               <div className="relative w-48 h-48">
                                 {stack.map((card, index) => {
-                                  // Calculate grid position for when this folder is selected
-                                  const gridCol = index % 3;
-                                  const gridRow = Math.floor(index / 3);
-                                  const gridX = (gridCol - 1) * 200; // Relative to center
-                                  const gridY = gridRow * 200 - 300; // Move up from folder position
+                                  // Calculate position for when this folder is selected
+                                  // Desktop: single horizontal row, Mobile: grid layout
+                                  let gridX, gridY;
+                                  if (isMobile) {
+                                    // Mobile: 2-column grid
+                                    const gridCol = index % 2;
+                                    const gridRow = Math.floor(index / 2);
+                                    gridX = (gridCol - 0.5) * 180; // Relative to center
+                                    gridY = gridRow * 200 - 100; // Move up from folder position
+                                  } else {
+                                    // Desktop: single horizontal row
+                                    const totalCards = stack.length;
+                                    const cardSpacing = 180; // Space between cards
+                                    const startX = -(totalCards - 1) * cardSpacing / 2; // Center the row
+                                    gridX = startX + (index * cardSpacing);
+                                    gridY = -150; // Fixed height above folder
+                                  }
 
                                   return (
                                     <motion.div
@@ -254,7 +270,7 @@ export default function DashboardPage() {
                                       }}
                                       animate={isSelected ? {
                                         rotate: 0,
-                                        scale: 1.2,
+                                        scale: 1.1,
                                         zIndex: 30,
                                         opacity: 1,
                                       } : {
@@ -274,13 +290,27 @@ export default function DashboardPage() {
                                         duration: 0.8
                                       }}
                                     >
-                                      <Image
-                                        src="/file.png"
-                                        alt="file"
-                                        width={128}
-                                        height={160}
-                                        className="object-contain drop-shadow-lg"
-                                      />
+                                      <div className="text-center">
+                                        <div className="w-32 h-40 flex items-center justify-center">
+                                          <Image
+                                            src="/file.png"
+                                            alt="file"
+                                            width={128}
+                                            height={160}
+                                            className="object-contain drop-shadow-lg max-w-full max-h-full"
+                                          />
+                                        </div>
+                                        {isSelected && (
+                                          <motion.p
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: 0.5 + (index * 0.1) }}
+                                            className="text-xs text-gray-700 mt-2 px-2 font-medium max-w-[140px] leading-tight"
+                                          >
+                                            {card.name}
+                                          </motion.p>
+                                        )}
+                                      </div>
                                     </motion.div>
                                   );
                                 })}
