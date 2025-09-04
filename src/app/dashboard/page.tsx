@@ -204,7 +204,7 @@ export default function DashboardPage() {
                       ...(isSelected && !isMobile && {
                         position: "fixed",
                         left: "40%",
-                        top: "12rem",
+                        top: "13.75rem",
                         transform: "translateX(-50%)",
                       }),
                     }}
@@ -238,12 +238,12 @@ export default function DashboardPage() {
                                     gridX = (gridCol - 0.5) * 180; // Relative to center
                                     gridY = gridRow * 200 - 100; // Move up from folder position
                                   } else {
-                                    // Desktop: single horizontal row
+                                    // Desktop: single horizontal row at same level as folder
                                     const totalCards = stack.length;
                                     const cardSpacing = 180; // Space between cards
                                     const startX = -(totalCards - 1) * cardSpacing / 2; // Center the row
                                     gridX = startX + (index * cardSpacing);
-                                    gridY = -150; // Fixed height above folder
+                                    gridY = -400; // Same level as folder
                                   }
 
                                   return (
@@ -259,13 +259,13 @@ export default function DashboardPage() {
                                         ...(isSelected && !isMobile && {
                                           position: "fixed",
                                           left: `calc(40% + ${gridX}px)`,
-                                          top: `${192 + gridY}px`,
+                                          top: `${220 + gridY}px`,
                                           transform: "translateX(-50%)",
                                         }),
                                         // Mobile positioning via Tailwind, but we need left/top for grid
                                         ...(isSelected && isMobile && {
                                           left: `calc(50% + ${gridX}px)`,
-                                          top: `${192 + gridY}px`,
+                                          top: `${220 + gridY}px`,
                                         }),
                                       }}
                                       animate={isSelected ? {
