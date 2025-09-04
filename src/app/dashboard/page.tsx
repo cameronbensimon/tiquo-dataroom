@@ -15,6 +15,7 @@ export default function DashboardPage() {
   const token = useAuthToken();
   const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
   const [isDeckModalOpen, setIsDeckModalOpen] = useState(false);
   const [isBrandKitModalOpen, setIsBrandKitModalOpen] = useState(false);
   const [isPricingModelModalOpen, setIsPricingModelModalOpen] = useState(false);
@@ -86,16 +87,18 @@ export default function DashboardPage() {
     ]
   };
 
-  // Detect mobile screen size
+  // Detect mobile and tablet screen sizes
   useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 1024); // lg breakpoint
+    const checkScreenSize = () => {
+      const width = window.innerWidth;
+      setIsMobile(width < 768); // md breakpoint
+      setIsTablet(width >= 768 && width < 1024); // tablet: md to lg breakpoint
     };
     
-    checkIsMobile();
-    window.addEventListener('resize', checkIsMobile);
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
     
-    return () => window.removeEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
   // Generate fan-out positions for file cards in each stack (stable positions)
@@ -230,262 +233,300 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen" style={{backgroundColor: '#f2f2f2'}}>
+      {/* Fixed Logo at Top Center */}
+      <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
+        <Image
+          src="/tiquo logo.svg"
+          alt="tiquo"
+          width={96}
+          height={96}
+          className="w-20 h-20 md:w-24 md:h-24"
+        />
+      </div>
+
       {/* Main Content */}
       <main className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        {/* Header Section - Logo Only */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <Image
-              src="/tiquo logo.svg"
-              alt="tiquo"
-              width={96}
-              height={96}
-              className="w-24 h-24"
-            />
-          </div>
-        </div>
 
         {/* Folder Description Card */}
         <AnimatePresence>
-          {selectedFolderId && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="fixed top-32 left-1/2 transform -translate-x-1/2 z-50 bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-lg w-full mx-6 md:max-w-md md:mx-4"
+  {selectedFolderId && (
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.3 }}
+      // Make a full-width fixed strip and center the card with mx-auto
+      className="fixed inset-x-0 top-32 z-50 px-4 sm:px-6 lg:px-8"
+    >
+      <div className="mx-auto w-full md:max-w-md bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-lg">
+        <div className="relative">
+          <button
+            onClick={() => setSelectedFolderId(null)}
+            className="absolute top-0 right-0 -mt-2 -mr-2 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors"
+          >
+            <svg
+              className="w-4 h-4 text-gray-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-              <div className="relative">
-                <button
-                  onClick={() => setSelectedFolderId(null)}
-                  className="absolute top-0 right-0 -mt-2 -mr-2 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors"
-                >
-                  <svg
-                    className="w-4 h-4 text-gray-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-                
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  {dataRoomItems.find(item => item.id === selectedFolderId)?.name}
-                </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  {dataRoomItems.find(item => item.id === selectedFolderId)?.description}
-                </p>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
 
-        {/* Data Room Items Grid */}
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-6xl min-h-8">
-            {/* Main grid layout */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 px-4 sm:px-6 lg:px-8" id="folders-grid">
-              {dataRoomItems.map((item) => {
-                const isSelected = selectedFolderId === item.id;
-                const shouldFadeOut = selectedFolderId && selectedFolderId !== item.id;
-                
-                return (
-                  <motion.div
-                    key={item.id}
-                    layoutId={`folder-${item.id}`}
-                    className={`group cursor-pointer ${
-                      isSelected && isMobile 
-                        ? "fixed bottom-[-230px] left-1/2 -translate-x-1/2 z-40" 
-                        : "relative"
-                    }`}
-                    onClick={() => item.id === 1 ? handleDeckClick() : handleFolderClick(item.id)}
-                    animate={{
-                      opacity: shouldFadeOut ? 0 : 1,
-                      scale: shouldFadeOut ? 0.8 : 1,
-                      zIndex: isSelected ? 40 : shouldFadeOut ? 1 : 10,
-                    }}
-                    style={{
-                      pointerEvents: shouldFadeOut ? "none" : "auto", // Disable clicks when faded out
-                      // Desktop only: mobile uses Tailwind classes for proper centering
-                      ...(isSelected && !isMobile && {
-                        position: "fixed",
-                        left: "40%",
-                        top: "13.75rem",
-                        transform: "translateX(-50%)",
-                      }),
-                    }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 100,
-                      damping: 20,
-                      duration: 0.8
-                    }}
-                    whileHover={!selectedFolderId ? { scale: 1.05 } : {}}
-                    whileTap={!selectedFolderId ? { scale: 0.98 } : {}}
-                  >
-                    {item.image && (
-                      <div className="w-72 h-60 relative">
-                        {/* Stack of file cards behind folders (not deck) */}
-                        {item.name !== "Investor Deck" && (() => {
-                          const stack = getStackForFolder(item.name);
+          <h3 className="text-lg font-semibold text-gray-800 mb-2">
+            {dataRoomItems.find(item => item.id === selectedFolderId)?.name}
+          </h3>
+          <p className="text-sm text-gray-600 leading-relaxed">
+            {dataRoomItems.find(item => item.id === selectedFolderId)?.description}
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  )}
+</AnimatePresence>
+
+       {/* Data Room Items Grid */}
+<div className="min-h-dvh flex items-center justify-center px-4 sm:px-6 lg:px-8">
+  <div className="w-full max-w-6xl">
+    {/* Main grid layout */}
+    <div
+      id="folders-grid"
+      className="grid gap-6 md:gap-12 justify-items-center grid-cols-2 md:grid-cols-2 lg:grid-cols-4"
+    >
+      {dataRoomItems.map((item) => {
+        const isSelected = selectedFolderId === item.id;
+        const shouldFadeOut = selectedFolderId && selectedFolderId !== item.id;
+
+        return (
+          <motion.div
+            key={item.id}
+            layoutId={`folder-${item.id}`}
+            className={`group cursor-pointer ${
+              isSelected && (isMobile || isTablet)
+                ? "fixed bottom-[-230px] left-1/2 -translate-x-1/2 z-40"
+                : "relative"
+            }`}
+            onClick={() =>
+              item.id === 1 ? handleDeckClick() : handleFolderClick(item.id)
+            }
+            animate={{
+              opacity: shouldFadeOut ? 0 : 1,
+              scale: shouldFadeOut ? 0.8 : 1,
+              zIndex: isSelected ? 40 : shouldFadeOut ? 1 : 10,
+            }}
+                          style={{
+                pointerEvents: shouldFadeOut ? "none" : "auto",
+                // Desktop only: keep your fixed positioning for the selected item
+                ...(isSelected &&
+                  !isMobile && !isTablet && {
+                    position: "fixed",
+                    left: "40%",
+                    top: "13.75rem",
+                    transform: "translateX(-50%)",
+                  }),
+              }}
+            transition={{
+              type: "spring",
+              stiffness: 100,
+              damping: 20,
+              duration: 0.8,
+            }}
+            whileHover={!selectedFolderId ? { scale: 1.05 } : {}}
+            whileTap={!selectedFolderId ? { scale: 0.98 } : {}}
+          >
+            {item.image && (
+              <div className="w-72 h-60 relative">
+                {/* Stack of file cards behind folders (not deck) */}
+                {item.name !== "Investor Deck" && (() => {
+                  const stack = getStackForFolder(item.name);
+
+                  return (
+                    <div
+                      className="absolute -top-1 transform -translate-x-1/2 z-0"
+                      style={{
+                        left: isSelected ? "50%" : "calc(50% + 50px)",
+                      }}
+                    >
+                      {/* Randomized file card stack */}
+                      <div className="relative w-48 h-48">
+                        {stack.map((card, index) => {
+                          // Calculate position for when this folder is selected
+                          // Desktop: single horizontal row, Mobile: grid layout
+                          let gridX, gridY;
+                                                     if (isMobile || isTablet) {
+                             // Mobile & Tablet: 2-column grid
+                             const gridCol = index % 2;
+                             const gridRow = Math.floor(index / 2);
+                             gridX = (gridCol - 0.5) * 160; // Adjusted spacing
+                             // Much larger spacing between rows on tablet
+                             const rowSpacing = isTablet ? 200 : 140; 
+                             gridY = gridRow * rowSpacing - 700;
+                           } else {
+                            // Desktop: single horizontal row
+                            const totalCards = stack.length;
+                            const cardSpacing = 180;
+                            const startX = -((totalCards - 1) * cardSpacing) / 2;
+                            gridX = startX + index * cardSpacing;
+                            gridY = -150;
+                          }
 
                           return (
-                            <div className="absolute -top-1 transform -translate-x-1/2 z-0" style={{ 
-                              left: isSelected ? "50%" : "calc(50% + 50px)" 
-                            }}>
-                              {/* Randomized file card stack */}
-                              <div className="relative w-48 h-48">
-                                {stack.map((card, index) => {
-                                  // Calculate position for when this folder is selected
-                                  // Desktop: single horizontal row, Mobile: grid layout
-                                  let gridX, gridY;
-                                  if (isMobile) {
-                                    // Mobile: 2-column grid
-                                    const gridCol = index % 2;
-                                    const gridRow = Math.floor(index / 2);
-                                    gridX = (gridCol - 0.5) * 160; // Adjusted spacing for scaled-down cards (80% of 200)
-                                    gridY = gridRow * 140 - 550; // Move cards way higher on mobile
-                                  } else {
-                                    // Desktop: single horizontal row at same level as folder
-                                    const totalCards = stack.length;
-                                    const cardSpacing = 180; // Space between cards
-                                    const startX = -(totalCards - 1) * cardSpacing / 2; // Center the row
-                                    gridX = startX + (index * cardSpacing);
-                                    gridY = -400; // Same level as folder
-                                  }
-
-                                  return (
-                                    <motion.div
-                                      key={`card-${item.id}-${card.id}`}
-                                      className={`${
-                                        isSelected && isMobile 
-                                          ? "fixed" 
-                                          : "absolute"
-                                      } cursor-pointer`}
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        if (card.name === "Brand kit") {
-                                          handleBrandKitClick();
-                                        } else if (card.name === "Pricing Model") {
-                                          handlePricingModelClick();
-                                        } else if (card.name === "Certificate of incorporation") {
-                                          handleIncorporationClick();
-                                        } else if (card.name === "Cap table") {
-                                          handleCapTableClick();
-                                        } else if (card.name === "Feature Usecases") {
-                                          handleFeatureUsecasesClick();
-                                        }
-                                      }}
-                                      style={{
-                                        // Desktop only: mobile uses Tailwind classes
-                                        ...(isSelected && !isMobile && {
-                                          position: "fixed",
-                                          left: `calc(50% + ${gridX}px - 64px)`, // Subtract half card width
-                                          top: `${220 + gridY}px`,
-                                        }),
-                                        // Mobile positioning via Tailwind, but we need left/top for grid
-                                        ...(isSelected && isMobile && {
-                                          left: `calc(50% + ${gridX}px - 64px)`, // Subtract half scaled card width (160px * 0.8 / 2 = 64px)
-                                          top: `${220 + gridY}px`,
-                                        }),
-                                      }}
-                                      animate={isSelected ? {
-                                        rotate: 0,
-                                        scale: 1.1,
-                                        zIndex: 30,
-                                        opacity: 1,
-                                      } : {
-                                        // Original position behind folder
-                                        x: card.left,
-                                        y: card.top,
-                                        rotate: card.rotation,
-                                        scale: 1,
-                                        zIndex: 0,
-                                        opacity: shouldFadeOut ? 0 : card.opacity,
-                                      }}
-                                      transition={{
-                                        type: "spring",
-                                        stiffness: 80,
-                                        damping: 20,
-                                        delay: isSelected ? 0.3 + (index * 0.1) : 0,
-                                        duration: 0.8
-                                      }}
-                                    >
-                                      <div className="text-center">
-                                        <div className="w-40 h-40 md:w-32 md:h-40 flex items-center justify-center scale-80 md:scale-100">
-                                          <Image
-                                            src={
-                                              card.name === "Certificate of incorporation" ? "/incorporation.png" :
-                                              card.name === "Cap table" ? "/captableicon.png" :
-                                              card.name === "Feature Usecases" ? "/spreadsheeticon.png" :
-                                              card.name === "Feature Competitor Comparison" ? "/spreadsheeticon.png" :
-                                              card.name === "Feature Roadmap" ? "/timeline.png" :
-                                              card.name === "Unique selling points" ? "/staricon.png" :
-                                              card.name === "Brand kit" ? "/brandicon.png" :
-                                              card.name === "Use of funds" ? "/spreadsheeticon.png" :
-                                              card.name === "Pricing Model" ? "/moneyicon.png" :
-                                              card.name === "Go-to-market strategy" ? "/arrowicon.png" :
-                                              "/file.png"
-                                            }
-                                            alt={
-                                              card.name === "Certificate of incorporation" ? "incorporation" :
-                                              card.name === "Cap table" ? "cap table" :
-                                              card.name === "Feature Usecases" ? "spreadsheet" :
-                                              card.name === "Feature Competitor Comparison" ? "spreadsheet" :
-                                              card.name === "Feature Roadmap" ? "timeline" :
-                                              card.name === "Unique selling points" ? "star" :
-                                              card.name === "Brand kit" ? "brand" :
-                                              card.name === "Use of funds" ? "spreadsheet" :
-                                              card.name === "Pricing Model" ? "money" :
-                                              card.name === "Go-to-market strategy" ? "arrow" :
-                                              "file"
-                                            }
-                                            width={128}
-                                            height={160}
-                                            className="object-contain drop-shadow-lg max-w-full max-h-full"
-                                          />
-                                        </div>
-                                        {isSelected && (
-                                          <motion.p
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: 0.5 + (index * 0.1) }}
-                                            className="text-xs text-gray-700 -mt-6 md:mt-1 px-2 font-medium max-w-[160px] md:max-w-[140px] leading-tight"
-                                          >
-                                            {card.name}
-                                          </motion.p>
-                                        )}
-                                      </div>
-                                    </motion.div>
-                                  );
-                                })}
+                            <motion.div
+                              key={`card-${item.id}-${card.id}`}
+                                            className={`${
+                isSelected && (isMobile || isTablet) ? "fixed" : "absolute"
+              } cursor-pointer`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (card.name === "Brand kit") {
+                                  handleBrandKitClick();
+                                } else if (card.name === "Pricing Model") {
+                                  handlePricingModelClick();
+                                } else if (card.name === "Certificate of incorporation") {
+                                  handleIncorporationClick();
+                                } else if (card.name === "Cap table") {
+                                  handleCapTableClick();
+                                } else if (card.name === "Feature Usecases") {
+                                  handleFeatureUsecasesClick();
+                                }
+                              }}
+                                             style={{
+                 ...(isSelected &&
+                   !isMobile && !isTablet && {
+                     position: "fixed",
+                     left: `calc(50% + ${gridX}px - 64px)`,
+                     top: `${220 + gridY}px`,
+                   }),
+                 ...(isSelected &&
+                   (isMobile || isTablet) && {
+                     left: `calc(50% + ${gridX}px - 64px)`,
+                     top: `${220 + gridY}px`,
+                   }),
+               }}
+                              animate={
+                                isSelected
+                                  ? {
+                                      rotate: 0,
+                                      scale: 1.1,
+                                      zIndex: 30,
+                                      opacity: 1,
+                                    }
+                                  : {
+                                      x: card.left,
+                                      y: card.top,
+                                      rotate: card.rotation,
+                                      scale: 1,
+                                      zIndex: 0,
+                                      opacity: shouldFadeOut ? 0 : card.opacity,
+                                    }
+                              }
+                              transition={{
+                                type: "spring",
+                                stiffness: 80,
+                                damping: 20,
+                                delay: isSelected ? 0.3 + index * 0.1 : 0,
+                                duration: 0.8,
+                              }}
+                            >
+                              <div className="text-center">
+                                <div className="w-40 h-40 md:w-32 md:h-40 flex items-center justify-center scale-80 md:scale-90 lg:scale-100">
+                                  <Image
+                                    src={
+                                      card.name === "Certificate of incorporation"
+                                        ? "/incorporation.png"
+                                        : card.name === "Cap table"
+                                        ? "/captableicon.png"
+                                        : card.name === "Feature Usecases"
+                                        ? "/spreadsheeticon.png"
+                                        : card.name === "Feature Competitor Comparison"
+                                        ? "/spreadsheeticon.png"
+                                        : card.name === "Feature Roadmap"
+                                        ? "/timeline.png"
+                                        : card.name === "Unique selling points"
+                                        ? "/staricon.png"
+                                        : card.name === "Brand kit"
+                                        ? "/brandicon.png"
+                                        : card.name === "Use of funds"
+                                        ? "/spreadsheeticon.png"
+                                        : card.name === "Pricing Model"
+                                        ? "/moneyicon.png"
+                                        : card.name === "Go-to-market strategy"
+                                        ? "/arrowicon.png"
+                                        : "/file.png"
+                                    }
+                                    alt={
+                                      card.name === "Certificate of incorporation"
+                                        ? "incorporation"
+                                        : card.name === "Cap table"
+                                        ? "cap table"
+                                        : card.name === "Feature Usecases" ||
+                                          card.name === "Feature Competitor Comparison" ||
+                                          card.name === "Use of funds"
+                                        ? "spreadsheet"
+                                        : card.name === "Feature Roadmap"
+                                        ? "timeline"
+                                        : card.name === "Unique selling points"
+                                        ? "star"
+                                        : card.name === "Brand kit"
+                                        ? "brand"
+                                        : card.name === "Pricing Model"
+                                        ? "money"
+                                        : card.name === "Go-to-market strategy"
+                                        ? "arrow"
+                                        : "file"
+                                    }
+                                    width={128}
+                                    height={160}
+                                    className="object-contain drop-shadow-lg max-w-full max-h-full"
+                                  />
+                                </div>
+                                {isSelected && (
+                                  <motion.p
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.5 + index * 0.1 }}
+                                    className="text-xs text-gray-700 -mt-6 md:mt-1 px-2 font-medium max-w-[160px] md:max-w-[140px] leading-tight"
+                                  >
+                                    {card.name}
+                                  </motion.p>
+                                )}
                               </div>
-                            </div>
+                            </motion.div>
                           );
-                        })()}
-                        
-                        {/* Main folder/deck image */}
-                        <div className="relative z-10 w-full h-full scale-80 md:scale-100">
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            fill
-                            className="object-contain hover:drop-shadow-xl transition-all duration-300"
-                          />
-                        </div>
+                        })}
                       </div>
-                    )}
+                    </div>
+                  );
+                })()}
 
-                  </motion.div>
-                );
-              })}
-            </div>
-        </div>
+                {/* Main folder/deck image */}
+                <div 
+                  className="relative z-10 w-full h-full scale-80 md:scale-90 lg:scale-100 transition-transform duration-500"
+                  style={{
+                    transform: isSelected ? 'translateY(250px)' : 'translateY(0px)'
+                  }}
+                >
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    className="object-contain hover:drop-shadow-xl transition-all duration-300"
+                  />
+                </div>
+              </div>
+            )}
+          </motion.div>
+        );
+      })}
+    </div>
+  </div>
+</div>
       </main>
 
       {/* Bottom Text Section with fade animation */}

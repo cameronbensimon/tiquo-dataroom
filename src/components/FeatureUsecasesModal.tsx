@@ -26,7 +26,7 @@ export default function FeatureUsecasesModal({ isOpen, onClose, title = "Feature
       exhibition: "Exhibition & Museums", 
       events: "Events", 
       privateHire: "Private Hire", 
-      membersClub: "Member's Club", 
+      membersClub: "Member&apos;s Club", 
       misc: "Miscellaneous service",
       isHeader: true 
     },
@@ -120,7 +120,7 @@ export default function FeatureUsecasesModal({ isOpen, onClose, title = "Feature
     { category: "", subcategory: "Themeable front end", description: "White-label branding and configurable customer side UX/terminology.", hotel: true, spa: true, restaurant: true, gym: true, coworking: true, exhibition: true, events: true, privateHire: true, membersClub: true, misc: true },
     { category: "", subcategory: "Document and contract creation", description: "Create documents and contracts directly within the platform.", hotel: true, spa: true, restaurant: false, gym: true, coworking: true, exhibition: false, events: false, privateHire: true, membersClub: false, misc: true },
     { category: "", subcategory: "Send e-singing links", description: "Send links for users to sign contracts or documents linking to their profile.", hotel: true, spa: true, restaurant: false, gym: false, coworking: true, exhibition: false, events: false, privateHire: true, membersClub: false, misc: true },
-    { category: "", subcategory: "Intake forms", description: "Create and send intake forms with parameters linked to the customer's profile.", hotel: true, spa: true, restaurant: false, gym: true, coworking: false, exhibition: false, events: false, privateHire: false, membersClub: false, misc: true },
+    { category: "", subcategory: "Intake forms", description: "Create and send intake forms with parameters linked to the customer&apos;s profile.", hotel: true, spa: true, restaurant: false, gym: true, coworking: false, exhibition: false, events: false, privateHire: false, membersClub: false, misc: true },
     { category: "", subcategory: "Add services or products to active booking", description: "Add products/services to an in-progress booking and have a single payment for all of them together.", hotel: true, spa: true, restaurant: true, gym: true, coworking: true, exhibition: false, events: false, privateHire: false, membersClub: true, misc: true },
     { category: "", subcategory: "At least 99.9%–99.99% SLA & Security processes", description: "Cloud hosting with strong uptime, encryption, and audits.", hotel: true, spa: true, restaurant: true, gym: true, coworking: true, exhibition: true, events: true, privateHire: true, membersClub: true, misc: true },
     { category: "", subcategory: "SOC 2", description: "SOC 2 certification to guarantee security.", hotel: true, spa: true, restaurant: true, gym: true, coworking: true, exhibition: true, events: true, privateHire: true, membersClub: true, misc: true },
@@ -347,7 +347,7 @@ export default function FeatureUsecasesModal({ isOpen, onClose, title = "Feature
                         Private Hire
                       </th>
                       <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[90px]">
-                        Member's Club
+                        Member&apos;s Club
                       </th>
                       <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[100px]">
                         Miscellaneous
