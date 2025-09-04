@@ -62,7 +62,8 @@ export default function AuthPage() {
       await signIn("resend-otp", formData);
       setMessage("Successfully signed in!");
       setJustSignedIn(true);
-      // Don't navigate here - let the useEffect handle navigation after user data loads
+      setIsLoading(false);
+      // Let the useEffect handle navigation after user data loads
     } catch (error) {
       console.error("Verify code error:", error);
       const errorMessage = error instanceof Error ? error.message : String(error);
@@ -80,8 +81,6 @@ export default function AuthPage() {
   // Navigate based on access level after successful authentication
   useEffect(() => {
     if (!justSignedIn || !user) return;
-
-    setIsLoading(false);
 
     if (user.AccessAllowed === true) {
       // User has access, redirect to dashboard
