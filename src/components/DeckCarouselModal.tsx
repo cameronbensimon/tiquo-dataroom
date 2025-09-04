@@ -14,10 +14,9 @@ interface DeckCarouselModalProps {
   isOpen: boolean;
   onClose: () => void;
   images: DeckImage[];
-  title?: string;
 }
 
-export default function DeckCarouselModal({ isOpen, onClose, images, title = "Deck Viewer" }: DeckCarouselModalProps) {
+export default function DeckCarouselModal({ isOpen, onClose, images }: DeckCarouselModalProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
   
@@ -74,7 +73,7 @@ export default function DeckCarouselModal({ isOpen, onClose, images, title = "De
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, currentSlide]);
+  }, [isOpen, currentSlide, nextSlide, prevSlide, onClose]);
 
   // Reset to first slide and prevent body scroll when modal opens
   useEffect(() => {

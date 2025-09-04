@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import DeckCarouselModal from "@/components/DeckCarouselModal";
-import SpreadsheetModal from "@/components/SpreadsheetModal";
+import PricingModelModal from "@/components/PricingModelModal";
 
 export default function DashboardPage() {
   const token = useAuthToken();
@@ -483,7 +483,6 @@ export default function DashboardPage() {
         isOpen={isDeckModalOpen}
         onClose={() => setIsDeckModalOpen(false)}
         images={tiquoDeckImages}
-        title="TIQUO Investor Deck"
       />
 
       {/* Brand Kit Carousel Modal */}
@@ -491,11 +490,10 @@ export default function DashboardPage() {
         isOpen={isBrandKitModalOpen}
         onClose={() => setIsBrandKitModalOpen(false)}
         images={brandIdentityImages}
-        title="Tiquo Brand Identity"
       />
 
       {/* Pricing Model Spreadsheet Modal */}
-      <SpreadsheetModal
+      <PricingModelModal
         isOpen={isPricingModelModalOpen}
         onClose={() => setIsPricingModelModalOpen(false)}
         leftTable={leftTableData}

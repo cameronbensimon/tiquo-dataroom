@@ -3,22 +3,22 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-interface SpreadsheetTable {
+interface PricingTable {
   title: string;
   headers: string[];
   rows: (string | number | boolean)[][];
   editableColumns?: number[]; // Column indices that are editable
 }
 
-interface SpreadsheetModalProps {
+interface PricingModelModalProps {
   isOpen: boolean;
   onClose: () => void;
-  leftTable: SpreadsheetTable;
-  rightTables: [SpreadsheetTable, SpreadsheetTable];
+  leftTable: PricingTable;
+  rightTables: [PricingTable, PricingTable];
   title?: string;
 }
 
-export default function SpreadsheetModal({ isOpen, onClose, leftTable, rightTables, title = "Spreadsheet Viewer" }: SpreadsheetModalProps) {
+export default function PricingModelModal({ isOpen, onClose, leftTable, rightTables, title = "Pricing Model Viewer" }: PricingModelModalProps) {
   const [editableData, setEditableData] = useState<(string | number | boolean)[][]>([]);
   const [editableData2, setEditableData2] = useState<(string | number | boolean)[][]>([]);
 
@@ -33,11 +33,11 @@ export default function SpreadsheetModal({ isOpen, onClose, leftTable, rightTabl
   }, [isOpen, rightTables]);
 
   // Calculate formula-based values
-  const calculateValue = (rowIndex: number, colIndex: number, value: any): number | string => {
+  const calculateValue = (rowIndex: number, colIndex: number, value: string | number | boolean): number | string | boolean => {
     // If it's an empty string, return empty
     if (value === "" || value === null || value === undefined) return "";
     
-    // If it's not a formula, return as-is
+    // If it's not a string formula, return as-is
     if (typeof value !== 'string' || !value.startsWith('=')) return value;
     
     const subLocations = editableData[rowIndex]?.[1] as number || 0;
@@ -86,7 +86,7 @@ export default function SpreadsheetModal({ isOpen, onClose, leftTable, rightTabl
   };
 
   // Calculate revenue formula for second table
-  const calculateRevenueFormula = (rowIndex: number, colIndex: number, value: any): number | string => {
+  const calculateRevenueFormula = (rowIndex: number, colIndex: number, value: string | number | boolean): number | string | boolean => {
     if (typeof value !== 'string' || !value.includes('SUMREVENUE')) return value;
     
     // Get the revenue per year values from the Property Size and Revenue table (column 5)
@@ -109,7 +109,7 @@ export default function SpreadsheetModal({ isOpen, onClose, leftTable, rightTabl
   };
 
   // Render table cell
-  const renderCell = (cell: any, rowIndex: number, colIndex: number, isEditable: boolean = false, useEditableData: boolean = false, isTable2: boolean = false) => {
+  const renderCell = (cell: string | number | boolean, rowIndex: number, colIndex: number, isEditable: boolean = false, useEditableData: boolean = false, isTable2: boolean = false) => {
     // Use appropriate editable data based on table
     const actualCell = useEditableData 
       ? (isTable2 ? editableData2[rowIndex]?.[colIndex] : editableData[rowIndex]?.[colIndex]) 
@@ -192,7 +192,7 @@ export default function SpreadsheetModal({ isOpen, onClose, leftTable, rightTabl
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
