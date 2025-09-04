@@ -230,7 +230,9 @@ export default function DashboardPage() {
                           const stack = getStackForFolder(item.name);
 
                           return (
-                            <div className="absolute -top-1 transform -translate-x-1/2 z-0" style={{ left: "calc(50% + 50px)" }}>
+                            <div className="absolute -top-1 transform -translate-x-1/2 z-0" style={{ 
+                              left: isSelected ? "50%" : "calc(50% + 50px)" 
+                            }}>
                               {/* Randomized file card stack */}
                               <div className="relative w-48 h-48">
                                 {stack.map((card, index) => {
