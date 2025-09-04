@@ -3,12 +3,25 @@
 import { useAuthToken } from "@convex-dev/auth/react";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function DashboardPage() {
   const token = useAuthToken();
   const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile screen size
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 1024); // lg breakpoint
+    };
+    
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
 
   // Generate random positions for file cards in each stack (changes on each load)
   const generateRandomStack = () => {
@@ -179,7 +192,11 @@ export default function DashboardPage() {
                   <motion.div
                     key={item.id}
                     layoutId={`folder-${item.id}`}
-                    className="group cursor-pointer relative"
+                    className={`group cursor-pointer ${
+                      isSelected && isMobile 
+                        ? "fixed top-48 left-1/2 -translate-x-1/2 z-40" 
+                        : "relative"
+                    }`}
                     onClick={() => item.id !== 1 && handleFolderClick(item.id)}
                     animate={{
                       opacity: shouldFadeOut ? 0 : 1,
@@ -188,10 +205,13 @@ export default function DashboardPage() {
                     }}
                     style={{
                       pointerEvents: shouldFadeOut ? "none" : "auto", // Disable clicks when faded out
-                      position: isSelected ? "fixed" : "relative",
-                      left: isSelected ? "40%" : "auto",
-                      top: isSelected ? "12rem" : "auto", // top-48 = 192px, close to 200px
-                      transform: isSelected ? "translateX(-50%)" : "none",
+                      // Desktop only: mobile uses Tailwind classes for proper centering
+                      ...(isSelected && !isMobile && {
+                        position: "fixed",
+                        left: "40%",
+                        top: "12rem",
+                        transform: "translateX(-50%)",
+                      }),
                     }}
                     transition={{
                       type: "spring",
@@ -222,12 +242,24 @@ export default function DashboardPage() {
                                   return (
                                     <motion.div
                                       key={`card-${item.id}-${card.id}`}
-                                      className="absolute"
+                                      className={`${
+                                        isSelected && isMobile 
+                                          ? "fixed -translate-x-1/2" 
+                                          : "absolute"
+                                      }`}
                                       style={{
-                                        position: isSelected ? "fixed" : "absolute",
-                                        left: isSelected ? `calc(40% + ${gridX}px)` : "auto",
-                                        top: isSelected ? `${192 + gridY}px` : "auto", // 12rem = 192px
-                                        transform: isSelected ? "translateX(-50%)" : "none",
+                                        // Desktop only: mobile uses Tailwind classes
+                                        ...(isSelected && !isMobile && {
+                                          position: "fixed",
+                                          left: `calc(40% + ${gridX}px)`,
+                                          top: `${192 + gridY}px`,
+                                          transform: "translateX(-50%)",
+                                        }),
+                                        // Mobile positioning via Tailwind, but we need left/top for grid
+                                        ...(isSelected && isMobile && {
+                                          left: `calc(50% + ${gridX}px)`,
+                                          top: `${192 + gridY}px`,
+                                        }),
                                       }}
                                       animate={isSelected ? {
                                         rotate: 0,
