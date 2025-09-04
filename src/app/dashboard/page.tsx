@@ -379,9 +379,8 @@ export default function DashboardPage() {
                           return (
                             <motion.div
                               key={`card-${item.id}-${card.id}`}
-                                            className={`${
-                isSelected && (isMobile || isTablet) ? "fixed" : "absolute"
-              } cursor-pointer`}
+                              layoutId={`file-card-${item.id}-${card.id}`}
+                              className="absolute cursor-pointer"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 if (card.name === "Brand kit") {
@@ -396,22 +395,11 @@ export default function DashboardPage() {
                                   handleFeatureUsecasesClick();
                                 }
                               }}
-                                             style={{
-                 ...(isSelected &&
-                   !isMobile && !isTablet && {
-                     position: "fixed",
-                     left: `calc(50% + ${gridX}px - 64px)`,
-                     top: `${220 + gridY}px`,
-                   }),
-                 ...(isSelected &&
-                   (isMobile || isTablet) && {
-                     left: `calc(50% + ${gridX}px - 64px)`,
-                     top: `${220 + gridY}px`,
-                   }),
-               }}
                               animate={
                                 isSelected
                                   ? {
+                                      x: gridX,
+                                      y: gridY + 250, // Move down with folder first, then to grid position
                                       rotate: 0,
                                       scale: 1.1,
                                       zIndex: 30,
@@ -509,7 +497,7 @@ export default function DashboardPage() {
                 <div 
                   className="relative z-10 w-full h-full scale-80 md:scale-90 lg:scale-100 transition-transform duration-500"
                   style={{
-                    transform: isSelected ? 'translateY(250px)' : 'translateY(0px)'
+                    transform: isSelected ? 'translateY(270px)' : 'translateY(0px)'
                   }}
                 >
                   <Image
