@@ -12,6 +12,21 @@ export default function DashboardPage() {
   const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isDeckModalOpen, setIsDeckModalOpen] = useState(false);
+  const [isBrandKitModalOpen, setIsBrandKitModalOpen] = useState(false);
+
+  // TIQUO deck slides configuration
+  const tiquoDeckImages = Array.from({ length: 17 }, (_, index) => ({
+    id: index + 1,
+    src: `/slides/TIQUO DECK V5 - ${String(index + 1).padStart(2, '0')}.jpg`,
+    alt: `TIQUO Deck Slide ${index + 1}`
+  }));
+
+  // Brand identity images configuration
+  const brandIdentityImages = Array.from({ length: 17 }, (_, index) => ({
+    id: index + 1,
+    src: `/brand-identity/Tiquo brand identity - ${String(index + 1).padStart(2, '0')}.jpg`,
+    alt: `Tiquo Brand Identity ${index + 1}`
+  }));
 
   // Detect mobile screen size
   useEffect(() => {
@@ -59,6 +74,11 @@ export default function DashboardPage() {
     setIsDeckModalOpen(true);
   };
 
+  // Handle brand kit file click
+  const handleBrandKitClick = () => {
+    setIsBrandKitModalOpen(true);
+  };
+
   // Simple 4 buttons - deck + 3 folders
   const dataRoomItems = [
     { 
@@ -91,11 +111,11 @@ export default function DashboardPage() {
     { 
       id: 4, 
       name: "Brand & Strategy", 
-      count: 3, 
+      count: 4, 
       type: "folder" as const,
       image: "/Brand-Strategy.png",
       description: "Brand guidelines, marketing materials, strategic positioning documents, and visual identity assets.",
-      files: ["Brand kit", "Use of funds", "Go-to-market strategy"]
+      files: ["Brand kit", "Use of funds", "Go-to-market strategy", "Pricing Model"]
     },
   ];
 
@@ -268,7 +288,13 @@ export default function DashboardPage() {
                                         isSelected && isMobile 
                                           ? "fixed" 
                                           : "absolute"
-                                      }`}
+                                      } cursor-pointer`}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        if (card.name === "Brand kit") {
+                                          handleBrandKitClick();
+                                        }
+                                      }}
                                       style={{
                                         // Desktop only: mobile uses Tailwind classes
                                         ...(isSelected && !isMobile && {
@@ -397,6 +423,16 @@ export default function DashboardPage() {
       <DeckCarouselModal
         isOpen={isDeckModalOpen}
         onClose={() => setIsDeckModalOpen(false)}
+        images={tiquoDeckImages}
+        title="TIQUO Investor Deck"
+      />
+
+      {/* Brand Kit Carousel Modal */}
+      <DeckCarouselModal
+        isOpen={isBrandKitModalOpen}
+        onClose={() => setIsBrandKitModalOpen(false)}
+        images={brandIdentityImages}
+        title="Tiquo Brand Identity"
       />
     </div>
   );

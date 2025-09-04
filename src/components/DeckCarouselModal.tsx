@@ -4,21 +4,24 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
+interface DeckImage {
+  id: number;
+  src: string;
+  alt: string;
+}
+
 interface DeckCarouselModalProps {
   isOpen: boolean;
   onClose: () => void;
+  images: DeckImage[];
+  title?: string;
 }
 
-export default function DeckCarouselModal({ isOpen, onClose }: DeckCarouselModalProps) {
+export default function DeckCarouselModal({ isOpen, onClose, images, title = "Deck Viewer" }: DeckCarouselModalProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
   
-  // TIQUO deck slides - using numbered images from slides folder
-  const images = Array.from({ length: 17 }, (_, index) => ({
-    id: index + 1,
-    src: `/slides/TIQUO DECK V5 - ${String(index + 1).padStart(2, '0')}.jpg`,
-    alt: `TIQUO Deck Slide ${index + 1}`
-  }));
+  // Images are now passed as props for reusability
 
   // Navigation functions
   const goToSlide = (index: number) => {
