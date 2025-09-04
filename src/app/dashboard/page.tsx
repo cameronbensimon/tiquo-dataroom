@@ -253,7 +253,7 @@ export default function DashboardPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
-              className="fixed top-32 left-1/2 transform -translate-x-1/2 z-50 bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-lg max-w-md mx-4"
+              className="fixed top-32 left-1/2 transform -translate-x-1/2 z-50 bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-lg w-full mx-6 md:max-w-md md:mx-4"
             >
               <div className="relative">
                 <button
@@ -300,7 +300,7 @@ export default function DashboardPage() {
                     layoutId={`folder-${item.id}`}
                     className={`group cursor-pointer ${
                       isSelected && isMobile 
-                        ? "fixed top-48 left-1/2 -translate-x-1/2 z-40" 
+                        ? "fixed bottom-[-230px] left-1/2 -translate-x-1/2 z-40" 
                         : "relative"
                     }`}
                     onClick={() => item.id === 1 ? handleDeckClick() : handleFolderClick(item.id)}
@@ -348,8 +348,8 @@ export default function DashboardPage() {
                                     // Mobile: 2-column grid
                                     const gridCol = index % 2;
                                     const gridRow = Math.floor(index / 2);
-                                    gridX = (gridCol - 0.5) * 180; // Relative to center
-                                    gridY = gridRow * 200 - 100; // Move up from folder position
+                                    gridX = (gridCol - 0.5) * 160; // Adjusted spacing for scaled-down cards (80% of 200)
+                                    gridY = gridRow * 140 - 550; // Move cards way higher on mobile
                                   } else {
                                     // Desktop: single horizontal row at same level as folder
                                     const totalCards = stack.length;
@@ -385,12 +385,12 @@ export default function DashboardPage() {
                                         // Desktop only: mobile uses Tailwind classes
                                         ...(isSelected && !isMobile && {
                                           position: "fixed",
-                                          left: `calc(50% + ${gridX}px - 64px)`, // Subtract half card width (128px/2)
+                                          left: `calc(50% + ${gridX}px - 64px)`, // Subtract half card width
                                           top: `${220 + gridY}px`,
                                         }),
                                         // Mobile positioning via Tailwind, but we need left/top for grid
                                         ...(isSelected && isMobile && {
-                                          left: `calc(50% + ${gridX}px - 64px)`, // Subtract half card width for proper centering
+                                          left: `calc(50% + ${gridX}px - 64px)`, // Subtract half scaled card width (160px * 0.8 / 2 = 64px)
                                           top: `${220 + gridY}px`,
                                         }),
                                       }}
@@ -417,7 +417,7 @@ export default function DashboardPage() {
                                       }}
                                     >
                                       <div className="text-center">
-                                        <div className="w-32 h-40 flex items-center justify-center">
+                                        <div className="w-40 h-40 md:w-32 md:h-40 flex items-center justify-center scale-80 md:scale-100">
                                           <Image
                                             src={
                                               card.name === "Certificate of incorporation" ? "/incorporation.png" :
@@ -455,7 +455,7 @@ export default function DashboardPage() {
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: 0.5 + (index * 0.1) }}
-                                            className="text-xs text-gray-700 mt-1 px-2 font-medium max-w-[140px] leading-tight"
+                                            className="text-xs text-gray-700 -mt-6 md:mt-1 px-2 font-medium max-w-[160px] md:max-w-[140px] leading-tight"
                                           >
                                             {card.name}
                                           </motion.p>
@@ -470,7 +470,7 @@ export default function DashboardPage() {
                         })()}
                         
                         {/* Main folder/deck image */}
-                        <div className="relative z-10 w-full h-full">
+                        <div className="relative z-10 w-full h-full scale-80 md:scale-100">
                           <Image
                             src={item.image}
                             alt={item.name}
@@ -500,29 +500,55 @@ export default function DashboardPage() {
           >
             <div className="text-center">
               <p className="text-sm text-gray-400 max-w-xl mx-auto leading-relaxed">
-                tiquo is a technology company building modern solutions for business infrastructure and workflow automation. 
-                We create tools that streamline operations, enhance productivity, and enable seamless collaboration across teams.{" "}
-                <a 
-                  href="https://tiquo.co" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-blue-500 hover:text-blue-600 transition-colors"
-                >
-                  Visit tiquo.co
-                  <svg 
-                    className="w-3 h-3 ml-1" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
+                <span className="md:hidden">
+                  Data Room{" "}
+                  <a 
+                    href="https://tiquo.co" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-blue-500 hover:text-blue-600 transition-colors"
                   >
-                    <path 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      strokeWidth={2} 
-                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
-                    />
-                  </svg>
-                </a>
+                    Visit tiquo.co
+                    <svg 
+                      className="w-3 h-3 ml-1" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        strokeWidth={2} 
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
+                      />
+                    </svg>
+                  </a>
+                </span>
+                <span className="hidden md:block">
+                  tiquo is a technology company building modern solutions for business infrastructure and workflow automation. 
+                  We create tools that streamline operations, enhance productivity, and enable seamless collaboration across teams.{" "}
+                  <a 
+                    href="https://tiquo.co" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-blue-500 hover:text-blue-600 transition-colors"
+                  >
+                    Visit tiquo.co
+                    <svg 
+                      className="w-3 h-3 ml-1" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        strokeWidth={2} 
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
+                      />
+                      </svg>
+                    </a>
+                  </span>
               </p>
             </div>
           </motion.div>
