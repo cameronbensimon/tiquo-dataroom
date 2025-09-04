@@ -23,16 +23,22 @@ export default function DashboardPage() {
     return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
-  // Generate random positions for file cards in each stack
-  const generateRandomStack = (fileNames: string[]) => {
-    return fileNames.map((fileName, i) => ({
-      id: i,
-      name: fileName,
-      top: Math.floor(Math.random() * 32) - 16, // -16 to 16px (more vertical spread)
-      left: Math.floor(Math.random() * 40) - 20, // -20 to 20px (wider horizontal fan-out)
-      rotation: Math.floor(Math.random() * 30) - 15, // -15 to 15 degrees
-      opacity: Math.random() * 0.4 + 0.5, // 0.5 to 0.9
-    }));
+  // Generate fan-out positions for file cards in each stack (stable positions)
+  const generateFanOutStack = (fileNames: string[]) => {
+    return fileNames.map((fileName, i) => {
+      // Create fan-out effect: cards start close at bottom, spread at top
+      const fanAngle = (i - (fileNames.length - 1) / 2) * 15; // Spread cards in fan
+      const fanRadius = 20; // Distance from center
+      
+      return {
+        id: i,
+        name: fileName,
+        top: -Math.abs(fanAngle) * 0.5, // Slightly higher for outer cards
+        left: Math.sin((fanAngle * Math.PI) / 180) * fanRadius, // Horizontal fan spread
+        rotation: fanAngle, // Rotation follows fan angle
+        opacity: 0.7 + (i * 0.1), // Slightly different opacity for depth
+      };
+    });
   };
 
   // Handle folder click
@@ -87,9 +93,9 @@ export default function DashboardPage() {
   ];
 
   // Generate different stacks for each folder based on their files
-  const companyDocsStack = generateRandomStack(dataRoomItems.find(item => item.name === "Company Documents")?.files || []);
-  const productTechStack = generateRandomStack(dataRoomItems.find(item => item.name === "Product & Technology")?.files || []); 
-  const brandStrategyStack = generateRandomStack(dataRoomItems.find(item => item.name === "Brand & Strategy")?.files || []);
+  const companyDocsStack = generateFanOutStack(dataRoomItems.find(item => item.name === "Company Documents")?.files || []);
+  const productTechStack = generateFanOutStack(dataRoomItems.find(item => item.name === "Product & Technology")?.files || []); 
+  const brandStrategyStack = generateFanOutStack(dataRoomItems.find(item => item.name === "Brand & Strategy")?.files || []);
 
   // Get the stack for a specific folder
   const getStackForFolder = (folderName: string) => {
@@ -224,7 +230,7 @@ export default function DashboardPage() {
                           const stack = getStackForFolder(item.name);
 
                           return (
-                            <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 z-0">
+                            <div className="absolute -top-1 transform -translate-x-1/2 z-0" style={{ left: "calc(50% + 50px)" }}>
                               {/* Randomized file card stack */}
                               <div className="relative w-48 h-48">
                                 {stack.map((card, index) => {
