@@ -73,9 +73,14 @@ export default function DeckCarouselModal({ isOpen, onClose }: DeckCarouselModal
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, currentSlide]);
 
-  // Prevent body scroll when modal is open
+  // Reset to first slide and prevent body scroll when modal opens
   useEffect(() => {
     if (isOpen) {
+      // Reset to first slide
+      setCurrentSlide(0);
+      if (carouselRef.current) {
+        carouselRef.current.scrollTo({ left: 0, behavior: "instant" });
+      }
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
@@ -96,30 +101,59 @@ export default function DeckCarouselModal({ isOpen, onClose }: DeckCarouselModal
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
         className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center"
-        onClick={onClose}
       >
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.9, opacity: 0 }}
-          transition={{ duration: 0.3, delay: 0.1 }}
-          className="relative w-[95vw] h-[90vh] max-w-6xl bg-white rounded-lg overflow-hidden flex flex-col"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Close button */}
+        <div className="relative flex items-center justify-center w-full h-full">
+          {/* Left navigation arrow - outside modal */}
+          <button
+            onClick={prevSlide}
+            className="absolute left-4 z-30 bg-black/40 hover:bg-black/60 text-white rounded-full p-4 transition-colors backdrop-blur-sm group"
+            aria-label="Previous image"
+          >
+            <svg className="w-8 h-8 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          {/* Right navigation arrow - outside modal */}
+          <button
+            onClick={nextSlide}
+            className="absolute right-4 z-30 bg-black/40 hover:bg-black/60 text-white rounded-full p-4 transition-colors backdrop-blur-sm group"
+            aria-label="Next image"
+          >
+            <svg className="w-8 h-8 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
+          {/* Close button - outside modal on the right */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-20 bg-black/20 hover:bg-black/40 text-white rounded-full p-2 transition-colors backdrop-blur-sm"
+            className="absolute top-4 right-4 z-30 bg-black/40 hover:bg-black/60 text-white rounded-full p-3 transition-colors backdrop-blur-sm"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
 
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+            className="relative bg-white rounded-xl overflow-hidden"
+            style={{
+              width: "min(90vw, 85vh * (16/9))",
+              height: "min(85vh, 90vw * (9/16))",
+              maxWidth: "1200px",
+              maxHeight: "675px"
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+
           {/* Carousel container using CSS scroll-snap (Blossom Carousel principles) */}
           <div
             ref={carouselRef}
-            className="flex overflow-x-auto flex-1 scroll-smooth"
+            className="flex overflow-x-auto h-full scroll-smooth"
             style={{
               scrollSnapType: "x mandatory",
               scrollbarWidth: "none",
@@ -139,13 +173,13 @@ export default function DeckCarouselModal({ isOpen, onClose }: DeckCarouselModal
                 className="flex-none w-full h-full relative"
                 style={{ scrollSnapAlign: "start" }}
               >
-                <div className="relative w-full h-full flex items-center justify-center p-6">
-                  <div className="relative w-full h-full">
+                <div className="relative w-full h-full p-3">
+                  <div className="relative w-full h-full rounded-xl overflow-hidden shadow-lg">
                     <Image
                       src={image.src}
                       alt={image.alt}
                       fill
-                      className="object-contain rounded-lg"
+                      className="object-contain rounded-xl"
                       priority={index < 2}
                     />
                   </div>
@@ -154,47 +188,28 @@ export default function DeckCarouselModal({ isOpen, onClose }: DeckCarouselModal
             ))}
           </div>
 
-          {/* Left navigation arrow */}
-          <button
-            onClick={prevSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-black/20 hover:bg-black/40 text-white rounded-full p-3 transition-colors backdrop-blur-sm group"
-            aria-label="Previous image"
-          >
-            <svg className="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
 
-          {/* Right navigation arrow */}
-          <button
-            onClick={nextSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-black/20 hover:bg-black/40 text-white rounded-full p-3 transition-colors backdrop-blur-sm group"
-            aria-label="Next image"
-          >
-            <svg className="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-
-          {/* Progress bar */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20">
-            <div className="flex items-center gap-2">
+          </motion.div>
+          
+          {/* Progress bar - positioned outside the modal content */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-40">
+            <div className="flex items-center gap-2 bg-black/30 backdrop-blur-sm rounded-full px-4 py-2">
               {/* Slide indicators */}
               {images.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => goToSlide(index)}
-                  className={`w-8 h-2 rounded transition-all duration-300 ${
+                  className={`w-6 h-2 rounded-sm transition-all duration-300 ${
                     index === currentSlide 
-                      ? "bg-gray-600 scale-110" 
-                      : "bg-gray-400 hover:bg-gray-500"
+                      ? "bg-white scale-110" 
+                      : "bg-white/40 hover:bg-white/60"
                   }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />
               ))}
             </div>
           </div>
-        </motion.div>
+        </div>
       </motion.div>
     </AnimatePresence>
   );
