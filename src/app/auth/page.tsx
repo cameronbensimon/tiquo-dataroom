@@ -1,24 +1,56 @@
 "use client";
 
-import { useAuthActions, useAuthToken } from "@convex-dev/auth/react";
-import { useState, useEffect } from "react";
+import { useAuthActions } from "@convex-dev/auth/react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Authenticated, Unauthenticated, AuthLoading } from "convex/react";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
+// Component that handles navigation after authentication
+function AuthenticatedRedirect() {
+  const user = useQuery(api.users.getCurrentUser);
+  const router = useRouter();
+
+  console.log("🔄 AuthenticatedRedirect - user:", user);
+
+  if (user === undefined) {
+    console.log("⏳ User data loading...");
+    return null; // Still loading user data
+  }
+
+  if (user === null) {
+    console.log("❌ No user found, should not happen in Authenticated component");
+    return null;
+  }
+
+  console.log("✅ User data loaded:", {
+    email: user.email,
+    AccessAllowed: user.AccessAllowed,
+    _id: user._id
+  });
+
+  // Navigate based on access level
+  if (user.AccessAllowed === true) {
+    console.log("🚀 REDIRECTING TO DASHBOARD - AccessAllowed is true");
+    router.push("/dashboard");
+  } else {
+    console.log("🚀 REDIRECTING TO REQUEST-ACCESS - AccessAllowed is", user.AccessAllowed);
+    router.push("/request-access");
+  }
+
+  return null;
+}
+
 export default function AuthPage() {
   const { signIn } = useAuthActions();
-  const token = useAuthToken();
-  const user = useQuery(api.users.getCurrentUser);
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState<"email" | "code">("email");
   const [message, setMessage] = useState("");
-  const [justSignedIn, setJustSignedIn] = useState(false);
-  const router = useRouter();
 
   const handleSendCode = async () => {
     if (!email) {
@@ -60,10 +92,10 @@ export default function AuthPage() {
       formData.append("code", code);
       
       await signIn("resend-otp", formData);
-      setMessage("Successfully signed in!");
-      setJustSignedIn(true);
+      console.log("🎉 SIGN IN SUCCESSFUL!");
+      setMessage("Successfully signed in! Redirecting...");
       setIsLoading(false);
-      // Let the useEffect handle navigation after user data loads
+      // Navigation will be handled by Authenticated component
     } catch (error) {
       console.error("Verify code error:", error);
       const errorMessage = error instanceof Error ? error.message : String(error);
@@ -78,51 +110,53 @@ export default function AuthPage() {
     setMessage("");
   };
 
-  // Navigate based on access level after successful authentication
-  useEffect(() => {
-    if (!justSignedIn) return;
-    
-    console.log("Navigation check - justSignedIn:", justSignedIn, "user:", user, "token:", token);
-
-    // Wait for both authentication token and user data to be available
-    if (token && user) {
-      console.log("Navigating based on AccessAllowed:", user.AccessAllowed);
-      
-      if (user.AccessAllowed === true) {
-        // User has access, redirect to dashboard
-        console.log("Redirecting to dashboard");
-        router.push("/dashboard");
-      } else {
-        // User doesn't have access, redirect to request access page
-        console.log("Redirecting to request-access");
-        router.push("/request-access");
-      }
-      
-      // Reset the flag to prevent multiple navigations
-      setJustSignedIn(false);
-    }
-  }, [user, justSignedIn, token, router]);
-
+  // Use Convex Auth's built-in components for proper auth state management
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#f2f2f2'}}>
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <div className="flex justify-center">
-            <Image
-              src="/tiquo logo.svg"
-              alt="tiquo Logo"
-              width={96}
-              height={96}
-              className="w-20 h-20 md:w-24 md:h-24"
-            />
+    <>
+      <AuthLoading>
+        {/* Show loading while authentication state is being determined */}
+        <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#f2f2f2'}}>
+          <div className="text-center">
+            <div className="w-8 h-8 border-4 border-gray-300 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading...</p>
           </div>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            {step === "email" 
-              ? "Enter your email to access Tiquo's Data Room"
-              : "Enter the 6-digit code sent to your email"
-            }
-          </p>
         </div>
+      </AuthLoading>
+
+      <Authenticated>
+        {/* User is authenticated - handle navigation based on access level */}
+        <AuthenticatedRedirect />
+      </Authenticated>
+
+      <Unauthenticated>
+        {/* User is not authenticated - show login form */}
+        {renderAuthForm()}
+      </Unauthenticated>
+    </>
+  );
+
+  function renderAuthForm() {
+
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#f2f2f2'}}>
+        <div className="max-w-md w-full space-y-8">
+          <div>
+            <div className="flex justify-center">
+              <Image
+                src="/tiquo logo.svg"
+                alt="tiquo Logo"
+                width={96}
+                height={96}
+                className="w-20 h-20 md:w-24 md:h-24"
+              />
+            </div>
+            <p className="mt-2 text-center text-sm text-gray-600">
+              {step === "email" 
+                ? "Enter your email to access Tiquo's Data Room"
+                : "Enter the 6-digit code sent to your email"
+              }
+            </p>
+          </div>
 
         {message && (
           <div className={`rounded-md p-4 ${
@@ -246,8 +280,9 @@ export default function AuthPage() {
               </div>
             </>
           )}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
