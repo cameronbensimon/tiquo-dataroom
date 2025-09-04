@@ -284,22 +284,22 @@ export default function DashboardPage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebPage",
-            "name": "TIQUO Data Room",
-            "description": "Secure investor data room containing TIQUO's company documents, financial projections, product roadmaps, and strategic business materials",
+            "name": "tiquo Data Room",
+            "description": "The Universal Booking, Loyalty & Point of Sale Platform",
             "url": "https://dataroom.tiquo.co/dashboard",
             "isPartOf": {
               "@type": "WebSite",
-              "name": "TIQUO Data Room",
+              "name": "tiquo Data Room",
               "url": "https://dataroom.tiquo.co"
             },
             "provider": {
               "@type": "Organization",
-              "name": "TIQUO"
+              "name": "tiquo"
             },
             "mainEntity": {
               "@type": "Dataset",
-              "name": "TIQUO Investor Materials",
-              "description": "Comprehensive collection of business documents including investor presentation, company documentation, product specifications, and brand materials",
+              "name": "tiquo Data Room",
+              "description": "The Universal Booking, Loyalty & Point of Sale Platform",
               "keywords": ["investor deck", "company documents", "product roadmap", "brand guidelines", "financial projections", "business strategy"]
             }
           })
@@ -311,7 +311,7 @@ export default function DashboardPage() {
         <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
           <Image
             src="/tiquo logo.svg"
-            alt="TIQUO - Modern Technology Solutions for Business Infrastructure"
+            alt="The Universal Booking, Loyalty & Point of Sale Platform"
             width={96}
             height={96}
             className="w-20 h-20 md:w-24 md:h-24"
