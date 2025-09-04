@@ -251,20 +251,19 @@ export default function DashboardPage() {
                                       key={`card-${item.id}-${card.id}`}
                                       className={`${
                                         isSelected && isMobile 
-                                          ? "fixed -translate-x-1/2" 
+                                          ? "fixed" 
                                           : "absolute"
                                       }`}
                                       style={{
                                         // Desktop only: mobile uses Tailwind classes
                                         ...(isSelected && !isMobile && {
                                           position: "fixed",
-                                          left: `calc(40% + ${gridX}px)`,
+                                          left: `calc(50% + ${gridX}px - 64px)`, // Subtract half card width (128px/2)
                                           top: `${220 + gridY}px`,
-                                          transform: "translateX(-50%)",
                                         }),
                                         // Mobile positioning via Tailwind, but we need left/top for grid
                                         ...(isSelected && isMobile && {
-                                          left: `calc(50% + ${gridX}px)`,
+                                          left: `calc(50% + ${gridX}px - 64px)`, // Subtract half card width for proper centering
                                           top: `${220 + gridY}px`,
                                         }),
                                       }}
