@@ -144,6 +144,13 @@ export default function DashboardPage() {
     }
   }, [token, router]);
 
+  // Redirect to auth page if user is null (not authenticated)
+  useEffect(() => {
+    if (user === null) {
+      router.push("/auth");
+    }
+  }, [user, router]);
+
   // Detect mobile and tablet screen sizes
   useEffect(() => {
     const checkScreenSize = () => {
@@ -281,9 +288,8 @@ export default function DashboardPage() {
     return null;
   }
 
-  // Redirect to auth if not authenticated
+  // Show loading while user is null (being redirected to auth)
   if (user === null) {
-    router.push("/auth");
     return null;
   }
 
@@ -446,7 +452,7 @@ export default function DashboardPage() {
                     <div
                       className="absolute -top-1 transform -translate-x-1/2 z-0"
                       style={{
-                        left: isSelected ? "50%" : "calc(50% + 50px)",
+                        left: isSelected ? "60%" : "calc(50% + 50px)",
                       }}
                     >
                       {/* Randomized file card stack */}
