@@ -269,6 +269,12 @@ export default function DashboardPage() {
     return [];
   };
 
+  // Check if a file should have Work in Progress badge
+  const isWorkInProgress = (fileName: string) => {
+    const wipFiles = ["Use of funds", "Go-to-market strategy", "Unique selling points"];
+    return wipFiles.includes(fileName);
+  };
+
   // Show loading or nothing while redirecting
   if (!token) {
     return null;
@@ -410,7 +416,7 @@ export default function DashboardPage() {
                 ...(isSelected &&
                   !isMobile && !isTablet && {
                     position: "fixed",
-                    left: "40%",
+                    left: "37%",
                     top: "13.75rem",
                     transform: "translateX(-50%)",
                   }),
@@ -507,7 +513,7 @@ export default function DashboardPage() {
                               }}
                             >
                               <div className="text-center">
-                                <div className="w-40 h-40 md:w-32 md:h-40 flex items-center justify-center scale-80 md:scale-90 lg:scale-100">
+                                <div className="w-40 h-40 md:w-32 md:h-40 flex items-center justify-center scale-80 md:scale-90 lg:scale-100 relative">
                                   <Image
                                     src={
                                       card.name === "Certificate of incorporation"
@@ -559,6 +565,12 @@ export default function DashboardPage() {
                                     height={160}
                                     className="object-contain drop-shadow-lg max-w-full max-h-full"
                                   />
+                                  {/* Work in Progress Badge */}
+                                  {isWorkInProgress(card.name) && (
+                                    <div className="absolute -top-2 -right-2 bg-amber-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow-lg border-2 border-white z-10 transform rotate-12">
+                                      WIP
+                                    </div>
+                                  )}
                                 </div>
                                 {isSelected && (
                                   <motion.p
