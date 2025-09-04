@@ -1,18 +1,23 @@
 "use client";
 
-import { useAuthActions } from "@convex-dev/auth/react";
-import { useState } from "react";
+import { useAuthActions, useAuthToken } from "@convex-dev/auth/react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useQuery } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 export default function AuthPage() {
   const { signIn } = useAuthActions();
+  const token = useAuthToken();
+  const user = useQuery(api.users.getCurrentUser);
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState<"email" | "code">("email");
   const [message, setMessage] = useState("");
+  const [justSignedIn, setJustSignedIn] = useState(false);
   const router = useRouter();
 
   const handleSendCode = async () => {
@@ -56,12 +61,12 @@ export default function AuthPage() {
       
       await signIn("resend-otp", formData);
       setMessage("Successfully signed in!");
-      router.push("/dashboard");
+      setJustSignedIn(true);
+      // Don't navigate here - let the useEffect handle navigation after user data loads
     } catch (error) {
       console.error("Verify code error:", error);
       const errorMessage = error instanceof Error ? error.message : String(error);
       setMessage(`Invalid code: ${errorMessage}`);
-    } finally {
       setIsLoading(false);
     }
   };
@@ -71,6 +76,21 @@ export default function AuthPage() {
     setCode("");
     setMessage("");
   };
+
+  // Navigate based on access level after successful authentication
+  useEffect(() => {
+    if (!justSignedIn || !user) return;
+
+    setIsLoading(false);
+
+    if (user.AccessAllowed === true) {
+      // User has access, redirect to dashboard
+      router.push("/dashboard");
+    } else {
+      // User doesn't have access, redirect to request access page
+      router.push("/request-access");
+    }
+  }, [user, justSignedIn, router]);
 
   return (
     <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#f2f2f2'}}>
