@@ -305,7 +305,7 @@ export default function DashboardPage() {
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: 0.5 + (index * 0.1) }}
-                                            className="text-xs text-gray-700 mt-2 px-2 font-medium max-w-[140px] leading-tight"
+                                            className="text-xs text-gray-700 mt-1 px-2 font-medium max-w-[140px] leading-tight"
                                           >
                                             {card.name}
                                           </motion.p>
