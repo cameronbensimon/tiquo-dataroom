@@ -12,6 +12,7 @@ import PricingModelModal from "@/components/PricingModelModal";
 import SingleImageModal from "@/components/SingleImageModal";
 import CapTableModal from "@/components/CapTableModal";
 import FeatureUsecasesModal from "@/components/FeatureUsecasesModal";
+import AccessDenied from "@/components/AccessDenied";
 
 export default function DashboardPage() {
   const token = useAuthToken();
@@ -289,6 +290,11 @@ export default function DashboardPage() {
   // Show loading while checking authentication
   if (user === undefined) {
     return null;
+  }
+
+  // Check if user has access - AccessAllowed must be explicitly true
+  if (user.AccessAllowed !== true) {
+    return <AccessDenied />;
   }
 
   return (
