@@ -194,17 +194,16 @@ export default function PricingModelModal({ isOpen, onClose, leftTable, rightTab
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
-
   return (
     <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
-        className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center"
-      >
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center"
+        >
         <div className="relative flex items-center justify-center w-full h-full">
           {/* Close button - outside modal on the right */}
           <button
@@ -390,7 +389,8 @@ export default function PricingModelModal({ isOpen, onClose, leftTable, rightTab
             </div>
           </motion.div>
         </div>
-      </motion.div>
+        </motion.div>
+      )}
     </AnimatePresence>
   );
 }

@@ -93,17 +93,16 @@ export default function DeckCarouselModal({ isOpen, onClose, images }: DeckCarou
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
-
   return (
     <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
-        className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center"
-      >
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center"
+        >
         <div className="relative flex items-center justify-center w-full h-full">
           {/* Left navigation arrow - outside modal */}
           <button
@@ -212,7 +211,8 @@ export default function DeckCarouselModal({ isOpen, onClose, images }: DeckCarou
             </div>
           </div>
         </div>
-      </motion.div>
+        </motion.div>
+      )}
     </AnimatePresence>
   );
 }
