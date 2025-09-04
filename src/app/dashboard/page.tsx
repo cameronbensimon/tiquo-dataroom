@@ -139,7 +139,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Data Room Items Grid */}
-        <div className="relative max-w-6xl mx-auto min-h-8">
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-6xl min-h-8">
           {/* Close button when folder is selected */}
           <AnimatePresence>
             {selectedFolderId && (
@@ -148,7 +148,7 @@ export default function DashboardPage() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setSelectedFolderId(null)}
-                className="absolute top-4 right-4 z-50 bg-white/80 backdrop-blur-sm rounded-full p-3 hover:bg-white/90 transition-colors shadow-lg"
+                className="fixed top-8 right-8 z-50 bg-white/80 backdrop-blur-sm rounded-full p-3 hover:bg-white/90 transition-colors shadow-lg"
               >
                 <svg
                   className="w-6 h-6 text-gray-800"
@@ -168,9 +168,9 @@ export default function DashboardPage() {
           </AnimatePresence>
 
           {/* Single container - all items always mounted to prevent teleporting */}
-          <div className="relative min-h-8">
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-6xl min-h-8">
             {/* Main grid layout */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-12" id="folders-grid">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 px-4 sm:px-6 lg:px-8" id="folders-grid">
               {dataRoomItems.map((item) => {
                 const isSelected = selectedFolderId === item.id;
                 const shouldFadeOut = selectedFolderId && selectedFolderId !== item.id;
@@ -184,14 +184,14 @@ export default function DashboardPage() {
                     animate={{
                       opacity: shouldFadeOut ? 0 : 1,
                       scale: shouldFadeOut ? 0.8 : 1,
-                      // Move to center of container when selected
-                      x: isSelected ? "50%" : 0,
-                      translateX: isSelected ? "-50%" : "0%",
-                      y: isSelected ? 200 : 0, // Move down exactly 200px when selected
                       zIndex: isSelected ? 40 : shouldFadeOut ? 1 : 10,
                     }}
                     style={{
                       pointerEvents: shouldFadeOut ? "none" : "auto", // Disable clicks when faded out
+                      position: isSelected ? "fixed" : "relative",
+                      left: isSelected ? "40%" : "auto",
+                      top: isSelected ? "12rem" : "auto", // top-48 = 192px, close to 200px
+                      transform: isSelected ? "translateX(-50%)" : "none",
                     }}
                     transition={{
                       type: "spring",
@@ -223,10 +223,13 @@ export default function DashboardPage() {
                                     <motion.div
                                       key={`card-${item.id}-${card.id}`}
                                       className="absolute"
+                                      style={{
+                                        position: isSelected ? "fixed" : "absolute",
+                                        left: isSelected ? `calc(40% + ${gridX}px)` : "auto",
+                                        top: isSelected ? `${192 + gridY}px` : "auto", // 12rem = 192px
+                                        transform: isSelected ? "translateX(-50%)" : "none",
+                                      }}
                                       animate={isSelected ? {
-                                        // Move to grid position centered with folder
-                                        x: `calc(50% + ${gridX}px - 64px)`,
-                                        y: `${gridY + 150}px`, // Position relative to container
                                         rotate: 0,
                                         scale: 1.2,
                                         zIndex: 30,
