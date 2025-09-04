@@ -5,11 +5,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import DeckCarouselModal from "@/components/DeckCarouselModal";
 
 export default function DashboardPage() {
   const token = useAuthToken();
   const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [isDeckModalOpen, setIsDeckModalOpen] = useState(false);
 
   // Detect mobile screen size
   useEffect(() => {
@@ -50,6 +52,11 @@ export default function DashboardPage() {
       // Otherwise, select the new folder
       setSelectedFolderId(folderId);
     }
+  };
+
+  // Handle deck click
+  const handleDeckClick = () => {
+    setIsDeckModalOpen(true);
   };
 
   // Simple 4 buttons - deck + 3 folders
@@ -198,7 +205,7 @@ export default function DashboardPage() {
                         ? "fixed top-48 left-1/2 -translate-x-1/2 z-40" 
                         : "relative"
                     }`}
-                    onClick={() => item.id !== 1 && handleFolderClick(item.id)}
+                    onClick={() => item.id === 1 ? handleDeckClick() : handleFolderClick(item.id)}
                     animate={{
                       opacity: shouldFadeOut ? 0 : 1,
                       scale: shouldFadeOut ? 0.8 : 1,
@@ -385,6 +392,12 @@ export default function DashboardPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Deck Carousel Modal */}
+      <DeckCarouselModal
+        isOpen={isDeckModalOpen}
+        onClose={() => setIsDeckModalOpen(false)}
+      />
     </div>
   );
 }
