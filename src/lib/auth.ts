@@ -18,6 +18,8 @@ const SECURITY_CONFIG = {
   RATE_LIMIT_WINDOW_MS: 15 * 60 * 1000,
   // Admin emails
   ADMIN_EMAILS: ['josh@tiquo.co', 'cameron@tiquo.co'],
+  // Auto-approved domains (users from these domains get automatic access)
+  AUTO_APPROVED_DOMAINS: ['accor.com'],
 };
 
 // Types
@@ -38,6 +40,24 @@ export interface Session {
   user: User;
 }
 
+
+// Check if email should get automatic access (admin or approved domain)
+function isAutoApprovedEmail(email: string): boolean {
+  const normalizedEmail = email.toLowerCase().trim();
+  
+  // Check if it's an admin email
+  if (SECURITY_CONFIG.ADMIN_EMAILS.includes(normalizedEmail)) {
+    return true;
+  }
+  
+  // Check if the email domain is auto-approved
+  const domain = normalizedEmail.split('@')[1];
+  if (domain && SECURITY_CONFIG.AUTO_APPROVED_DOMAINS.includes(domain)) {
+    return true;
+  }
+  
+  return false;
+}
 
 // Generate 6-digit numeric code for email verification
 function generateVerificationCode(): string {
@@ -236,8 +256,8 @@ export async function sendVerificationEmail(email: string, request: Request): Pr
       expires: expiresAt,
     });
 
-    // Check if user is admin for auto-approval
-    const isAdmin = SECURITY_CONFIG.ADMIN_EMAILS.includes(normalizedEmail);
+    // Check if user should get auto-approval
+    const isAutoApproved = isAutoApprovedEmail(normalizedEmail);
 
     // Send verification email
     const { error } = await resend.emails.send({
@@ -278,7 +298,7 @@ export async function sendVerificationEmail(email: string, request: Request): Pr
       return { success: false, error: 'Failed to send verification email.' };
     }
 
-    console.log(`[AUTH] Verification email sent to: ${normalizedEmail} (Admin: ${isAdmin})`);
+    console.log(`[AUTH] Verification email sent to: ${normalizedEmail} (Auto-approved: ${isAutoApproved})`);
     return { success: true };
 
   } catch (error) {
@@ -326,8 +346,8 @@ export async function verifyCodeAndCreateSession(email: string, code: string, re
       return { success: false, error: 'Invalid verification code.' };
     }
 
-    // Check if user is admin
-    const isAdmin = SECURITY_CONFIG.ADMIN_EMAILS.includes(normalizedEmail);
+    // Check if user should get auto-approval
+    const isAutoApproved = isAutoApprovedEmail(normalizedEmail);
 
     // Find or create user
     let user = await db.query.users.findFirst({
@@ -339,16 +359,16 @@ export async function verifyCodeAndCreateSession(email: string, code: string, re
       const [newUser] = await db.insert(schema.users).values({
         id: crypto.randomUUID(),
         email: normalizedEmail,
-        accessAllowed: isAdmin, // Auto-approve admins
+        accessAllowed: isAutoApproved, // Auto-approve admins and approved domains
         emailVerified: new Date(),
         createdAt: new Date(),
         updatedAt: new Date(),
       }).returning();
       user = newUser;
-      console.log(`[AUTH] Created new user: ${normalizedEmail} (Admin: ${isAdmin})`);
+      console.log(`[AUTH] Created new user: ${normalizedEmail} (Auto-approved: ${isAutoApproved})`);
       
-      // Send access request notifications for non-admin users
-      if (!isAdmin) {
+      // Send access request notifications for non-auto-approved users
+      if (!isAutoApproved) {
         console.log(`[AUTH] Sending access request notifications for: ${normalizedEmail}`);
         // Send notifications asynchronously to avoid blocking the response
         Promise.all([
@@ -365,17 +385,17 @@ export async function verifyCodeAndCreateSession(email: string, code: string, re
       await db.update(schema.users)
         .set({
           emailVerified: new Date(),
-          accessAllowed: isAdmin ? true : user.accessAllowed, // Auto-approve admins
+          accessAllowed: isAutoApproved ? true : user.accessAllowed, // Auto-approve admins and approved domains
           updatedAt: new Date(),
         })
         .where(eq(schema.users.id, user.id));
       
       user.emailVerified = new Date();
-      user.accessAllowed = isAdmin ? true : user.accessAllowed;
-      console.log(`[AUTH] Updated user: ${normalizedEmail} (Admin: ${isAdmin}, Access: ${user.accessAllowed})`);
+      user.accessAllowed = isAutoApproved ? true : user.accessAllowed;
+      console.log(`[AUTH] Updated user: ${normalizedEmail} (Auto-approved: ${isAutoApproved}, Access: ${user.accessAllowed})`);
       
-      // Send access request notifications for non-admin users who weren't previously verified
-      if (!isAdmin && !wasAlreadyVerified && !user.accessAllowed) {
+      // Send access request notifications for non-auto-approved users who weren't previously verified
+      if (!isAutoApproved && !wasAlreadyVerified && !user.accessAllowed) {
         console.log(`[AUTH] Sending access request notifications for returning user: ${normalizedEmail}`);
         // Send notifications asynchronously to avoid blocking the response
         Promise.all([
@@ -440,7 +460,7 @@ export async function getSession(sessionToken: string): Promise<Session | null> 
 
     if (!user?.email) return null;
 
-    // Add isAdmin flag to user
+    // Add isAdmin flag to user (only true admin emails, not auto-approved domains)
     const userWithAdmin = {
       ...user,
       isAdmin: SECURITY_CONFIG.ADMIN_EMAILS.includes(user.email.toLowerCase()),
