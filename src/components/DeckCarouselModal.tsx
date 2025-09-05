@@ -19,8 +19,50 @@ interface DeckCarouselModalProps {
 export default function DeckCarouselModal({ isOpen, onClose, images }: DeckCarouselModalProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const [preloadedImages, setPreloadedImages] = useState<Set<string>>(new Set());
+  const preloadQueueRef = useRef<Set<number>>(new Set());
   
-  // Images are now passed as props for reusability
+  // Progressive preloading function
+  const preloadImagesAhead = (currentIndex: number, lookAhead: number = 7) => {
+    const preloadPromises: Promise<void>[] = [];
+    
+    // Preload images ahead of current position
+    for (let i = 1; i <= lookAhead; i++) {
+      const nextIndex = (currentIndex + i) % images.length;
+      const prevIndex = currentIndex - i < 0 ? images.length + (currentIndex - i) : currentIndex - i;
+      
+      // Add both forward and backward images to preload queue
+      [nextIndex, prevIndex].forEach(index => {
+        if (index >= 0 && index < images.length && !preloadQueueRef.current.has(index)) {
+          preloadQueueRef.current.add(index);
+          preloadPromises.push(preloadImage(images[index].src));
+        }
+      });
+    }
+    
+    // Execute preloading in background
+    Promise.all(preloadPromises).catch(error => 
+      console.warn('Some images failed to preload:', error)
+    );
+  };
+
+  // Function to preload individual image
+  const preloadImage = (src: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      if (preloadedImages.has(src)) {
+        resolve();
+        return;
+      }
+      
+      const img = new window.Image();
+      img.onload = () => {
+        setPreloadedImages(prev => new Set([...prev, src]));
+        resolve();
+      };
+      img.onerror = reject;
+      img.src = src;
+    });
+  };
 
   // Navigation functions
   const goToSlide = (index: number) => {
@@ -32,6 +74,9 @@ export default function DeckCarouselModal({ isOpen, onClose, images }: DeckCarou
         behavior: "smooth"
       });
     }
+    
+    // Trigger progressive preloading when slide changes
+    preloadImagesAhead(index);
   };
 
   const nextSlide = () => {
@@ -50,7 +95,12 @@ export default function DeckCarouselModal({ isOpen, onClose, images }: DeckCarou
       const slideWidth = carouselRef.current.clientWidth;
       const scrollLeft = carouselRef.current.scrollLeft;
       const newSlide = Math.round(scrollLeft / slideWidth);
-      setCurrentSlide(newSlide);
+      
+      if (newSlide !== currentSlide) {
+        setCurrentSlide(newSlide);
+        // Trigger progressive preloading when slide changes via scroll
+        preloadImagesAhead(newSlide);
+      }
     }
   };
 
@@ -74,6 +124,16 @@ export default function DeckCarouselModal({ isOpen, onClose, images }: DeckCarou
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, currentSlide, nextSlide, prevSlide, onClose]);
+
+  // Initialize preloading when modal opens
+  useEffect(() => {
+    if (isOpen && images.length > 0) {
+      // Reset preload queue
+      preloadQueueRef.current.clear();
+      // Start aggressive preloading from the beginning
+      preloadImagesAhead(0, 10);
+    }
+  }, [isOpen, images]);
 
   // Reset to first slide and prevent body scroll when modal opens
   useEffect(() => {
@@ -181,7 +241,10 @@ export default function DeckCarouselModal({ isOpen, onClose, images }: DeckCarou
                       alt={image.alt}
                       fill
                       className="object-cover rounded-xl"
-                      priority={index < 2}
+                      priority={index <= 2 || Math.abs(index - currentSlide) <= 1}
+                      loading={index <= 4 || Math.abs(index - currentSlide) <= 3 ? "eager" : "lazy"}
+                      placeholder="blur"
+                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyuw=="
                     />
                   </div>
                 </div>

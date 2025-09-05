@@ -13,7 +13,8 @@ export async function GET() {
     
     const brandImages = blobs.filter(blob => 
       blob.pathname.toLowerCase().includes('brand identity') ||
-      blob.pathname.toLowerCase().includes('tiquo brand')
+      blob.pathname.toLowerCase().includes('tiquo brand') ||
+      blob.pathname.toLowerCase().includes('brand-identity')
     ).sort((a, b) => a.pathname.localeCompare(b.pathname));
     
     return NextResponse.json({

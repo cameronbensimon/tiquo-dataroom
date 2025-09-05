@@ -40,6 +40,47 @@ export default function DashboardPage() {
   const [tiquoDeckImages, setTiquoDeckImages] = useState<DeckImage[]>([]);
   const [brandIdentityImages, setBrandIdentityImages] = useState<DeckImage[]>([]);
   const [isLoadingImages, setIsLoadingImages] = useState(true);
+  const [preloadedImages, setPreloadedImages] = useState<Set<string>>(new Set());
+
+  // Function to preload images
+  const preloadImage = (src: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      if (preloadedImages.has(src)) {
+        resolve();
+        return;
+      }
+      
+      const img = new window.Image();
+      img.onload = () => {
+        setPreloadedImages(prev => new Set([...prev, src]));
+        resolve();
+      };
+      img.onerror = reject;
+      img.src = src;
+    });
+  };
+
+  // Function to preload initial images (first 3 of each deck)
+  const preloadInitialImages = async (deckImages: DeckImage[], brandImages: DeckImage[]) => {
+    const preloadPromises: Promise<void>[] = [];
+    
+    // Preload first 3 deck images
+    for (let i = 0; i < Math.min(3, deckImages.length); i++) {
+      preloadPromises.push(preloadImage(deckImages[i].src));
+    }
+    
+    // Preload first 3 brand identity images
+    for (let i = 0; i < Math.min(3, brandImages.length); i++) {
+      preloadPromises.push(preloadImage(brandImages[i].src));
+    }
+    
+    try {
+      await Promise.all(preloadPromises);
+      console.log('✅ Preloaded initial images for both decks');
+    } catch (error) {
+      console.warn('⚠️ Some initial images failed to preload:', error);
+    }
+  };
 
   // Fetch images from blob storage on component mount
   useEffect(() => {
@@ -50,11 +91,16 @@ export default function DashboardPage() {
         const result = await response.json();
         
         if (result.success) {
-          setTiquoDeckImages(result.data.deckImages);
-          setBrandIdentityImages(result.data.brandImages);
-          console.log('Loaded deck images:', result.data.deckImages.length);
-          console.log('Loaded brand images:', result.data.brandImages.length);
-          console.log('All blob files:', result.data.allBlobs);
+          const deckImages = result.data.deckImages;
+          const brandImages = result.data.brandImages;
+          
+          setTiquoDeckImages(deckImages);
+          setBrandIdentityImages(brandImages);
+          console.log('Loaded deck images:', deckImages.length);
+          console.log('Loaded brand images:', brandImages.length);
+          
+          // Start preloading initial images immediately
+          preloadInitialImages(deckImages, brandImages);
         } else {
           console.error('Failed to fetch blob images:', result.error);
         }
