@@ -29,7 +29,7 @@ export default function DashboardPage() {
   const [isFeatureRoadmapModalOpen, setIsFeatureRoadmapModalOpen] = useState(false);
   const [isFeatureCompetitorComparisonModalOpen, setIsFeatureCompetitorComparisonModalOpen] = useState(false);
 
-  // TIQUO deck slides configuration
+  // TIQUO deck slides configuration - using Vercel blob storage
   const tiquoDeckImages = Array.from({ length: 17 }, (_, index) => {
     const slideDescriptions = [
       "TIQUO Company Overview and Mission Statement",
@@ -51,14 +51,20 @@ export default function DashboardPage() {
       "Contact Information and Next Steps"
     ];
     
+    // Use the blob storage URL from environment variable
+    // The environment variable should contain the base URL for your blob storage
+    const blobBaseUrl = process.env.NEXT_PUBLIC_VERCEL_BLOB_BASE_URL || 
+                        process.env.VERCEL_BLOB_READ_WRITE_TOKEN ||
+                        '';
+    
     return {
       id: index + 1,
-      src: `/slides/TIQUO DECK V5 - ${String(index + 1).padStart(2, '0')}.jpg`,
+      src: `${blobBaseUrl}/TIQUO DECK V5 - ${String(index + 1).padStart(2, '0')}.jpg`,
       alt: `TIQUO Investor Presentation Slide ${index + 1}: ${slideDescriptions[index] || `Slide ${index + 1}`}`
     };
   });
 
-  // Brand identity images configuration
+  // Brand identity images configuration - using Vercel blob storage
   const brandIdentityImages = Array.from({ length: 17 }, (_, index) => {
     const brandDescriptions = [
       "TIQUO Logo Design and Typography Guidelines",
@@ -80,9 +86,14 @@ export default function DashboardPage() {
       "Complete Brand Style Guide Summary"
     ];
     
+    // Use the blob storage URL from environment variable
+    const blobBaseUrl = process.env.NEXT_PUBLIC_VERCEL_BLOB_BASE_URL || 
+                        process.env.VERCEL_BLOB_READ_WRITE_TOKEN ||
+                        '';
+    
     return {
       id: index + 1,
-      src: `/brand-identity/Tiquo brand identity - ${String(index + 1).padStart(2, '0')}.jpg`,
+      src: `${blobBaseUrl}/Tiquo brand identity - ${String(index + 1).padStart(2, '0')}.jpg`,
       alt: `TIQUO Brand Identity Guide Page ${index + 1}: ${brandDescriptions[index] || `Brand Identity ${index + 1}`}`
     };
   });
