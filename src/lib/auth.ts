@@ -124,13 +124,13 @@ async function sendAdminAccessNotification(requestingEmail: string, clientIP: st
   
   try {
     await resend.emails.send({
-      from: 'Tiquo Data Room <dataroom@tiquo.app>',
+      from: 'Tiquo Data Room <noreply@tiquo.app>',
       to: adminEmails,
       subject: `DataRoom Access Request from ${requestingEmail}`,
       html: `
         <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
           <div style="text-align: center; margin-bottom: 30px;">
-            <img src="https://dataroom.tiquo.co/tiquo%20logo.svg" alt="Tiquo Logo" style="width: 80px; height: 80px;" />
+            <img src="https://dataroom.tiquo.co/tiquo-logo-black.png" alt="Tiquo Logo" style="width: 80px; height: 80px;" />
           </div>
           <h2 style="color: #DC2626; margin-bottom: 20px; text-align: center;">New DataRoom Access Request</h2>
           
@@ -167,13 +167,13 @@ async function sendAdminAccessNotification(requestingEmail: string, clientIP: st
 async function sendAccessRequestConfirmation(requestingEmail: string): Promise<void> {
   try {
     await resend.emails.send({
-      from: 'Tiquo Data Room <dataroom@tiquo.app>',
+      from: 'Tiquo Data Room <noreply@tiquo.app>',
       to: [requestingEmail],
       subject: 'DataRoom Access Request Received',
       html: `
         <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
           <div style="text-align: center; margin-bottom: 30px;">
-            <img src="https://dataroom.tiquo.co/tiquo%20logo.svg" alt="Tiquo Logo" style="width: 80px; height: 80px;" />
+            <img src="https://dataroom.tiquo.co/tiquo-logo-black.png" alt="Tiquo Logo" style="width: 80px; height: 80px;" />
           </div>
           <h2 style="color: #2563EB; margin-bottom: 20px; text-align: center;">Access Request Received</h2>
           
@@ -216,7 +216,7 @@ async function sendAccessRequestConfirmation(requestingEmail: string): Promise<v
 }
 
 // Send secure verification email
-export async function sendVerificationEmail(email: string, request: Request): Promise<{ success: boolean; error?: string; isNewUser?: boolean }> {
+export async function sendVerificationEmail(email: string, request: Request): Promise<{ success: boolean; error?: string }> {
   try {
     const clientIP = getClientIP(request);
     
@@ -239,37 +239,6 @@ export async function sendVerificationEmail(email: string, request: Request): Pr
       return { success: false, error: 'Invalid email format.' };
     }
 
-    // Check if user already exists
-    let existingUser = await db.query.users.findFirst({
-      where: eq(schema.users.email, normalizedEmail),
-    });
-    
-    const isNewUser = !existingUser;
-    const isAutoApproved = isAutoApprovedEmail(normalizedEmail);
-
-    // Create user immediately if they don't exist (unified flow)
-    if (isNewUser) {
-      const newUserData = {
-        id: crypto.randomUUID(),
-        email: normalizedEmail,
-        name: null,
-        image: null,
-        accessAllowed: isAutoApproved,
-        emailVerified: null, // Will be set when they verify the code
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-
-      const [newUser] = await db.insert(schema.users).values(newUserData).returning();
-      existingUser = newUser;
-      console.log(`[AUTH] Created new user during send-code: ${normalizedEmail} (Auto-approved: ${isAutoApproved})`);
-      
-      // Note: Access request notifications are NOT sent here
-      // They will be sent only when the user manually requests access after signing in
-    } else {
-      console.log(`[AUTH] Existing user requesting code: ${normalizedEmail}`);
-    }
-
     const verificationCode = generateVerificationCode();
     const hashedCode = hashToken(verificationCode);
     const expiresAt = new Date(Date.now() + SECURITY_CONFIG.CODE_EXPIRY_MS);
@@ -284,22 +253,22 @@ export async function sendVerificationEmail(email: string, request: Request): Pr
       expires: expiresAt,
     });
 
-    // Send verification email with appropriate messaging
+    // Check if user should get auto-approval
+    const isAutoApproved = isAutoApprovedEmail(normalizedEmail);
+
+    // Send verification email
     const { error } = await resend.emails.send({
-      from: 'Tiquo Data Room <dataroom@tiquo.app>',
+      from: 'Tiquo Data Room <noreply@tiquo.app>',
       to: [normalizedEmail],
-      subject: isNewUser ? 'Welcome to Tiquo - Your Access Code' : 'Your Secure DataRoom Access Code',
+                  subject: 'Your Secure DataRoom Access Code',
       html: `
         <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
           <div style="text-align: center; margin-bottom: 30px;">
-            <img src="https://dataroom.tiquo.co/tiquo%20logo.svg" alt="Tiquo Logo" style="width: 80px; height: 80px;" />
+            <img src="https://dataroom.tiquo.co/tiquo-logo-black.png" alt="Tiquo Logo" style="width: 80px; height: 80px;" />
           </div>
-          <h2 style="color: #DC2626; margin-bottom: 20px; text-align: center;">${isNewUser ? 'Welcome to Tiquo!' : 'Secure Access Code'}</h2>
+                          <h2 style="color: #DC2626; margin-bottom: 20px; text-align: center;">Secure Access Code</h2>
           <p style="font-size: 16px; margin-bottom: 20px; text-align: center; color: #1F2937;">
-            ${isNewUser 
-              ? 'Your account has been created! Enter this code to complete your registration and access the Tiquo Data Room:'
-              : 'Enter this code to securely access the Tiquo Data Room:'
-            }
+            Enter this code to securely access the Tiquo Data Room:
           </p>
           <div style="background: #FEF2F2; border: 2px solid #DC2626; padding: 25px; border-radius: 10px; text-align: center; margin: 30px 0;">
             <span style="font-size: 36px; font-weight: bold; letter-spacing: 12px; color: #DC2626; font-family: monospace;">${verificationCode}</span>
@@ -325,8 +294,8 @@ export async function sendVerificationEmail(email: string, request: Request): Pr
       return { success: false, error: 'Failed to send verification email.' };
     }
 
-    console.log(`[AUTH] Verification email sent to: ${normalizedEmail} (New user: ${isNewUser}, Auto-approved: ${isAutoApproved})`);
-    return { success: true, isNewUser };
+    console.log(`[AUTH] Verification email sent to: ${normalizedEmail} (Auto-approved: ${isAutoApproved})`);
+    return { success: true };
 
   } catch (error) {
     console.error('[AUTH] Send verification email error:', error);
@@ -373,26 +342,48 @@ export async function verifyCodeAndCreateSession(email: string, code: string, re
       return { success: false, error: 'Invalid verification code.' };
     }
 
-    // Find the user (should always exist now since created in send-code step)
-    const user = await db.query.users.findFirst({
+    // Check if user should get auto-approval
+    const isAutoApproved = isAutoApprovedEmail(normalizedEmail);
+
+    // Find or create user
+    let user = await db.query.users.findFirst({
       where: eq(schema.users.email, normalizedEmail),
     });
 
     if (!user) {
-      console.error(`[AUTH] No user found for verified email: ${normalizedEmail} - this should not happen`);
-      return { success: false, error: 'User account not found. Please try requesting a new code.' };
-    }
-
-    // Update user to mark email as verified
-    await db.update(schema.users)
-      .set({
+      // Create new user
+      const [newUser] = await db.insert(schema.users).values({
+        id: crypto.randomUUID(),
+        email: normalizedEmail,
+        accessAllowed: isAutoApproved, // Auto-approve admins and approved domains
         emailVerified: new Date(),
+        createdAt: new Date(),
         updatedAt: new Date(),
-      })
-      .where(eq(schema.users.id, user.id));
+      }).returning();
+             user = newUser;
+       console.log(`[AUTH] Created new user: ${normalizedEmail} (Auto-approved: ${isAutoApproved})`);
+       
+       // Note: Access request notifications are NOT sent automatically
+       // Users must explicitly request access via the request-access API endpoint
+    } else {
+      // Update existing user
+      const wasAlreadyVerified = user.emailVerified !== null;
       
-    user.emailVerified = new Date();
-    console.log(`[AUTH] Email verified for user: ${normalizedEmail} (Access: ${user.accessAllowed})`);
+      await db.update(schema.users)
+        .set({
+          emailVerified: new Date(),
+          accessAllowed: isAutoApproved ? true : user.accessAllowed, // Auto-approve admins and approved domains
+          updatedAt: new Date(),
+        })
+        .where(eq(schema.users.id, user.id));
+      
+             user.emailVerified = new Date();
+       user.accessAllowed = isAutoApproved ? true : user.accessAllowed;
+       console.log(`[AUTH] Updated user: ${normalizedEmail} (Auto-approved: ${isAutoApproved}, Access: ${user.accessAllowed})`);
+       
+       // Note: Access request notifications are NOT sent automatically
+       // Users must explicitly request access via the request-access API endpoint
+    }
 
     // Clean up verification token
     await db.delete(schema.verificationTokens)
@@ -532,13 +523,13 @@ export async function signOut(sessionToken?: string): Promise<void> {
 export async function sendAccessGrantedNotification(userEmail: string): Promise<void> {
   try {
     await resend.emails.send({
-      from: 'Tiquo Data Room <dataroom@tiquo.app>',
+      from: 'Tiquo Data Room <noreply@tiquo.app>',
       to: [userEmail],
       subject: 'DataRoom Access Granted!',
       html: `
         <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
           <div style="text-align: center; margin-bottom: 30px;">
-            <img src="https://dataroom.tiquo.co/tiquo%20logo.svg" alt="Tiquo Logo" style="width: 80px; height: 80px;" />
+            <img src="https://dataroom.tiquo.co/tiquo-logo-black.png" alt="Tiquo Logo" style="width: 80px; height: 80px;" />
           </div>
           <h2 style="color: #059669; margin-bottom: 20px; text-align: center;">Access Granted!</h2>
           

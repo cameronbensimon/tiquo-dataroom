@@ -24,11 +24,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { 
-        success: true, 
-        message: 'Verification code sent successfully',
-        isNewUser: result.isNewUser
-      },
+      { success: true, message: 'Verification code sent successfully' },
       { status: 200 }
     );
 

@@ -17,13 +17,13 @@ async function sendAdminAccessNotification(requestingEmail: string, clientIP: st
   
   try {
     await resend.emails.send({
-      from: 'Tiquo Data Room <dataroom@tiquo.app>',
+      from: 'Tiquo Data Room <noreply@tiquo.app>',
       to: adminEmails,
       subject: `Data Room Access Request from ${requestingEmail}`,
       html: `
         <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
           <div style="text-align: center; margin-bottom: 30px;">
-            <img src="https://dataroom.tiquo.co/tiquo%20logo.svg" alt="Tiquo Logo" style="width: 80px; height: 80px;" />
+            <img src="https://dataroom.tiquo.co/tiquo-logo-black.png" alt="Tiquo Logo" style="width: 80px; height: 80px;" />
           </div>
           <h2 style="color: #DC2626; margin-bottom: 20px; text-align: center;">New Data Room Access Request</h2>
           
@@ -38,7 +38,6 @@ async function sendAdminAccessNotification(requestingEmail: string, clientIP: st
               <strong>Status:</strong> Pending Admin Review
             </p>
           </div>
-          
           
           <div style="background: #F3F4F6; padding: 15px; border-radius: 6px; margin: 20px 0;">
             <p style="font-size: 14px; margin: 0; color: #6B7280; text-align: center;">
@@ -60,13 +59,13 @@ async function sendAdminAccessNotification(requestingEmail: string, clientIP: st
 async function sendAccessRequestConfirmation(requestingEmail: string): Promise<void> {
   try {
     await resend.emails.send({
-      from: 'Tiquo Data Room <dataroom@tiquo.app>',
+      from: 'Tiquo Data Room <noreply@tiquo.app>',
       to: [requestingEmail],
       subject: 'Data Room Access Request Received',
       html: `
         <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
           <div style="text-align: center; margin-bottom: 30px;">
-            <img src="https://dataroom.tiquo.co/tiquo%20logo.svg" alt="Tiquo Logo" style="width: 80px; height: 80px;" />
+            <img src="https://dataroom.tiquo.co/tiquo-logo-black.png" alt="Tiquo Logo" style="width: 80px; height: 80px;" />
           </div>
           <h2 style="color: #2563EB; margin-bottom: 20px; text-align: center;">Access Request Received</h2>
           

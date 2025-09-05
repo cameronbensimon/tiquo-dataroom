@@ -45,7 +45,6 @@ export default function AuthPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState<"email" | "code">("email");
   const [message, setMessage] = useState("");
-  const [isNewUser, setIsNewUser] = useState<boolean | null>(null);
   const router = useRouter();
 
 
@@ -96,9 +95,7 @@ export default function AuthPage() {
       if (!response.ok) {
         setMessage(`Error: ${result.error}`);
       } else {
-        setIsNewUser(result.isNewUser);
-        const actionText = result.isNewUser ? 'complete your registration' : 'sign in';
-        setMessage(`Security code sent! ${result.isNewUser ? 'Your account has been created.' : ''} Check your email and enter the 6-digit code below to ${actionText}.`);
+        setMessage("Security code sent! Check your email and enter the 6-digit code below.");
         setStep("code");
       }
     } catch (error) {
@@ -157,7 +154,6 @@ export default function AuthPage() {
     setStep("email");
     setCode("");
     setMessage("");
-    setIsNewUser(null);
   };
 
   return (
@@ -209,11 +205,7 @@ export default function AuthPage() {
           <p className="mt-2 text-center text-sm text-gray-600">
             {step === "email" 
               ? "Enter your email to access Tiquo's Data Room"
-              : isNewUser === true 
-                ? "Enter the 6-digit security code to complete registration"
-                : isNewUser === false
-                  ? "Enter the 6-digit security code to sign in"
-                  : "Enter the 6-digit security code from your email"
+              : "Enter the 6-digit security code from your email"
             }
           </p>
         </div>
@@ -261,7 +253,7 @@ export default function AuthPage() {
                                           Sending Code...
                   </div>
                 ) : (
-                  "Continue"
+                  "Send Security Code"
                 )}
               </Button>
             </>
@@ -311,10 +303,6 @@ export default function AuthPage() {
                       />
                       Verifying...
                     </div>
-                  ) : isNewUser === true ? (
-                    "Complete Registration"
-                  ) : isNewUser === false ? (
-                    "Sign In"
                   ) : (
                     "Verify Code"
                   )}
