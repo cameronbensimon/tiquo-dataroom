@@ -78,7 +78,12 @@ export default function CapTableModal({ isOpen, onClose, title = "Cap Table" }: 
     });
 
     return (
-      <svg width="200" height="200" viewBox="0 0 200 200" className="drop-shadow-lg">
+      <svg 
+        width="200" 
+        height="200" 
+        viewBox="0 0 200 200" 
+        className="drop-shadow-lg w-48 h-48 md:w-52 md:h-52 lg:w-56 lg:h-56"
+      >
         {paths}
         {/* Center white circle to create donut effect */}
         <circle
@@ -145,33 +150,33 @@ export default function CapTableModal({ isOpen, onClose, title = "Cap Table" }: 
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
-            className="relative bg-white rounded-xl overflow-hidden shadow-2xl"
+            className="relative bg-white rounded-xl overflow-hidden shadow-2xl mx-4"
             style={{
-              width: "min(85vw, 1000px)",
-              height: "min(80vh, 600px)",
+              width: "min(90vw, 1000px)",
+              height: "min(90vh, 700px)",
               maxWidth: "1000px",
-              maxHeight: "600px"
+              maxHeight: "700px"
             }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="bg-gray-50 border-b border-gray-200 p-6">
-              <h2 className="text-2xl font-semibold text-gray-900">Company Ownership</h2>
+            <div className="bg-gray-50 border-b border-gray-200 p-4 md:p-6">
+              <h2 className="text-xl md:text-2xl font-semibold text-gray-900">Company Ownership</h2>
             </div>
 
             {/* Chart and table layout */}
-            <div className="overflow-auto h-[calc(100%-100px)] p-8">
-              <div className="flex gap-8 items-center justify-center h-full">
+            <div className="overflow-auto h-[calc(100%-100px)] p-4 md:p-8">
+              <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-center justify-center h-full">
                 {/* Donut chart */}
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center flex-shrink-0">
                   {createDonutChart()}
                   
                   {/* Legend */}
-                  <div className="mt-6 space-y-2">
+                  <div className="mt-4 md:mt-6 space-y-2">
                     {shareholderData.map((shareholder, index) => (
                       <div key={index} className="flex items-center gap-3">
                         <div 
-                          className="w-4 h-4 rounded-full"
+                          className="w-3 h-3 md:w-4 md:h-4 rounded-full flex-shrink-0"
                           style={{ backgroundColor: shareholder.color }}
                         />
                         <span className="text-sm font-medium text-gray-700">
@@ -186,18 +191,18 @@ export default function CapTableModal({ isOpen, onClose, title = "Cap Table" }: 
                 </div>
 
                 {/* Shareholding table */}
-                <div className="flex flex-col">
-                  <div className="border border-gray-200 rounded-lg overflow-hidden">
-                    <table className="w-full border-collapse">
+                <div className="flex flex-col w-full lg:w-auto min-w-0">
+                  <div className="border border-gray-200 rounded-lg overflow-hidden overflow-x-auto">
+                    <table className="w-full border-collapse min-w-[300px]">
                       <thead>
                         <tr className="bg-gray-100">
-                          <th className="border-b border-gray-300 px-4 py-3 text-left text-sm font-medium text-gray-700 bg-gray-50">
+                          <th className="border-b border-gray-300 px-3 md:px-4 py-2 md:py-3 text-left text-xs md:text-sm font-medium text-gray-700 bg-gray-50">
                             Shareholder
                           </th>
-                          <th className="border-b border-gray-300 px-4 py-3 text-left text-sm font-medium text-gray-700 bg-gray-50">
+                          <th className="border-b border-gray-300 px-3 md:px-4 py-2 md:py-3 text-left text-xs md:text-sm font-medium text-gray-700 bg-gray-50">
                             Shares
                           </th>
-                          <th className="border-b border-gray-300 px-4 py-3 text-left text-sm font-medium text-gray-700 bg-gray-50">
+                          <th className="border-b border-gray-300 px-3 md:px-4 py-2 md:py-3 text-left text-xs md:text-sm font-medium text-gray-700 bg-gray-50">
                             Percentage
                           </th>
                         </tr>
@@ -208,16 +213,16 @@ export default function CapTableModal({ isOpen, onClose, title = "Cap Table" }: 
                             key={index}
                             className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
                           >
-                            <td className="border-b border-gray-200 px-4 py-3 text-sm font-medium text-gray-900">
+                            <td className="border-b border-gray-200 px-3 md:px-4 py-2 md:py-3 text-xs md:text-sm font-medium text-gray-900">
                               {shareholder.name}
                             </td>
-                            <td className="border-b border-gray-200 px-4 py-3 text-sm text-gray-900">
+                            <td className="border-b border-gray-200 px-3 md:px-4 py-2 md:py-3 text-xs md:text-sm text-gray-900">
                               {shareholder.shares.toLocaleString()}
                             </td>
-                            <td className="border-b border-gray-200 px-4 py-3 text-sm text-gray-900">
+                            <td className="border-b border-gray-200 px-3 md:px-4 py-2 md:py-3 text-xs md:text-sm text-gray-900">
                               <div className="flex items-center gap-2">
                                 <div 
-                                  className="w-3 h-3 rounded-full"
+                                  className="w-2 h-2 md:w-3 md:h-3 rounded-full flex-shrink-0"
                                   style={{ backgroundColor: shareholder.color }}
                                 />
                                 {shareholder.percentage}%
@@ -226,13 +231,13 @@ export default function CapTableModal({ isOpen, onClose, title = "Cap Table" }: 
                           </tr>
                         ))}
                         <tr className="bg-gray-100 font-semibold">
-                          <td className="border-b border-gray-300 px-4 py-3 text-sm text-gray-900">
+                          <td className="border-b border-gray-300 px-3 md:px-4 py-2 md:py-3 text-xs md:text-sm text-gray-900">
                             Total
                           </td>
-                          <td className="border-b border-gray-300 px-4 py-3 text-sm text-gray-900">
+                          <td className="border-b border-gray-300 px-3 md:px-4 py-2 md:py-3 text-xs md:text-sm text-gray-900">
                             {totalShares.toLocaleString()}
                           </td>
-                          <td className="border-b border-gray-300 px-4 py-3 text-sm text-gray-900">
+                          <td className="border-b border-gray-300 px-3 md:px-4 py-2 md:py-3 text-xs md:text-sm text-gray-900">
                             100%
                           </td>
                         </tr>
