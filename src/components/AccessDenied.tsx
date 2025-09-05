@@ -55,9 +55,9 @@ export default function AccessDenied({ onRequestAccess }: AccessDeniedProps) {
           <Image
             src="/tiquo logo.svg"
             alt="Tiquo - The Universal Booking, Loyalty & Point of Sale Platform"
-            width={120}
-            height={120}
-            className="w-24 h-24 md:w-30 md:h-30"
+            width={96}
+            height={96}
+            className="w-20 h-20 md:w-24 md:h-24"
           />
         </div>
         
@@ -66,22 +66,14 @@ export default function AccessDenied({ onRequestAccess }: AccessDeniedProps) {
           {requestState === 'success' ? (
             // Success state
             <>
-              <h1 className="text-2xl md:text-3xl font-bold text-green-600">
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
                 Access Request Submitted
               </h1>
               
               <p className="text-lg text-gray-600 leading-relaxed">
-                Your request for access to the Tiquo DataRoom has been submitted successfully.
+                Your request for access to the Tiquo Data Room has been submitted successfully.
               </p>
 
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                <h3 className="text-green-800 font-semibold mb-2">What happens next?</h3>
-                <ul className="text-green-700 text-sm space-y-1 list-disc list-inside">
-                  <li>You&apos;ll receive a confirmation email shortly</li>
-                  <li>Our team will review your request within 1-2 business days</li>
-                  <li>You&apos;ll be notified by email once access is granted</li>
-                </ul>
-              </div>
 
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <p className="text-blue-800 text-sm">
@@ -96,9 +88,6 @@ export default function AccessDenied({ onRequestAccess }: AccessDeniedProps) {
                 Access Restricted
               </h1>
               
-              <p className="text-lg text-gray-600 leading-relaxed">
-                Access is restricted to Tiquo&apos;s data room. Request access here.
-              </p>
 
               {message && (
                 <div className={`rounded-md p-4 ${
@@ -116,7 +105,6 @@ export default function AccessDenied({ onRequestAccess }: AccessDeniedProps) {
                   onClick={handleRequestAccess}
                   disabled={requestState === 'requesting'}
                   size="lg"
-                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:transform-none"
                 >
                   {requestState === 'requesting' ? (
                     <div className="flex items-center gap-2">
@@ -136,7 +124,7 @@ export default function AccessDenied({ onRequestAccess }: AccessDeniedProps) {
         {requestState !== 'success' && (
           <div className="pt-8">
             <p className="text-sm text-gray-400">
-              If you believe you should have access, please contact us and we&apos;ll review your request.
+              If you believe you should have access, please request access using the button and we&apos;ll review your request.
             </p>
           </div>
         )}

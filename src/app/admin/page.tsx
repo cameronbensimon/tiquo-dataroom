@@ -108,8 +108,9 @@ export default function AdminPage() {
               <Image
                 src="/tiquo logo.svg"
                 alt="Tiquo Logo"
-                width={40}
-                height={40}
+                width={96}
+                height={96}
+                className="w-20 h-20 md:w-24 md:h-24"
               />
               <h1 className="text-2xl font-bold text-gray-900">Admin Panel</h1>
             </div>
@@ -125,7 +126,7 @@ export default function AdminPage() {
         <div className="bg-white rounded-lg shadow">
           <div className="px-6 py-4 border-b border-gray-200">
             <h2 className="text-xl font-semibold text-gray-800">User Access Management</h2>
-            <p className="text-sm text-gray-600 mt-1">Manage DataRoom access permissions</p>
+            <p className="text-sm text-gray-600 mt-1">Manage Data Room access permissions</p>
           </div>
 
           {message && (

@@ -104,7 +104,7 @@ async function sendAdminAccessNotification(requestingEmail: string, clientIP: st
   
   try {
     await resend.emails.send({
-      from: 'Tiquo DataRoom <noreply@tiquo.app>',
+      from: 'Tiquo Data Room <noreply@tiquo.app>',
       to: adminEmails,
       subject: `DataRoom Access Request from ${requestingEmail}`,
       html: `
@@ -156,7 +156,7 @@ async function sendAdminAccessNotification(requestingEmail: string, clientIP: st
 async function sendAccessRequestConfirmation(requestingEmail: string): Promise<void> {
   try {
     await resend.emails.send({
-      from: 'Tiquo DataRoom <noreply@tiquo.app>',
+      from: 'Tiquo Data Room <noreply@tiquo.app>',
       to: [requestingEmail],
       subject: 'DataRoom Access Request Received',
       html: `
@@ -167,7 +167,7 @@ async function sendAccessRequestConfirmation(requestingEmail: string): Promise<v
           <h2 style="color: #2563EB; margin-bottom: 20px; text-align: center;">Access Request Received</h2>
           
           <p style="font-size: 16px; margin-bottom: 20px; text-align: center; color: #1F2937;">
-            Thank you for your interest in accessing the Tiquo DataRoom.
+            Thank you for your interest in accessing the Tiquo Data Room.
           </p>
           
           <div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -195,7 +195,7 @@ async function sendAccessRequestConfirmation(requestingEmail: string): Promise<v
           </div>
         </div>
       `,
-      text: `Access Request Received\n\nThank you for your interest in accessing the Tiquo DataRoom.\n\nWhat happens next?\n- Your access request has been forwarded to our team\n- We will review your request within 1-2 business days\n- You'll receive an email notification once access is granted\n- If approved, you'll be able to access the DataRoom immediately\n\nRequest Details:\nEmail: ${requestingEmail}\nDate: ${new Date().toLocaleString('en-US', { timeZone: 'UTC' })} UTC\n\nIf you have questions, contact us at hello@tiquo.co`,
+      text: `Access Request Received\n\nThank you for your interest in accessing the Tiquo Data Room.\n\nWhat happens next?\n- Your access request has been forwarded to our team\n- We will review your request within 1-2 business days\n- You'll receive an email notification once access is granted\n- If approved, you'll be able to access the DataRoom immediately\n\nRequest Details:\nEmail: ${requestingEmail}\nDate: ${new Date().toLocaleString('en-US', { timeZone: 'UTC' })} UTC\n\nIf you have questions, contact us at hello@tiquo.co`,
     });
     
     console.log(`[AUTH] Access request confirmation sent to: ${requestingEmail}`);
@@ -247,7 +247,7 @@ export async function sendVerificationEmail(email: string, request: Request): Pr
 
     // Send verification email
     const { error } = await resend.emails.send({
-      from: 'Tiquo DataRoom <noreply@tiquo.app>',
+      from: 'Tiquo Data Room <noreply@tiquo.app>',
       to: [normalizedEmail],
                   subject: 'Your Secure DataRoom Access Code',
       html: `
@@ -257,7 +257,7 @@ export async function sendVerificationEmail(email: string, request: Request): Pr
           </div>
                           <h2 style="color: #DC2626; margin-bottom: 20px; text-align: center;">Secure Access Code</h2>
           <p style="font-size: 16px; margin-bottom: 20px; text-align: center; color: #1F2937;">
-            Enter this code to securely access the Tiquo DataRoom:
+            Enter this code to securely access the Tiquo Data Room:
           </p>
           <div style="background: #FEF2F2; border: 2px solid #DC2626; padding: 25px; border-radius: 10px; text-align: center; margin: 30px 0;">
             <span style="font-size: 36px; font-weight: bold; letter-spacing: 12px; color: #DC2626; font-family: monospace;">${verificationCode}</span>
@@ -276,7 +276,7 @@ export async function sendVerificationEmail(email: string, request: Request): Pr
           </div>
         </div>
       `,
-                  text: `Tiquo DataRoom Access Code: ${verificationCode}\n\nSECURITY NOTICE:\n- This code expires in 15 minutes\n- Never share this code with anyone\n- Request from IP: ${clientIP}\n- If you didn't request this, report to security@tiquo.co\n\nEnter this code at: https://dataroom.tiquo.co/auth`,
+                  text: `Tiquo Data Room Access Code: ${verificationCode}\n\nSECURITY NOTICE:\n- This code expires in 15 minutes\n- Never share this code with anyone\n- Request from IP: ${clientIP}\n- If you didn't request this, report to security@tiquo.co\n\nEnter this code at: https://dataroom.tiquo.co/auth`,
     });
 
     if (error) {
@@ -531,7 +531,7 @@ export async function signOut(sessionToken?: string): Promise<void> {
 export async function sendAccessGrantedNotification(userEmail: string): Promise<void> {
   try {
     await resend.emails.send({
-      from: 'Tiquo DataRoom <noreply@tiquo.app>',
+      from: 'Tiquo Data Room <noreply@tiquo.app>',
       to: [userEmail],
       subject: 'DataRoom Access Granted!',
       html: `
@@ -542,7 +542,7 @@ export async function sendAccessGrantedNotification(userEmail: string): Promise<
           <h2 style="color: #059669; margin-bottom: 20px; text-align: center;">Access Granted!</h2>
           
           <p style="font-size: 16px; margin-bottom: 20px; text-align: center; color: #1F2937;">
-            Great news! Your access to the Tiquo DataRoom has been approved.
+            Great news! Your access to the Tiquo Data Room has been approved.
           </p>
           
           <div style="background: #ECFDF5; border: 1px solid #BBF7D0; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -569,7 +569,7 @@ export async function sendAccessGrantedNotification(userEmail: string): Promise<
           </div>
         </div>
       `,
-      text: `Access Granted!\n\nGreat news! Your access to the Tiquo DataRoom has been approved.\n\nYou now have access to:\n- Investor presentation deck\n- Company documents & cap table\n- Product & technology roadmap\n- Brand guidelines & strategy materials\n\nAccess DataRoom: https://dataroom.tiquo.co/dashboard\n\nWelcome to Tiquo! Questions? Contact hello@tiquo.co`,
+      text: `Access Granted!\n\nGreat news! Your access to the Tiquo Data Room has been approved.\n\nYou now have access to:\n- Investor presentation deck\n- Company documents & cap table\n- Product & technology roadmap\n- Brand guidelines & strategy materials\n\nAccess DataRoom: https://dataroom.tiquo.co/dashboard\n\nWelcome to Tiquo! Questions? Contact hello@tiquo.co`,
     });
     
     console.log(`[AUTH] Access granted notification sent to: ${userEmail}`);

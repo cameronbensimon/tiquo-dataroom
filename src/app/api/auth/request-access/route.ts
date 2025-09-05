@@ -17,15 +17,15 @@ async function sendAdminAccessNotification(requestingEmail: string, clientIP: st
   
   try {
     await resend.emails.send({
-      from: 'Tiquo DataRoom <noreply@tiquo.app>',
+      from: 'Tiquo Data Room <noreply@tiquo.app>',
       to: adminEmails,
-      subject: `DataRoom Access Request from ${requestingEmail}`,
+      subject: `Data Room Access Request from ${requestingEmail}`,
       html: `
         <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
           <div style="text-align: center; margin-bottom: 30px;">
             <img src="https://dataroom.tiquo.co/tiquo%20logo.svg" alt="Tiquo Logo" style="width: 80px; height: 80px;" />
           </div>
-          <h2 style="color: #DC2626; margin-bottom: 20px; text-align: center;">New DataRoom Access Request</h2>
+          <h2 style="color: #DC2626; margin-bottom: 20px; text-align: center;">New Data Room Access Request</h2>
           
           <div style="background: #FEF2F2; border: 1px solid #FECACA; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <p style="font-size: 16px; margin-bottom: 10px; color: #1F2937;">
@@ -69,9 +69,9 @@ async function sendAdminAccessNotification(requestingEmail: string, clientIP: st
 async function sendAccessRequestConfirmation(requestingEmail: string): Promise<void> {
   try {
     await resend.emails.send({
-      from: 'Tiquo DataRoom <noreply@tiquo.app>',
+      from: 'Tiquo Data Room <noreply@tiquo.app>',
       to: [requestingEmail],
-      subject: 'DataRoom Access Request Received',
+      subject: 'Data Room Access Request Received',
       html: `
         <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
           <div style="text-align: center; margin-bottom: 30px;">
@@ -80,7 +80,7 @@ async function sendAccessRequestConfirmation(requestingEmail: string): Promise<v
           <h2 style="color: #2563EB; margin-bottom: 20px; text-align: center;">Access Request Received</h2>
           
           <p style="font-size: 16px; margin-bottom: 20px; text-align: center; color: #1F2937;">
-            Thank you for your interest in accessing the Tiquo DataRoom.
+            Thank you for your interest in accessing the Tiquo Data Room.
           </p>
           
           <div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -108,7 +108,7 @@ async function sendAccessRequestConfirmation(requestingEmail: string): Promise<v
           </div>
         </div>
       `,
-      text: `Access Request Received\n\nThank you for your interest in accessing the Tiquo DataRoom.\n\nWhat happens next?\n- Your access request has been forwarded to our team\n- We will review your request within 1-2 business days\n- You'll receive an email notification once access is granted\n- If approved, you'll be able to access the DataRoom immediately\n\nRequest Details:\nEmail: ${requestingEmail}\nDate: ${new Date().toLocaleString('en-US', { timeZone: 'UTC' })} UTC\n\nIf you have questions, contact us at hello@tiquo.co`,
+      text: `Access Request Received\n\nThank you for your interest in accessing the Tiquo Data Room.\n\nWhat happens next?\n- Your access request has been forwarded to our team\n- We will review your request within 1-2 business days\n- You'll receive an email notification once access is granted\n- If approved, you'll be able to access the DataRoom immediately\n\nRequest Details:\nEmail: ${requestingEmail}\nDate: ${new Date().toLocaleString('en-US', { timeZone: 'UTC' })} UTC\n\nIf you have questions, contact us at hello@tiquo.co`,
     });
     
     console.log(`[API] Access request confirmation sent to: ${requestingEmail}`);

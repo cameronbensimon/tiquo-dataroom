@@ -160,7 +160,7 @@ export default function AuthPage() {
           </div>
           <p className="mt-2 text-center text-sm text-gray-600">
             {step === "email" 
-              ? "Secure access to Tiquo's Data Room"
+              ? "Enter your email to access Tiquo's Data Room"
               : "Enter the 6-digit security code from your email"
             }
           </p>
