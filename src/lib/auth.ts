@@ -130,7 +130,7 @@ async function sendAdminAccessNotification(requestingEmail: string, clientIP: st
       html: `
         <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
           <div style="text-align: center; margin-bottom: 30px;">
-            <img src="https://dataroom.tiquo.co/tiquo-logo-black.png" alt="Tiquo Logo" style="width: 80px; height: 80px;" />
+            <img src="https://dataroom.tiquo.co/tiquo-logo-black.png" alt="Tiquo Logo" style="height: 60px; width: auto; max-width: 200px;" />
           </div>
           <h2 style="color: #DC2626; margin-bottom: 20px; text-align: center;">New DataRoom Access Request</h2>
           
@@ -173,7 +173,7 @@ async function sendAccessRequestConfirmation(requestingEmail: string): Promise<v
       html: `
         <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
           <div style="text-align: center; margin-bottom: 30px;">
-            <img src="https://dataroom.tiquo.co/tiquo-logo-black.png" alt="Tiquo Logo" style="width: 80px; height: 80px;" />
+            <img src="https://dataroom.tiquo.co/tiquo-logo-black.png" alt="Tiquo Logo" style="height: 60px; width: auto; max-width: 200px;" />
           </div>
           <h2 style="color: #2563EB; margin-bottom: 20px; text-align: center;">Access Request Received</h2>
           
@@ -264,7 +264,7 @@ export async function sendVerificationEmail(email: string, request: Request): Pr
       html: `
         <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
           <div style="text-align: center; margin-bottom: 30px;">
-            <img src="https://dataroom.tiquo.co/tiquo-logo-black.png" alt="Tiquo Logo" style="width: 80px; height: 80px;" />
+            <img src="https://dataroom.tiquo.co/tiquo-logo-black.png" alt="Tiquo Logo" style="height: 60px; width: auto; max-width: 200px;" />
           </div>
                           <h2 style="color: #DC2626; margin-bottom: 20px; text-align: center;">Secure Access Code</h2>
           <p style="font-size: 16px; margin-bottom: 20px; text-align: center; color: #1F2937;">
@@ -529,7 +529,7 @@ export async function sendAccessGrantedNotification(userEmail: string): Promise<
       html: `
         <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
           <div style="text-align: center; margin-bottom: 30px;">
-            <img src="https://dataroom.tiquo.co/tiquo-logo-black.png" alt="Tiquo Logo" style="width: 80px; height: 80px;" />
+            <img src="https://dataroom.tiquo.co/tiquo-logo-black.png" alt="Tiquo Logo" style="height: 60px; width: auto; max-width: 200px;" />
           </div>
           <h2 style="color: #059669; margin-bottom: 20px; text-align: center;">Access Granted!</h2>
           
