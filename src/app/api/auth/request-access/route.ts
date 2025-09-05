@@ -89,7 +89,7 @@ async function sendAccessRequestConfirmation(requestingEmail: string): Promise<v
               <li style="margin-bottom: 8px;">Your access request has been forwarded to our team</li>
               <li style="margin-bottom: 8px;">We will review your request within 1-2 business days</li>
               <li style="margin-bottom: 8px;">You'll receive an email notification once access is granted</li>
-              <li>If approved, you'll be able to access the DataRoom immediately</li>
+              <li>If approved, you'll be able to access the Data Room immediately</li>
             </ul>
           </div>
           
@@ -108,7 +108,7 @@ async function sendAccessRequestConfirmation(requestingEmail: string): Promise<v
           </div>
         </div>
       `,
-      text: `Access Request Received\n\nThank you for your interest in accessing the Tiquo Data Room.\n\nWhat happens next?\n- Your access request has been forwarded to our team\n- We will review your request within 1-2 business days\n- You'll receive an email notification once access is granted\n- If approved, you'll be able to access the DataRoom immediately\n\nRequest Details:\nEmail: ${requestingEmail}\nDate: ${new Date().toLocaleString('en-US', { timeZone: 'UTC' })} UTC\n\nIf you have questions, contact us at hello@tiquo.co`,
+      text: `Access Request Received\n\nThank you for your interest in accessing the Tiquo Data Room.\n\nWhat happens next?\n- Your access request has been forwarded to our team\n- We will review your request within 1-2 business days\n- You'll receive an email notification once access is granted\n- If approved, you'll be able to access the Data Room immediately\n\nRequest Details:\nEmail: ${requestingEmail}\nDate: ${new Date().toLocaleString('en-US', { timeZone: 'UTC' })} UTC\n\nIf you have questions, contact us at hello@tiquo.co`,
     });
     
     console.log(`[API] Access request confirmation sent to: ${requestingEmail}`);
