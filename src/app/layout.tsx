@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import ConvexClientProvider from "@/lib/convex-client-provider";
+import { AuthProvider } from "@/lib/auth-context";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -61,11 +61,6 @@ export const metadata: Metadata = {
       { url: "/favicon.ico", sizes: "180x180" },
     ],
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
   category: 'business',
   manifest: "/manifest.json",
   other: {
@@ -117,9 +112,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} antialiased`}
       >
-        <ConvexClientProvider>
+        <AuthProvider>
           {children}
-        </ConvexClientProvider>
+        </AuthProvider>
       </body>
     </html>
   );

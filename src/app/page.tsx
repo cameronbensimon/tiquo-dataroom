@@ -1,23 +1,30 @@
 "use client";
 
-import { useAuthToken } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Image from "next/image";
+import { useAuth } from "@/lib/auth-context";
 
 export default function Home() {
-  const token = useAuthToken();
+  const { user, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (token) {
-      // User is authenticated, redirect to dashboard
-      router.push("/dashboard");
-    } else {
-      // User is not authenticated, redirect to auth page
+    if (isLoading) return;
+
+    if (!isAuthenticated) {
       router.push("/auth");
+      return;
     }
-  }, [token, router]);
+
+    if (user) {
+      if (user.accessAllowed === true) {
+        router.push("/dashboard");
+      } else {
+        router.push("/request-access");
+      }
+    }
+  }, [user, isAuthenticated, isLoading, router]);
 
   // Show a loading state while determining auth status and redirecting
   return (

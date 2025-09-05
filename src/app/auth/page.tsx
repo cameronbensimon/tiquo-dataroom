@@ -1,56 +1,62 @@
 "use client";
 
-import { useAuthActions } from "@convex-dev/auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Authenticated, Unauthenticated, AuthLoading } from "convex/react";
-import { useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/lib/auth-context";
 
-// Component that handles navigation after authentication
+// Simple redirect component
 function AuthenticatedRedirect() {
-  const user = useQuery(api.users.getCurrentUser);
+  const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
 
-  console.log("🔄 AuthenticatedRedirect - user:", user);
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      console.log("[AUTH] User authenticated, redirecting to home");
+      router.push("/");
+    }
+  }, [isAuthenticated, isLoading, router]);
 
-  if (user === undefined) {
-    console.log("⏳ User data loading...");
-    return null; // Still loading user data
-  }
-
-  if (user === null) {
-    console.log("❌ No user found, should not happen in Authenticated component");
-    return null;
-  }
-
-  console.log("✅ User data loaded:", {
-    email: user.email,
-    AccessAllowed: user.AccessAllowed,
-    _id: user._id
-  });
-
-  // Navigate based on access level
-  if (user.AccessAllowed === true) {
-    console.log("🚀 REDIRECTING TO DASHBOARD - AccessAllowed is true");
-    router.push("/dashboard");
-  } else {
-    console.log("🚀 REDIRECTING TO REQUEST-ACCESS - AccessAllowed is", user.AccessAllowed);
-    router.push("/request-access");
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#f2f2f2'}}>
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-gray-300 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Authenticating...</p>
+        </div>
+      </div>
+    );
   }
 
   return null;
 }
 
 export default function AuthPage() {
-  const { signIn } = useAuthActions();
+  const { isAuthenticated, isLoading: authLoading, refreshSession } = useAuth();
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState<"email" | "code">("email");
   const [message, setMessage] = useState("");
+  const router = useRouter();
+
+
+  // If user is already authenticated, show redirect component
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#f2f2f2'}}>
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-gray-300 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isAuthenticated) {
+    return <AuthenticatedRedirect />;
+  }
 
   const handleSendCode = async () => {
     if (!email) {
@@ -62,16 +68,27 @@ export default function AuthPage() {
     setMessage("");
     
     try {
-      const formData = new FormData();
-      formData.append("email", email);
-      
-      await signIn("resend-otp", formData);
-      setMessage("Check your email for the login code!");
-      setStep("code");
+      const response = await fetch('/api/auth/send-code', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email.toLowerCase(),
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setMessage(`Error: ${result.error}`);
+      } else {
+        setMessage("Security code sent! Check your email and enter the 6-digit code below.");
+        setStep("code");
+      }
     } catch (error) {
       console.error("Send code error:", error);
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      setMessage(`Error sending code: ${errorMessage}`);
+      setMessage("Error sending code. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -79,7 +96,12 @@ export default function AuthPage() {
 
   const handleVerifyCode = async () => {
     if (!code) {
-      setMessage("Please enter the verification code");
+      setMessage("Please enter the 6-digit security code");
+      return;
+    }
+
+    if (code.length !== 6) {
+      setMessage("Security code must be exactly 6 digits");
       return;
     }
 
@@ -87,19 +109,31 @@ export default function AuthPage() {
     setMessage("");
     
     try {
-      const formData = new FormData();
-      formData.append("email", email);
-      formData.append("code", code);
-      
-      await signIn("resend-otp", formData);
-      console.log("🎉 SIGN IN SUCCESSFUL!");
-      setMessage("Successfully signed in! Redirecting...");
-      setIsLoading(false);
-      // Navigation will be handled by Authenticated component
+      const response = await fetch('/api/auth/verify-code', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          email: email.toLowerCase(),
+          code: code,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setMessage(`Error: ${result.error}`);
+        setIsLoading(false);
+      } else {
+        // Refresh session and redirect
+        await refreshSession();
+        router.push("/");
+      }
     } catch (error) {
       console.error("Verify code error:", error);
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      setMessage(`Invalid code: ${errorMessage}`);
+      setMessage("Error verifying code. Please try again.");
       setIsLoading(false);
     }
   };
@@ -110,59 +144,33 @@ export default function AuthPage() {
     setMessage("");
   };
 
-  // Use Convex Auth's built-in components for proper auth state management
   return (
-    <>
-      <AuthLoading>
-        {/* Show loading while authentication state is being determined */}
-        <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#f2f2f2'}}>
-          <div className="text-center">
-            <div className="w-8 h-8 border-4 border-gray-300 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading...</p>
+    <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#f2f2f2'}}>
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <div className="flex justify-center">
+            <Image
+              src="/tiquo logo.svg"
+              alt="tiquo Logo"
+              width={96}
+              height={96}
+              priority
+              className="w-20 h-20 md:w-24 md:h-24"
+            />
           </div>
+          <p className="mt-2 text-center text-sm text-gray-600">
+            {step === "email" 
+              ? "Secure access to Tiquo's Data Room"
+              : "Enter the 6-digit security code from your email"
+            }
+          </p>
         </div>
-      </AuthLoading>
-
-      <Authenticated>
-        {/* User is authenticated - handle navigation based on access level */}
-        <AuthenticatedRedirect />
-      </Authenticated>
-
-      <Unauthenticated>
-        {/* User is not authenticated - show login form */}
-        {renderAuthForm()}
-      </Unauthenticated>
-    </>
-  );
-
-  function renderAuthForm() {
-
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#f2f2f2'}}>
-        <div className="max-w-md w-full space-y-8">
-          <div>
-            <div className="flex justify-center">
-              <Image
-                src="/tiquo logo.svg"
-                alt="tiquo Logo"
-                width={96}
-                height={96}
-                className="w-20 h-20 md:w-24 md:h-24"
-              />
-            </div>
-            <p className="mt-2 text-center text-sm text-gray-600">
-              {step === "email" 
-                ? "Enter your email to access Tiquo's Data Room"
-                : "Enter the 6-digit code sent to your email"
-              }
-            </p>
-          </div>
 
         {message && (
           <div className={`rounded-md p-4 ${
             message.includes("Error") || message.includes("Invalid")
               ? "bg-red-50 text-red-700 border border-red-200"
-              : "bg-green-50 text-green-700 border border-green-200"
+              : "bg-blue-50 text-blue-700 border border-blue-200"
           }`}>
             <p className="text-sm text-center">{message}</p>
           </div>
@@ -198,10 +206,10 @@ export default function AuthPage() {
                       width={20}
                       height={20}
                     />
-                    Sending Code...
+                                          Sending Code...
                   </div>
                 ) : (
-                  "Send Login Code"
+                  "Send Security Code"
                 )}
               </Button>
             </>
@@ -214,13 +222,14 @@ export default function AuthPage() {
                   type="text"
                   required
                   maxLength={6}
-                  className="relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm text-center tracking-widest text-2xl"
+                  className="relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm text-center tracking-widest text-2xl font-mono"
                   placeholder="000000"
                   value={code}
                   onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                  autoComplete="one-time-code"
                 />
                 <p className="text-xs text-gray-500 text-center mt-2">
-                  Code sent to {email}
+                  Security code sent to <strong>{email}</strong>
                 </p>
               </div>
               <div className="flex space-x-3">
@@ -251,7 +260,7 @@ export default function AuthPage() {
                       Verifying...
                     </div>
                   ) : (
-                    "Sign In"
+                    "Verify Code"
                   )}
                 </Button>
               </div>
@@ -274,15 +283,14 @@ export default function AuthPage() {
                       Resending...
                     </div>
                   ) : (
-                    "Resend code"
+                    "Resend Security Code"
                   )}
                 </Button>
               </div>
             </>
           )}
-          </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }

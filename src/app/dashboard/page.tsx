@@ -1,11 +1,9 @@
 "use client";
 
-import { useAuthToken } from "@convex-dev/auth/react";
-import { useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/auth-context";
 import { motion, AnimatePresence } from "framer-motion";
 import DeckCarouselModal from "@/components/DeckCarouselModal";
 import PricingModelModal from "@/components/PricingModelModal";
@@ -15,9 +13,8 @@ import FeatureUsecasesModal from "@/components/FeatureUsecasesModal";
 import AccessDenied from "@/components/AccessDenied";
 
 export default function DashboardPage() {
-  const token = useAuthToken();
+  const { user, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
-  const user = useQuery(api.users.getCurrentUser);
   const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
@@ -138,18 +135,11 @@ export default function DashboardPage() {
 
   // Redirect to auth page if not logged in
   useEffect(() => {
-    if (token === undefined) return; // Still loading
-    if (!token) {
+    if (isLoading) return; // Still loading
+    if (!isAuthenticated) {
       router.push("/auth");
     }
-  }, [token, router]);
-
-  // Redirect to auth page if user is null (not authenticated)
-  useEffect(() => {
-    if (user === null) {
-      router.push("/auth");
-    }
-  }, [user, router]);
+  }, [isAuthenticated, isLoading, router]);
 
   // Detect mobile and tablet screen sizes
   useEffect(() => {
@@ -283,23 +273,25 @@ export default function DashboardPage() {
     return wipFiles.includes(fileName);
   };
 
-  // Show loading or nothing while redirecting
-  if (!token) {
-    return null;
-  }
-
-  // Show loading while user is null (being redirected to auth)
-  if (user === null) {
-    return null;
-  }
-
   // Show loading while checking authentication
-  if (user === undefined) {
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#f2f2f2'}}>
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-gray-300 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Redirect if unauthenticated (handled by useEffect above)
+  if (!isAuthenticated || !user) {
     return null;
   }
 
   // Check if user has access - AccessAllowed must be explicitly true
-  if (user.AccessAllowed !== true) {
+  if (user.accessAllowed !== true) {
     return <AccessDenied />;
   }
 

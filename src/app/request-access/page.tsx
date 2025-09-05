@@ -1,39 +1,43 @@
 "use client";
 
-import { useAuthToken } from "@convex-dev/auth/react";
-import { useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import AccessDenied from "@/components/AccessDenied";
+import { useAuth } from "@/lib/auth-context";
 
 export default function RequestAccessPage() {
-  const token = useAuthToken();
+  const { user, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
-  const user = useQuery(api.users.getCurrentUser);
 
   // Redirect to auth page if not logged in
   useEffect(() => {
-    if (token === undefined) return; // Still loading
-    if (!token) {
+    if (isLoading) return; // Still loading
+    if (!isAuthenticated) {
       router.push("/auth");
     }
-  }, [token, router]);
+  }, [isAuthenticated, isLoading, router]);
 
   // Redirect to dashboard if user has access
   useEffect(() => {
-    if (user?.AccessAllowed === true) {
+    if (user && user.accessAllowed === true) {
       router.push("/dashboard");
     }
   }, [user, router]);
 
   // Show loading while checking authentication
-  if (!token || user === undefined) {
-    return null;
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#f2f2f2'}}>
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-gray-300 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
   }
 
   // Redirect to auth if not authenticated
-  if (user === null) {
+  if (!isAuthenticated || !user) {
     return null;
   }
 
