@@ -10,6 +10,7 @@ import PricingModelModal from "@/components/PricingModelModal";
 import SingleImageModal from "@/components/SingleImageModal";
 import CapTableModal from "@/components/CapTableModal";
 import FeatureUsecasesModal from "@/components/FeatureUsecasesModal";
+import FeatureRoadmapModal from "@/components/FeatureRoadmapModal";
 import AccessDenied from "@/components/AccessDenied";
 
 export default function DashboardPage() {
@@ -24,6 +25,7 @@ export default function DashboardPage() {
   const [isIncorporationModalOpen, setIsIncorporationModalOpen] = useState(false);
   const [isCapTableModalOpen, setIsCapTableModalOpen] = useState(false);
   const [isFeatureUsecasesModalOpen, setIsFeatureUsecasesModalOpen] = useState(false);
+  const [isFeatureRoadmapModalOpen, setIsFeatureRoadmapModalOpen] = useState(false);
 
   // TIQUO deck slides configuration
   const tiquoDeckImages = Array.from({ length: 17 }, (_, index) => {
@@ -212,6 +214,11 @@ export default function DashboardPage() {
   // Handle feature usecases file click
   const handleFeatureUsecasesClick = () => {
     setIsFeatureUsecasesModalOpen(true);
+  };
+
+  // Handle feature roadmap file click
+  const handleFeatureRoadmapClick = () => {
+    setIsFeatureRoadmapModalOpen(true);
   };
 
   // Simple 4 buttons - deck + 3 folders
@@ -493,6 +500,8 @@ export default function DashboardPage() {
                                   handleCapTableClick();
                                 } else if (card.name === "Feature Usecases") {
                                   handleFeatureUsecasesClick();
+                                } else if (card.name === "Feature Roadmap") {
+                                  handleFeatureRoadmapClick();
                                 }
                               }}
                               animate={
@@ -577,7 +586,7 @@ export default function DashboardPage() {
                                   />
                                   {/* Work in Progress Badge */}
                                   {isWorkInProgress(card.name) && (
-                                    <div className="absolute -bottom-2 -left-2 bg-amber-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow-lg border-2 border-white z-10 transform -rotate-12">
+                                    <div className="absolute bottom-1 left-1 bg-amber-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow-lg border-2 border-white z-10 transform -rotate-12">
                                       WIP
                                     </div>
                                   )}
@@ -737,6 +746,13 @@ Simpler for staff, seamless for customers, smarter for the business.
         isOpen={isFeatureUsecasesModalOpen}
         onClose={() => setIsFeatureUsecasesModalOpen(false)}
         title="Feature Usecases by Industry"
+      />
+
+      {/* Feature Roadmap Modal */}
+      <FeatureRoadmapModal
+        isOpen={isFeatureRoadmapModalOpen}
+        onClose={() => setIsFeatureRoadmapModalOpen(false)}
+        title="Product Development Roadmap"
       />
       </div>
     </>
