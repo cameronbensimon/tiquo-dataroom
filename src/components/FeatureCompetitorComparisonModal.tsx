@@ -338,7 +338,7 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
             </div>
 
             {/* Single table layout */}
-            <div className="overflow-auto h-[calc(100%-100px)] p-6 border border-gray-200 rounded-lg">
+            <div className="overflow-auto h-[calc(100%-100px)] px-6 pb-6 border border-gray-200 rounded-lg">
                 <table className="w-full border-collapse text-xs">
                   <thead className="sticky top-0 bg-white z-20 shadow-sm border-b-2 border-gray-300">
                     {/* Category header row */}
