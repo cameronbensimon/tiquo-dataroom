@@ -88,6 +88,10 @@ export default function AccessDenied({ onRequestAccess }: AccessDeniedProps) {
                 Access Restricted
               </h1>
               
+              <p className="text-gray-600 leading-relaxed">
+                If you believe you should have access, please request access using the button and we&apos;ll review your request.
+              </p>
+              
 
               {message && (
                 <div className={`rounded-md p-4 ${
@@ -108,7 +112,12 @@ export default function AccessDenied({ onRequestAccess }: AccessDeniedProps) {
                 >
                   {requestState === 'requesting' ? (
                     <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <Image
+                        src="/Black.gif"
+                        alt="Loading..."
+                        width={16}
+                        height={16}
+                      />
                       Requesting Access...
                     </div>
                   ) : (
@@ -120,14 +129,6 @@ export default function AccessDenied({ onRequestAccess }: AccessDeniedProps) {
           )}
         </div>
         
-        {/* Additional Info */}
-        {requestState !== 'success' && (
-          <div className="pt-8">
-            <p className="text-sm text-gray-400">
-              If you believe you should have access, please request access using the button and we&apos;ll review your request.
-            </p>
-          </div>
-        )}
       </div>
     </div>
   );

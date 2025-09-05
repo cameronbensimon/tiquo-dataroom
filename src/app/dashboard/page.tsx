@@ -278,7 +278,13 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#f2f2f2'}}>
         <div className="text-center">
-          <div className="w-8 h-8 border-4 border-gray-300 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+          <Image
+            src="/Black.gif"
+            alt="Loading..."
+            width={32}
+            height={32}
+            className="mx-auto mb-4"
+          />
           <p className="text-gray-600">Loading...</p>
         </div>
       </div>
@@ -356,7 +362,7 @@ export default function DashboardPage() {
         <div className="relative">
           <button
             onClick={() => setSelectedFolderId(null)}
-            className="absolute top-0 right-0 -mt-2 -mr-2 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors"
+            className="absolute top-0 right-0 -mt-2 -mr-2 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors cursor-pointer"
           >
             <svg
               className="w-4 h-4 text-gray-600"
@@ -571,7 +577,7 @@ export default function DashboardPage() {
                                   />
                                   {/* Work in Progress Badge */}
                                   {isWorkInProgress(card.name) && (
-                                    <div className="absolute -top-2 -right-2 bg-amber-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow-lg border-2 border-white z-10 transform rotate-12">
+                                    <div className="absolute -bottom-2 -left-2 bg-amber-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow-lg border-2 border-white z-10 transform -rotate-12">
                                       WIP
                                     </div>
                                   )}

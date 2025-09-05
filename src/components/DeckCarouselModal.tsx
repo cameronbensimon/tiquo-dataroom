@@ -107,7 +107,7 @@ export default function DeckCarouselModal({ isOpen, onClose, images }: DeckCarou
           {/* Left navigation arrow - outside modal */}
           <button
             onClick={prevSlide}
-            className="absolute left-4 z-30 bg-black/40 hover:bg-black/60 text-white rounded-full p-4 transition-colors backdrop-blur-sm group"
+            className="absolute left-4 z-30 bg-black/40 hover:bg-black/60 text-white rounded-full p-4 transition-colors backdrop-blur-sm group cursor-pointer"
             aria-label="Previous image"
           >
             <svg className="w-8 h-8 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -118,7 +118,7 @@ export default function DeckCarouselModal({ isOpen, onClose, images }: DeckCarou
           {/* Right navigation arrow - outside modal */}
           <button
             onClick={nextSlide}
-            className="absolute right-4 z-30 bg-black/40 hover:bg-black/60 text-white rounded-full p-4 transition-colors backdrop-blur-sm group"
+            className="absolute right-4 z-30 bg-black/40 hover:bg-black/60 text-white rounded-full p-4 transition-colors backdrop-blur-sm group cursor-pointer"
             aria-label="Next image"
           >
             <svg className="w-8 h-8 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -129,7 +129,7 @@ export default function DeckCarouselModal({ isOpen, onClose, images }: DeckCarou
           {/* Close button - outside modal on the right */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-30 bg-black/40 hover:bg-black/60 text-white rounded-full p-3 transition-colors backdrop-blur-sm"
+            className="absolute top-4 right-4 z-30 bg-black/40 hover:bg-black/60 text-white rounded-full p-3 transition-colors backdrop-blur-sm cursor-pointer"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -200,7 +200,7 @@ export default function DeckCarouselModal({ isOpen, onClose, images }: DeckCarou
                 <button
                   key={index}
                   onClick={() => goToSlide(index)}
-                  className={`w-6 h-2 rounded-sm transition-all duration-300 ${
+                  className={`w-6 h-2 rounded-sm transition-all duration-300 cursor-pointer ${
                     index === currentSlide 
                       ? "bg-white scale-110" 
                       : "bg-white/40 hover:bg-white/60"
