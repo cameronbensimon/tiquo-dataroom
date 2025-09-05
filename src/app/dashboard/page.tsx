@@ -468,9 +468,10 @@ export default function DashboardPage() {
                 ...(isSelected &&
                   !isMobile && !isTablet && {
                     position: "fixed",
-                    left: "37%",
-                    top: "13.75rem",
+                    left: "calc(50% - 8.5rem)",
+                    top: "13.75rem", 
                     transform: "translateX(-50%)",
+                    zIndex: 50,
                   }),
               }}
             transition={{
