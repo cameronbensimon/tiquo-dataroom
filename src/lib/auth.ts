@@ -129,12 +129,6 @@ async function sendAdminAccessNotification(requestingEmail: string, clientIP: st
             </p>
           </div>
           
-          <div style="text-align: center; margin: 30px 0;">
-            <a href="https://dataroom.tiquo.co/admin" 
-               style="display: inline-block; background: #059669; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; margin-right: 10px;">
-              Review & Manage Access
-            </a>
-          </div>
           
           <div style="background: #F3F4F6; padding: 15px; border-radius: 6px; margin: 20px 0;">
             <p style="font-size: 14px; margin: 0; color: #6B7280; text-align: center;">
