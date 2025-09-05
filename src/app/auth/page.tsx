@@ -157,7 +157,7 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#f2f2f2'}}>
+    <div className="min-h-screen flex items-center justify-center px-4" style={{backgroundColor: '#f2f2f2'}}>
       <div className="max-w-md w-full space-y-8">
         <div>
           <div className="flex justify-center">
