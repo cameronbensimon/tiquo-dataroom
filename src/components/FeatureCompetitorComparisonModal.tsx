@@ -137,7 +137,7 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
     // Empty row
     { category: "", subcategory: "", description: "", tiquo: "", mews: "", fols: "", opera: "", hotix: "", lightspeed: "", toast: "", square: "", clover: "", salesforce: "", hubspot: "", zoho: "", pipedrive: "", memberstack: "", passkit: "", mindbody: "", abcGlofox: "", exercicecom: "", gymflow: "", ideas: "", atomize: "", mailchimp: "", klaviyo: "", brevo: "", eventtemple: "", tripleseat: "", ticketTailor: "", weezevent: "", ticketmaster: "", evenbrite: "", officernd: "", nexudus: "", optix: "" },
     // General category (first few rows)
-    { category: "General", subcategory: "Live data engine", description: "Real-time updates across availability, POS, profiles, and dashboards.", tiquo: "Fully featured", mews: "Fully featured", fols: "N/A", opera: "Limited implementation", hotix: "N/A", lightspeed: "Fully featured", toast: "Fully featured", square: "Fully featured", clover: "Fully featured", salesforce: "Fully featured", hubspot: "Fully featured", zoho: "Fully featured", pipedrive: "Fully featured", memberstack: "Limited implementation", passkit: "Limited implementation", mindbody: "Fully featured", abcGlofox: "Fully featured", exercicecom: "Limited implementation", gymflow: "Limited implementation", ideas: "Limited implementation", atomize: "Fully featured", mailchimp: "Fully featured", klaviyo: "Fully featured", brevo: "Fully featured", eventtemple: "Fully featured", tripleseat: "Fully featured", ticketTailor: "Fully featured", weezevent: "Fully featured", ticketmaster: "Limited implementation", evenbrite: "Fully featured", officernd: "Fully featured", nexudus: "Fully featured", optix: "Fully featured" },
+    { category: "General", subcategory: "Live data engine", description: "Real-time updates across availability, POS, profiles, and dashboards.", tiquo: "Fully featured", mews: "Limited implementation", fols: "N/A", opera: "Limited implementation", hotix: "N/A", lightspeed: "Limited implementation", toast: "Limited implementation", square: "Limited implementation", clover: "Limited implementation", salesforce: "Limited implementation", hubspot: "Limited implementation", zoho: "Limited implementation", pipedrive: "Limited implementation", memberstack: "Limited implementation", passkit: "Limited implementation", mindbody: "Limited implementation", abcGlofox: "Limited implementation", exercicecom: "Limited implementation", gymflow: "Limited implementation", ideas: "Limited implementation", atomize: "Limited implementation", mailchimp: "Limited implementation", klaviyo: "Limited implementation", brevo: "Limited implementation", eventtemple: "Limited implementation", tripleseat: "Limited implementation", ticketTailor: "Limited implementation", weezevent: "Limited implementation", ticketmaster: "Limited implementation", evenbrite: "Limited implementation", officernd: "Limited implementation", nexudus: "Limited implementation", optix: "Limited implementation" },
     { category: "", subcategory: "Multi-currency & global payments", description: "Process payments in multiple currencies with correct local taxes.", tiquo: "Fully featured", mews: "Fully featured", fols: "N/A", opera: "Fully featured", hotix: "N/A", lightspeed: "Fully featured", toast: "Fully featured", square: "Fully featured", clover: "Fully featured", salesforce: "Fully featured", hubspot: "Fully featured", zoho: "Fully featured", pipedrive: "Fully featured", memberstack: "Limited implementation", passkit: "Limited implementation", mindbody: "Fully featured", abcGlofox: "Fully featured", exercicecom: "Limited implementation", gymflow: "Limited implementation", ideas: "Limited implementation", atomize: "Limited implementation", mailchimp: "Fully featured", klaviyo: "Fully featured", brevo: "Fully featured", eventtemple: "Fully featured", tripleseat: "Fully featured", ticketTailor: "Fully featured", weezevent: "Fully featured", ticketmaster: "Fully featured", evenbrite: "Fully featured", officernd: "Fully featured", nexudus: "Fully featured", optix: "Fully featured" },
     { category: "", subcategory: "Themeable staff back end", description: "White-label branding and configurable admin UX/terminology.", tiquo: "Fully featured", mews: "Limited implementation", fols: "N/A", opera: "Limited implementation", hotix: "N/A", lightspeed: "Limited implementation", toast: "Limited implementation", square: "Limited implementation", clover: "Limited implementation", salesforce: "Fully featured", hubspot: "Limited implementation", zoho: "Limited implementation", pipedrive: "Limited implementation", memberstack: "Fully featured", passkit: "Limited implementation", mindbody: "Limited implementation", abcGlofox: "Limited implementation", exercicecom: "Fully featured", gymflow: "Limited implementation", ideas: "Limited implementation", atomize: "Limited implementation", mailchimp: "Limited implementation", klaviyo: "Limited implementation", brevo: "Limited implementation", eventtemple: "Limited implementation", tripleseat: "Limited implementation", ticketTailor: "Limited implementation", weezevent: "Limited implementation", ticketmaster: "N/A", evenbrite: "Limited implementation", officernd: "Fully featured", nexudus: "Fully featured", optix: "Fully featured" },
     { category: "", subcategory: "Themeable front end", description: "White-label branding and configurable customer side UX/terminology.", tiquo: "Fully featured", mews: "Limited implementation", fols: "N/A", opera: "Limited implementation", hotix: "N/A", lightspeed: "Limited implementation", toast: "Limited implementation", square: "Fully featured", clover: "Limited implementation", salesforce: "Fully featured", hubspot: "Fully featured", zoho: "Fully featured", pipedrive: "Limited implementation", memberstack: "Fully featured", passkit: "Fully featured", mindbody: "Fully featured", abcGlofox: "Limited implementation", exercicecom: "Fully featured", gymflow: "Limited implementation", ideas: "Limited implementation", atomize: "N/A", mailchimp: "Fully featured", klaviyo: "Fully featured", brevo: "Fully featured", eventtemple: "Limited implementation", tripleseat: "Limited implementation", ticketTailor: "Fully featured", weezevent: "Fully featured", ticketmaster: "Limited implementation", evenbrite: "Fully featured", officernd: "Fully featured", nexudus: "Fully featured", optix: "Fully featured" },
@@ -338,19 +338,18 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
             </div>
 
             {/* Single table layout */}
-            <div className="overflow-auto h-[calc(100%-100px)] p-6">
-              <div className="overflow-auto border border-gray-200 rounded-lg">
+            <div className="overflow-auto h-[calc(100%-100px)] p-6 border border-gray-200 rounded-lg">
                 <table className="w-full border-collapse text-xs">
-                  <thead className="sticky top-0 bg-gray-100 z-10">
+                  <thead className="sticky top-0 bg-white z-20 shadow-sm border-b-2 border-gray-300">
                     {/* Category header row */}
                     <tr>
-                      <th className="border-b border-gray-300 px-2 py-2 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[140px]">
+                      <th className="border-b border-gray-300 px-2 py-2 text-center text-xs font-medium text-gray-700 bg-white min-w-[140px]">
                         {/* Empty cell for Category column */}
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-2 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[200px]">
+                      <th className="border-b border-gray-300 px-2 py-2 text-center text-xs font-medium text-gray-700 bg-white min-w-[200px]">
                         {/* Empty cell for Feature column */}
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-2 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[300px]">
+                      <th className="border-b border-gray-300 px-2 py-2 text-center text-xs font-medium text-gray-700 bg-white min-w-[300px]">
                         {/* Empty cell for Description column */}
                       </th>
                       <th colSpan={5} className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-blue-100 min-w-[400px]">
@@ -385,112 +384,112 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
                       </th>
                     </tr>
                     <tr>
-                      <th className="border-b border-gray-300 px-2 py-3 text-left text-xs font-medium text-gray-700 bg-gray-50 min-w-[140px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-left text-xs font-medium text-gray-700 bg-white min-w-[140px]">
                         Category
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-left text-xs font-medium text-gray-700 bg-gray-50 min-w-[200px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-left text-xs font-medium text-gray-700 bg-white min-w-[200px]">
                         Feature
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-left text-xs font-medium text-gray-700 bg-gray-50 min-w-[300px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-left text-xs font-medium text-gray-700 bg-white min-w-[300px]">
                         Description
                       </th>
                       <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-blue-50 min-w-[80px]">
                         TIQUO
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[80px]">
                         MEWS
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[80px]">
                         FOLS
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[80px]">
                         OPERA
                       </th>
-                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[80px]">
                         HOTIX
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[100px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[100px]">
                         LIGHTSPEED
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[80px]">
                         TOAST
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[80px]">
                         SQUARE
                       </th>
-                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[80px]">
                         CLOVER
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[100px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[100px]">
                         SALESFORCE
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[80px]">
                         HUBSPOT
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[80px]">
                         ZOHO
                       </th>
-                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[90px]">
+                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[90px]">
                         PIPEDRIVE
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[100px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[100px]">
                         MEMBERSTACK
                       </th>
-                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[80px]">
                         PASSKIT
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[80px]">
                         MINDBODY
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[90px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[90px]">
                         ABC GLOFOX
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[100px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[100px]">
                         EXERCICE.COM
                       </th>
-                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[80px]">
                         GYMFLOW
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[80px]">
                         IDEAS
                       </th>
-                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[80px]">
                         ATOMIZE
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[90px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[90px]">
                         MAILCHIMP
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[80px]">
                         KLAVIYO
                       </th>
-                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[80px]">
                         BREVO
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[100px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[100px]">
                         EVENTTEMPLE
                       </th>
-                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[90px]">
+                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[90px]">
                         TRIPLESEAT
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[110px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[110px]">
                         TICKET TAILOR
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[80px]">
                         WEEZEVENT
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[100px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[100px]">
                         TICKETMASTER
                       </th>
-                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[80px]">
                         EVENBRITE
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[90px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[90px]">
                         OFFICERND
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[80px]">
                         NEXUDUS
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-white min-w-[80px]">
                         OPTIX
                       </th>
                     </tr>
@@ -630,7 +629,6 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
                     })}
                   </tbody>
                 </table>
-              </div>
             </div>
           </motion.div>
         </div>
