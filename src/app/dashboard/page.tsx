@@ -263,7 +263,7 @@ export default function DashboardPage() {
       name: "Investor Deck", 
       count: 15, 
       type: "folder" as const,
-      image: "/deck.png",
+      image: "/deck.webp",
       description: "Comprehensive investor presentation materials including company overview, financial projections, and strategic roadmap.",
       files: []
     },
@@ -272,7 +272,7 @@ export default function DashboardPage() {
       name: "Company Documents", 
       count: 2, 
       type: "folder" as const,
-      image: "/Company-documents.png",
+      image: "/Company-documents.webp",
       description: "Our certificate of incorporation, cap table, and other company records are organized here.",
       files: ["Cap table", "Certificate of incorporation"]
     },
@@ -281,7 +281,7 @@ export default function DashboardPage() {
       name: "Product & Technology", 
       count: 4, 
       type: "folder" as const,
-      image: "/Product-Technology.png",
+      image: "/Product-Technology.webp",
       description: "Technical specifications, product roadmaps, architecture documentation, and development resources.",
       files: ["Feature Roadmap", "Feature Usecases", "Feature Competitor Comparison", "Unique selling points"]
     },
@@ -290,7 +290,7 @@ export default function DashboardPage() {
       name: "Brand & Strategy", 
       count: 4, 
       type: "folder" as const,
-      image: "/Brand-Strategy.png",
+      image: "/Brand-Strategy.webp",
       description: "Brand guidelines, strategic positioning documents, and visual identity assets.",
       files: ["Brand kit", "Use of funds", "Go-to-market strategy", "Pricing Model"]
     },
@@ -573,26 +573,26 @@ export default function DashboardPage() {
                                   <Image
                                     src={
                                       card.name === "Certificate of incorporation"
-                                        ? "/incorporation.png"
+                                        ? "/incorporation.webp"
                                         : card.name === "Cap table"
-                                        ? "/captableicon.png"
+                                        ? "/captableicon.webp"
                                         : card.name === "Feature Usecases"
-                                        ? "/spreadsheeticon.png"
+                                        ? "/spreadsheeticon.webp"
                                         : card.name === "Feature Competitor Comparison"
-                                        ? "/spreadsheeticon.png"
+                                        ? "/spreadsheeticon.webp"
                                         : card.name === "Feature Roadmap"
-                                        ? "/timeline.png"
+                                        ? "/timeline.webp"
                                         : card.name === "Unique selling points"
-                                        ? "/staricon.png"
+                                        ? "/staricon.webp"
                                         : card.name === "Brand kit"
-                                        ? "/brandicon.png"
+                                        ? "/brandicon.webp"
                                         : card.name === "Use of funds"
-                                        ? "/spreadsheeticon.png"
+                                        ? "/spreadsheeticon.webp"
                                         : card.name === "Pricing Model"
-                                        ? "/moneyicon.png"
+                                        ? "/moneyicon.webp"
                                         : card.name === "Go-to-market strategy"
-                                        ? "/arrowicon.png"
-                                        : "/file.png"
+                                        ? "/arrowicon.webp"
+                                        : "/file.webp"
                                     }
                                     alt={
                                       card.name === "Certificate of incorporation"
