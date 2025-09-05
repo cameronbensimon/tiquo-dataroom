@@ -11,6 +11,7 @@ import SingleImageModal from "@/components/SingleImageModal";
 import CapTableModal from "@/components/CapTableModal";
 import FeatureUsecasesModal from "@/components/FeatureUsecasesModal";
 import FeatureRoadmapModal from "@/components/FeatureRoadmapModal";
+import FeatureCompetitorComparisonModal from "@/components/FeatureCompetitorComparisonModal";
 import AccessDenied from "@/components/AccessDenied";
 
 export default function DashboardPage() {
@@ -26,6 +27,7 @@ export default function DashboardPage() {
   const [isCapTableModalOpen, setIsCapTableModalOpen] = useState(false);
   const [isFeatureUsecasesModalOpen, setIsFeatureUsecasesModalOpen] = useState(false);
   const [isFeatureRoadmapModalOpen, setIsFeatureRoadmapModalOpen] = useState(false);
+  const [isFeatureCompetitorComparisonModalOpen, setIsFeatureCompetitorComparisonModalOpen] = useState(false);
 
   // TIQUO deck slides configuration
   const tiquoDeckImages = Array.from({ length: 17 }, (_, index) => {
@@ -219,6 +221,11 @@ export default function DashboardPage() {
   // Handle feature roadmap file click
   const handleFeatureRoadmapClick = () => {
     setIsFeatureRoadmapModalOpen(true);
+  };
+
+  // Handle feature competitor comparison file click
+  const handleFeatureCompetitorComparisonClick = () => {
+    setIsFeatureCompetitorComparisonModalOpen(true);
   };
 
   // Simple 4 buttons - deck + 3 folders
@@ -502,6 +509,8 @@ export default function DashboardPage() {
                                   handleFeatureUsecasesClick();
                                 } else if (card.name === "Feature Roadmap") {
                                   handleFeatureRoadmapClick();
+                                } else if (card.name === "Feature Competitor Comparison") {
+                                  handleFeatureCompetitorComparisonClick();
                                 }
                               }}
                               animate={
@@ -586,7 +595,7 @@ export default function DashboardPage() {
                                   />
                                   {/* Work in Progress Badge */}
                                   {isWorkInProgress(card.name) && (
-                                    <div className="absolute bottom-1 left-1 bg-amber-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow-lg border-2 border-white z-10 transform -rotate-12">
+                                    <div className="absolute bottom-3 left-3 bg-amber-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow-lg border-2 border-white z-10 transform -rotate-12">
                                       WIP
                                     </div>
                                   )}
@@ -746,6 +755,13 @@ Simpler for staff, seamless for customers, smarter for the business.
         isOpen={isFeatureUsecasesModalOpen}
         onClose={() => setIsFeatureUsecasesModalOpen(false)}
         title="Feature Usecases by Industry"
+      />
+
+      {/* Feature Competitor Comparison Modal */}
+      <FeatureCompetitorComparisonModal
+        isOpen={isFeatureCompetitorComparisonModalOpen}
+        onClose={() => setIsFeatureCompetitorComparisonModalOpen(false)}
+        title="Feature Competitor Comparison"
       />
 
       {/* Feature Roadmap Modal */}
