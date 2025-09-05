@@ -277,19 +277,19 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
   const renderCell = (value: string) => {
     if (value === "Fully featured") {
       return (
-        <span className="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
+        <span className="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 whitespace-nowrap">
           ✓ Full
         </span>
       );
     } else if (value === "Limited implementation") {
       return (
-        <span className="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">
-          ~ Limited
+        <span className="inline-flex items-center px-1 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800 whitespace-nowrap">
+          ● Limited
         </span>
       );
     } else if (value === "N/A") {
       return (
-        <span className="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-600">
+        <span className="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-600 whitespace-nowrap">
           ✗ N/A
         </span>
       );
@@ -342,6 +342,48 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
               <div className="overflow-auto border border-gray-200 rounded-lg">
                 <table className="w-full border-collapse text-xs">
                   <thead className="sticky top-0 bg-gray-100 z-10">
+                    {/* Category header row */}
+                    <tr>
+                      <th className="border-b border-gray-300 px-2 py-2 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[140px]">
+                        {/* Empty cell for Category column */}
+                      </th>
+                      <th className="border-b border-gray-300 px-2 py-2 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[200px]">
+                        {/* Empty cell for Feature column */}
+                      </th>
+                      <th className="border-b border-gray-300 px-2 py-2 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[300px]">
+                        {/* Empty cell for Description column */}
+                      </th>
+                      <th colSpan={5} className="border-b border-gray-300 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-blue-100 min-w-[400px]">
+                        PMS
+                      </th>
+                      <th colSpan={4} className="border-b border-gray-300 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-green-100 min-w-[320px]">
+                        POS
+                      </th>
+                      <th colSpan={4} className="border-b border-gray-300 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-yellow-100 min-w-[320px]">
+                        CRM
+                      </th>
+                      <th colSpan={2} className="border-b border-gray-300 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-purple-100 min-w-[160px]">
+                        MEMBERSHIP & LOYALTY
+                      </th>
+                      <th colSpan={4} className="border-b border-gray-300 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-red-100 min-w-[320px]">
+                        SPA WELLNESS GYM SYSTEM
+                      </th>
+                      <th colSpan={2} className="border-b border-gray-300 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-indigo-100 min-w-[160px]">
+                        RMS
+                      </th>
+                      <th colSpan={3} className="border-b border-gray-300 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-pink-100 min-w-[240px]">
+                        MARKETING
+                      </th>
+                      <th colSpan={2} className="border-b border-gray-300 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-orange-100 min-w-[160px]">
+                        EVENT MANAGEMENT
+                      </th>
+                      <th colSpan={4} className="border-b border-gray-300 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-teal-100 min-w-[320px]">
+                        TICKETING
+                      </th>
+                      <th colSpan={3} className="border-b border-gray-300 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-cyan-100 min-w-[240px]">
+                        CO-WORKING
+                      </th>
+                    </tr>
                     <tr>
                       <th className="border-b border-gray-300 px-2 py-3 text-left text-xs font-medium text-gray-700 bg-gray-50 min-w-[140px]">
                         Category
@@ -484,7 +526,7 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
                           <td className="border-b border-gray-200 px-2 py-2 text-xs text-gray-700 leading-relaxed">
                             {row.description}
                           </td>
-                          <td className="border-b border-gray-200 px-2 py-2 text-center bg-blue-25">
+                          <td className="border-b border-gray-200 px-2 py-2 text-center bg-blue-50">
                             {renderCell(row.tiquo)}
                           </td>
                           <td className="border-b border-gray-200 px-2 py-2 text-center">
