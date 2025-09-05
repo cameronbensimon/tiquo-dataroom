@@ -17,7 +17,7 @@ async function sendAdminAccessNotification(requestingEmail: string, clientIP: st
   
   try {
     await resend.emails.send({
-      from: 'Tiquo Data Room <noreply@tiquo.app>',
+      from: 'Tiquo Data Room <dataroom@tiquo.app>',
       to: adminEmails,
       subject: `Data Room Access Request from ${requestingEmail}`,
       html: `
@@ -34,9 +34,6 @@ async function sendAdminAccessNotification(requestingEmail: string, clientIP: st
             <p style="font-size: 16px; margin-bottom: 10px; color: #1F2937;">
               <strong>Request Time:</strong> ${new Date().toLocaleString('en-US', { timeZone: 'UTC' })} UTC
             </p>
-            <p style="font-size: 16px; margin-bottom: 10px; color: #1F2937;">
-              <strong>IP Address:</strong> ${clientIP}
-            </p>
             <p style="font-size: 16px; margin: 0; color: #1F2937;">
               <strong>Status:</strong> Pending Admin Review
             </p>
@@ -50,7 +47,7 @@ async function sendAdminAccessNotification(requestingEmail: string, clientIP: st
           </div>
         </div>
       `,
-      text: `New DataRoom Access Request\n\nRequesting Email: ${requestingEmail}\nRequest Time: ${new Date().toLocaleString('en-US', { timeZone: 'UTC' })} UTC\nIP Address: ${clientIP}\n\nPlease review and manage access at: https://dataroom.tiquo.co/admin`,
+      text: `New DataRoom Access Request\n\nRequesting Email: ${requestingEmail}\nRequest Time: ${new Date().toLocaleString('en-US', { timeZone: 'UTC' })} UTC\n\nPlease review and manage access at: https://dataroom.tiquo.co/admin`,
     });
     
     console.log(`[API] Admin notification sent for access request: ${requestingEmail}`);
@@ -63,7 +60,7 @@ async function sendAdminAccessNotification(requestingEmail: string, clientIP: st
 async function sendAccessRequestConfirmation(requestingEmail: string): Promise<void> {
   try {
     await resend.emails.send({
-      from: 'Tiquo Data Room <noreply@tiquo.app>',
+      from: 'Tiquo Data Room <dataroom@tiquo.app>',
       to: [requestingEmail],
       subject: 'Data Room Access Request Received',
       html: `
