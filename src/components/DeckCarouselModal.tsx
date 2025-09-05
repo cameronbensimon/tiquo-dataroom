@@ -167,7 +167,7 @@ export default function DeckCarouselModal({ isOpen, onClose, images }: DeckCarou
           {/* Left navigation arrow - outside modal */}
           <button
             onClick={prevSlide}
-            className="absolute left-4 z-30 bg-black/40 hover:bg-black/60 text-white rounded-full p-4 transition-colors backdrop-blur-sm group cursor-pointer"
+            className="absolute left-4 top-3/4 md:top-1/2 -translate-y-1/2 z-30 bg-black/40 hover:bg-black/60 text-white rounded-full p-4 transition-colors backdrop-blur-sm group cursor-pointer"
             aria-label="Previous image"
           >
             <svg className="w-8 h-8 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -178,7 +178,7 @@ export default function DeckCarouselModal({ isOpen, onClose, images }: DeckCarou
           {/* Right navigation arrow - outside modal */}
           <button
             onClick={nextSlide}
-            className="absolute right-4 z-30 bg-black/40 hover:bg-black/60 text-white rounded-full p-4 transition-colors backdrop-blur-sm group cursor-pointer"
+            className="absolute right-4 top-3/4 md:top-1/2 -translate-y-1/2 z-30 bg-black/40 hover:bg-black/60 text-white rounded-full p-4 transition-colors backdrop-blur-sm group cursor-pointer"
             aria-label="Next image"
           >
             <svg className="w-8 h-8 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -256,7 +256,7 @@ export default function DeckCarouselModal({ isOpen, onClose, images }: DeckCarou
           </motion.div>
           
           {/* Progress bar - positioned outside the modal content */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-40">
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-40 hidden md:block">
             <div className="flex items-center gap-2 bg-black/30 backdrop-blur-sm rounded-full px-4 py-2">
               {/* Slide indicators */}
               {images.map((_, index) => (

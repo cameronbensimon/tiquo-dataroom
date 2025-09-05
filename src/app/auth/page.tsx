@@ -158,6 +158,38 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4" style={{backgroundColor: '#f2f2f2'}}>
+      {/* Preload critical images for dashboard */}
+      <div className="hidden">
+        <Image
+          src="/Brand-Strategy.webp"
+          alt="Brand Strategy"
+          width={1}
+          height={1}
+          priority
+        />
+        <Image
+          src="/deck.webp"
+          alt="Deck"
+          width={1}
+          height={1}
+          priority
+        />
+        <Image
+          src="/Product-Technology.webp"
+          alt="Product Technology"
+          width={1}
+          height={1}
+          priority
+        />
+        <Image
+          src="/Company-documents.webp"
+          alt="Company Documents"
+          width={1}
+          height={1}
+          priority
+        />
+      </div>
+      
       <div className="max-w-md w-full space-y-8">
         <div>
           <div className="flex justify-center">
