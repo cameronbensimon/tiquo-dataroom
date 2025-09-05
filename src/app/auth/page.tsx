@@ -20,7 +20,7 @@ function AuthenticatedRedirect() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#f2f2f2'}}>
+      <div className="min-h-screen flex items-center justify-center px-6 sm:px-4" style={{backgroundColor: '#f2f2f2'}}>
         <div className="text-center">
           <Image
             src="/Black.gif"
@@ -51,7 +51,7 @@ export default function AuthPage() {
   // If user is already authenticated, show redirect component
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#f2f2f2'}}>
+      <div className="min-h-screen flex items-center justify-center px-6 sm:px-4" style={{backgroundColor: '#f2f2f2'}}>
         <div className="text-center">
           <Image
             src="/Black.gif"
@@ -157,7 +157,7 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4" style={{backgroundColor: '#f2f2f2'}}>
+    <div className="min-h-screen flex items-center justify-center px-6 sm:px-4" style={{backgroundColor: '#f2f2f2'}}>
       {/* Preload critical images for dashboard */}
       <div className="hidden">
         <Image
