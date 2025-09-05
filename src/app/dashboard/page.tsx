@@ -263,7 +263,7 @@ export default function DashboardPage() {
       count: 4, 
       type: "folder" as const,
       image: "/Brand-Strategy.png",
-      description: "Brand guidelines, marketing materials, strategic positioning documents, and visual identity assets.",
+      description: "Brand guidelines, strategic positioning documents, and visual identity assets.",
       files: ["Brand kit", "Use of funds", "Go-to-market strategy", "Pricing Model"]
     },
   ];
