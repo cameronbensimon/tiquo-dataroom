@@ -570,6 +570,106 @@ export async function sendAccessGrantedNotification(userEmail: string): Promise<
   }
 }
 
+// Send access request notification emails
+export async function sendAccessRequestNotifications(userEmail: string): Promise<void> {
+  try {
+    const requestDate = new Date().toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'numeric', 
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZone: 'UTC',
+      timeZoneName: 'short'
+    });
+
+    // Email template for the requester
+    const requesterEmailTemplate = `
+      <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif; background-color: #f9f9f9;">
+        <div style="text-align: center; margin-bottom: 30px;">
+          <img src="https://dataroom.tiquo.co/tiquo-logo-black.png" alt="Tiquo Logo" style="height: 60px; width: auto; max-width: 200px;" />
+        </div>
+        
+        <div style="background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+          <h2 style="color: #333; margin-bottom: 20px;">Access Request Received</h2>
+          
+          <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
+            Thank you for your interest in accessing the Tiquo Data Room.
+          </p>
+          
+          <h3 style="color: #333; margin: 20px 0 15px 0;">What happens next?</h3>
+          
+          <ul style="color: #666; line-height: 1.8; margin-bottom: 25px; padding-left: 20px;">
+            <li>Your access request has been forwarded to our team</li>
+            <li>We will review your request within 1-2 business days</li>
+            <li>You'll receive an email notification once access is granted</li>
+            <li>If approved, you'll be able to access the Data Room immediately</li>
+          </ul>
+          
+          <div style="background-color: #f8f9fa; padding: 20px; border-radius: 4px; margin: 25px 0;">
+            <h4 style="color: #333; margin: 0 0 15px 0;">Request Details:</h4>
+            <p style="color: #666; margin: 5px 0;"><strong>Email:</strong> ${userEmail}</p>
+            <p style="color: #666; margin: 5px 0;"><strong>Date:</strong> ${requestDate}</p>
+          </div>
+          
+          <p style="color: #666; line-height: 1.6; margin-top: 25px;">
+            If you have any questions, please contact us at <a href="mailto:support@tiquo.co" style="color: #007bff;">support@tiquo.co</a>
+          </p>
+        </div>
+      </div>
+    `;
+
+    // Email template for admins
+    const adminEmailTemplate = `
+      <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif; background-color: #f9f9f9;">
+        <div style="text-align: center; margin-bottom: 30px;">
+          <img src="https://dataroom.tiquo.co/tiquo-logo-black.png" alt="Tiquo Logo" style="height: 60px; width: auto; max-width: 200px;" />
+        </div>
+        
+        <div style="background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+          <h2 style="color: #333; margin-bottom: 20px;">New Data Room Access Request</h2>
+          
+          <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
+            A new user has requested access to the Tiquo Data Room.
+          </p>
+          
+          <div style="background-color: #f8f9fa; padding: 20px; border-radius: 4px; margin: 25px 0;">
+            <h4 style="color: #333; margin: 0 0 15px 0;">Request Details:</h4>
+            <p style="color: #666; margin: 5px 0;"><strong>Email:</strong> ${userEmail}</p>
+            <p style="color: #666; margin: 5px 0;"><strong>Date:</strong> ${requestDate}</p>
+          </div>
+          
+          <p style="color: #666; line-height: 1.6; margin-top: 25px;">
+            Please review this request and grant access if appropriate via the admin panel.
+          </p>
+        </div>
+      </div>
+    `;
+
+    // Send confirmation email to the requester
+    await resend.emails.send({
+      from: 'Tiquo Data Room <noreply@tiquo.app>',
+      to: [userEmail],
+      subject: 'Access Request Received - Tiquo Data Room',
+      html: requesterEmailTemplate,
+    });
+
+    // Send notification emails to admins
+    await resend.emails.send({
+      from: 'Tiquo Data Room <noreply@tiquo.app>',
+      to: ['josh@tiquo.co', 'cameron@tiquo.co'],
+      subject: 'New Data Room Access Request',
+      html: adminEmailTemplate,
+    });
+
+    console.log(`[EMAIL] Access request notifications sent for ${userEmail}`);
+  } catch (error) {
+    console.error('[EMAIL] Failed to send access request notifications:', error);
+    throw error;
+  }
+}
+
 // Clean up expired sessions and tokens (call periodically)
 export async function cleanupExpiredData(): Promise<void> {
   try {

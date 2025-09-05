@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getCurrentSession } from '@/lib/auth';
+import { getCurrentSession, sendAccessRequestNotifications } from '@/lib/auth';
 
 export async function POST(request: Request) {
   try {
@@ -16,14 +16,12 @@ export async function POST(request: Request) {
     // User is requesting access - log this for admin review
     console.log(`[ACCESS REQUEST] User ${session.user.email} requested access at ${new Date().toISOString()}`);
     
-    // In a real implementation, you might:
-    // 1. Send an email notification to admins
-    // 2. Create a database record of the request
-    // 3. Add the user to a pending requests queue
+    // Send email notifications to admins and requester
+    await sendAccessRequestNotifications(session.user.email);
     
     return NextResponse.json({
       success: true,
-      message: 'Your access request has been submitted and is being reviewed.'
+      message: 'Your access request has been submitted and is being reviewed. You will receive a confirmation email shortly.'
     });
     
   } catch (error) {

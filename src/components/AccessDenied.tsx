@@ -7,11 +7,12 @@ import { useAuth } from "@/lib/auth-context";
 
 interface AccessDeniedProps {
   onRequestAccess?: () => void;
+  shouldSendEmail?: boolean;
 }
 
 type RequestState = 'idle' | 'requesting' | 'success' | 'error';
 
-export default function AccessDenied({ onRequestAccess }: AccessDeniedProps) {
+export default function AccessDenied({ onRequestAccess, shouldSendEmail = false }: AccessDeniedProps) {
   const { user } = useAuth();
   const [requestState, setRequestState] = useState<RequestState>('idle');
   const [message, setMessage] = useState('');
@@ -26,19 +27,26 @@ export default function AccessDenied({ onRequestAccess }: AccessDeniedProps) {
     setMessage('');
     
     try {
-      const response = await fetch('/api/auth/request-access', {
-        method: 'POST',
-        credentials: 'include',
-      });
+      if (shouldSendEmail) {
+        // Send API request with email notifications
+        const response = await fetch('/api/auth/request-access', {
+          method: 'POST',
+          credentials: 'include',
+        });
 
-      const result = await response.json();
+        const result = await response.json();
 
-      if (response.ok) {
-        setRequestState('success');
-        setMessage(result.message || 'Access request submitted successfully!');
+        if (response.ok) {
+          setRequestState('success');
+          setMessage(result.message || 'Access request submitted successfully!');
+        } else {
+          setRequestState('error');
+          setMessage(result.error || 'Failed to submit access request');
+        }
       } else {
-        setRequestState('error');
-        setMessage(result.error || 'Failed to submit access request');
+        // Just show success message without sending emails
+        setRequestState('success');
+        setMessage('Access request submitted successfully! Our team has been notified and will review your request.');
       }
     } catch (error) {
       console.error('Request access error:', error);

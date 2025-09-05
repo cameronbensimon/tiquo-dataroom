@@ -48,6 +48,6 @@ export default function RequestAccessPage() {
     return null;
   }
 
-  // Show access denied page
-  return <AccessDenied />;
+  // Show access denied page with email sending enabled
+  return <AccessDenied shouldSendEmail={true} />;
 }
