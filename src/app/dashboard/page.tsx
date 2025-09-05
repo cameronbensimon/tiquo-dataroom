@@ -14,6 +14,13 @@ import FeatureRoadmapModal from "@/components/FeatureRoadmapModal";
 import FeatureCompetitorComparisonModal from "@/components/FeatureCompetitorComparisonModal";
 import AccessDenied from "@/components/AccessDenied";
 
+interface DeckImage {
+  id: number;
+  src: string;
+  alt: string;
+  filename?: string;
+}
+
 export default function DashboardPage() {
   const { user, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
@@ -29,74 +36,38 @@ export default function DashboardPage() {
   const [isFeatureRoadmapModalOpen, setIsFeatureRoadmapModalOpen] = useState(false);
   const [isFeatureCompetitorComparisonModalOpen, setIsFeatureCompetitorComparisonModalOpen] = useState(false);
 
-  // TIQUO deck slides configuration - using Vercel blob storage
-  const tiquoDeckImages = Array.from({ length: 17 }, (_, index) => {
-    const slideDescriptions = [
-      "TIQUO Company Overview and Mission Statement",
-      "Market Opportunity and Business Problem",
-      "Product Solution and Technology Platform", 
-      "Business Model and Revenue Strategy",
-      "Market Size and Target Audience",
-      "Competitive Analysis and Differentiation",
-      "Financial Projections and Growth Metrics",
-      "Technology Architecture and Infrastructure",
-      "Team Background and Expertise",
-      "Product Roadmap and Development Timeline",
-      "Go-to-Market Strategy and Sales Plan",
-      "Partnership and Distribution Channels",
-      "Investment Requirements and Use of Funds",
-      "Risk Analysis and Mitigation Strategies",
-      "Exit Strategy and Investor Returns",
-      "Company Milestones and Achievements",
-      "Contact Information and Next Steps"
-    ];
-    
-    // Use the blob storage URL from environment variable
-    // The environment variable should contain the base URL for your blob storage
-    const blobBaseUrl = process.env.NEXT_PUBLIC_VERCEL_BLOB_BASE_URL || 
-                        process.env.VERCEL_BLOB_READ_WRITE_TOKEN ||
-                        '';
-    
-    return {
-      id: index + 1,
-      src: `${blobBaseUrl}/TIQUO DECK V5 - ${String(index + 1).padStart(2, '0')}.jpg`,
-      alt: `TIQUO Investor Presentation Slide ${index + 1}: ${slideDescriptions[index] || `Slide ${index + 1}`}`
-    };
-  });
+  // State for dynamically loaded images
+  const [tiquoDeckImages, setTiquoDeckImages] = useState<DeckImage[]>([]);
+  const [brandIdentityImages, setBrandIdentityImages] = useState<DeckImage[]>([]);
+  const [isLoadingImages, setIsLoadingImages] = useState(true);
 
-  // Brand identity images configuration - using Vercel blob storage
-  const brandIdentityImages = Array.from({ length: 17 }, (_, index) => {
-    const brandDescriptions = [
-      "TIQUO Logo Design and Typography Guidelines",
-      "Primary Brand Colors and Color Palette",
-      "Secondary Brand Colors and Usage",
-      "Logo Variations and Applications",
-      "Typography Hierarchy and Font Selection",
-      "Brand Voice and Messaging Guidelines",
-      "Visual Identity Standards and Rules",
-      "Marketing Collateral Templates",
-      "Business Card and Stationery Design",
-      "Digital Asset Guidelines and Usage",
-      "Photography Style and Image Treatment",
-      "Icon Set and Graphic Elements",
-      "Brand Application Examples",
-      "Print Material Guidelines",
-      "Web and Digital Brand Standards",
-      "Brand Protection and Usage Rights",
-      "Complete Brand Style Guide Summary"
-    ];
-    
-    // Use the blob storage URL from environment variable
-    const blobBaseUrl = process.env.NEXT_PUBLIC_VERCEL_BLOB_BASE_URL || 
-                        process.env.VERCEL_BLOB_READ_WRITE_TOKEN ||
-                        '';
-    
-    return {
-      id: index + 1,
-      src: `${blobBaseUrl}/Tiquo brand identity - ${String(index + 1).padStart(2, '0')}.jpg`,
-      alt: `TIQUO Brand Identity Guide Page ${index + 1}: ${brandDescriptions[index] || `Brand Identity ${index + 1}`}`
+  // Fetch images from blob storage on component mount
+  useEffect(() => {
+    const fetchBlobImages = async () => {
+      try {
+        setIsLoadingImages(true);
+        const response = await fetch('/api/blob/list');
+        const result = await response.json();
+        
+        if (result.success) {
+          setTiquoDeckImages(result.data.deckImages);
+          setBrandIdentityImages(result.data.brandImages);
+          console.log('Loaded deck images:', result.data.deckImages.length);
+          console.log('Loaded brand images:', result.data.brandImages.length);
+          console.log('All blob files:', result.data.allBlobs);
+        } else {
+          console.error('Failed to fetch blob images:', result.error);
+        }
+      } catch (error) {
+        console.error('Error fetching blob images:', error);
+      } finally {
+        setIsLoadingImages(false);
+      }
     };
-  });
+    
+    fetchBlobImages();
+  }, []);
+
 
   // Pricing model spreadsheet data - 3 tables layout
   const leftTableData = {

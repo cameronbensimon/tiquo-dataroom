@@ -353,31 +353,31 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
                       <th className="border-b border-gray-300 px-2 py-2 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[300px]">
                         {/* Empty cell for Description column */}
                       </th>
-                      <th colSpan={5} className="border-b border-gray-300 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-blue-100 min-w-[400px]">
+                      <th colSpan={5} className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-blue-100 min-w-[400px]">
                         PMS
                       </th>
-                      <th colSpan={4} className="border-b border-gray-300 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-green-100 min-w-[320px]">
+                      <th colSpan={4} className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-green-100 min-w-[320px]">
                         POS
                       </th>
-                      <th colSpan={4} className="border-b border-gray-300 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-yellow-100 min-w-[320px]">
+                      <th colSpan={4} className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-yellow-100 min-w-[320px]">
                         CRM
                       </th>
-                      <th colSpan={2} className="border-b border-gray-300 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-purple-100 min-w-[160px]">
+                      <th colSpan={2} className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-purple-100 min-w-[160px]">
                         MEMBERSHIP & LOYALTY
                       </th>
-                      <th colSpan={4} className="border-b border-gray-300 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-red-100 min-w-[320px]">
+                      <th colSpan={4} className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-red-100 min-w-[320px]">
                         SPA WELLNESS GYM SYSTEM
                       </th>
-                      <th colSpan={2} className="border-b border-gray-300 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-indigo-100 min-w-[160px]">
+                      <th colSpan={2} className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-indigo-100 min-w-[160px]">
                         RMS
                       </th>
-                      <th colSpan={3} className="border-b border-gray-300 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-pink-100 min-w-[240px]">
+                      <th colSpan={3} className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-pink-100 min-w-[240px]">
                         MARKETING
                       </th>
-                      <th colSpan={2} className="border-b border-gray-300 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-orange-100 min-w-[160px]">
+                      <th colSpan={2} className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-orange-100 min-w-[160px]">
                         EVENT MANAGEMENT
                       </th>
-                      <th colSpan={4} className="border-b border-gray-300 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-teal-100 min-w-[320px]">
+                      <th colSpan={4} className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-teal-100 min-w-[320px]">
                         TICKETING
                       </th>
                       <th colSpan={3} className="border-b border-gray-300 px-2 py-2 text-center text-xs font-bold text-gray-700 bg-cyan-100 min-w-[240px]">
@@ -406,7 +406,7 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
                       <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
                         OPERA
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
                         HOTIX
                       </th>
                       <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[100px]">
@@ -418,7 +418,7 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
                       <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
                         SQUARE
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
                         CLOVER
                       </th>
                       <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[100px]">
@@ -430,13 +430,13 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
                       <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
                         ZOHO
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[90px]">
+                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[90px]">
                         PIPEDRIVE
                       </th>
                       <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[100px]">
                         MEMBERSTACK
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
                         PASSKIT
                       </th>
                       <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
@@ -448,13 +448,13 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
                       <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[100px]">
                         EXERCICE.COM
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
                         GYMFLOW
                       </th>
                       <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
                         IDEAS
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
                         ATOMIZE
                       </th>
                       <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[90px]">
@@ -463,13 +463,13 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
                       <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
                         KLAVIYO
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
                         BREVO
                       </th>
                       <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[100px]">
                         EVENTTEMPLE
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[90px]">
+                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[90px]">
                         TRIPLESEAT
                       </th>
                       <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[110px]">
@@ -481,7 +481,7 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
                       <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[100px]">
                         TICKETMASTER
                       </th>
-                      <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
+                      <th className="border-b border-gray-300 border-r-2 border-r-gray-500 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[80px]">
                         EVENBRITE
                       </th>
                       <th className="border-b border-gray-300 px-2 py-3 text-center text-xs font-medium text-gray-700 bg-gray-50 min-w-[90px]">
@@ -538,7 +538,7 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
                           <td className="border-b border-gray-200 px-2 py-2 text-center">
                             {renderCell(row.opera)}
                           </td>
-                          <td className="border-b border-gray-200 px-2 py-2 text-center">
+                          <td className="border-b border-gray-200 border-r-2 border-r-gray-500 px-2 py-2 text-center">
                             {renderCell(row.hotix)}
                           </td>
                           <td className="border-b border-gray-200 px-2 py-2 text-center">
@@ -550,7 +550,7 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
                           <td className="border-b border-gray-200 px-2 py-2 text-center">
                             {renderCell(row.square)}
                           </td>
-                          <td className="border-b border-gray-200 px-2 py-2 text-center">
+                          <td className="border-b border-gray-200 border-r-2 border-r-gray-500 px-2 py-2 text-center">
                             {renderCell(row.clover)}
                           </td>
                           <td className="border-b border-gray-200 px-2 py-2 text-center">
@@ -562,13 +562,13 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
                           <td className="border-b border-gray-200 px-2 py-2 text-center">
                             {renderCell(row.zoho)}
                           </td>
-                          <td className="border-b border-gray-200 px-2 py-2 text-center">
+                          <td className="border-b border-gray-200 border-r-2 border-r-gray-500 px-2 py-2 text-center">
                             {renderCell(row.pipedrive)}
                           </td>
                           <td className="border-b border-gray-200 px-2 py-2 text-center">
                             {renderCell(row.memberstack)}
                           </td>
-                          <td className="border-b border-gray-200 px-2 py-2 text-center">
+                          <td className="border-b border-gray-200 border-r-2 border-r-gray-500 px-2 py-2 text-center">
                             {renderCell(row.passkit)}
                           </td>
                           <td className="border-b border-gray-200 px-2 py-2 text-center">
@@ -580,13 +580,13 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
                           <td className="border-b border-gray-200 px-2 py-2 text-center">
                             {renderCell(row.exercicecom)}
                           </td>
-                          <td className="border-b border-gray-200 px-2 py-2 text-center">
+                          <td className="border-b border-gray-200 border-r-2 border-r-gray-500 px-2 py-2 text-center">
                             {renderCell(row.gymflow)}
                           </td>
                           <td className="border-b border-gray-200 px-2 py-2 text-center">
                             {renderCell(row.ideas)}
                           </td>
-                          <td className="border-b border-gray-200 px-2 py-2 text-center">
+                          <td className="border-b border-gray-200 border-r-2 border-r-gray-500 px-2 py-2 text-center">
                             {renderCell(row.atomize)}
                           </td>
                           <td className="border-b border-gray-200 px-2 py-2 text-center">
@@ -595,13 +595,13 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
                           <td className="border-b border-gray-200 px-2 py-2 text-center">
                             {renderCell(row.klaviyo)}
                           </td>
-                          <td className="border-b border-gray-200 px-2 py-2 text-center">
+                          <td className="border-b border-gray-200 border-r-2 border-r-gray-500 px-2 py-2 text-center">
                             {renderCell(row.brevo)}
                           </td>
                           <td className="border-b border-gray-200 px-2 py-2 text-center">
                             {renderCell(row.eventtemple)}
                           </td>
-                          <td className="border-b border-gray-200 px-2 py-2 text-center">
+                          <td className="border-b border-gray-200 border-r-2 border-r-gray-500 px-2 py-2 text-center">
                             {renderCell(row.tripleseat)}
                           </td>
                           <td className="border-b border-gray-200 px-2 py-2 text-center">
@@ -613,7 +613,7 @@ export default function FeatureCompetitorComparisonModal({ isOpen, onClose, titl
                           <td className="border-b border-gray-200 px-2 py-2 text-center">
                             {renderCell(row.ticketmaster)}
                           </td>
-                          <td className="border-b border-gray-200 px-2 py-2 text-center">
+                          <td className="border-b border-gray-200 border-r-2 border-r-gray-500 px-2 py-2 text-center">
                             {renderCell(row.evenbrite)}
                           </td>
                           <td className="border-b border-gray-200 px-2 py-2 text-center">
