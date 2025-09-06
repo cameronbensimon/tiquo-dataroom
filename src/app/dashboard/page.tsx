@@ -282,7 +282,7 @@ export default function DashboardPage() {
       count: 4, 
       type: "folder" as const,
       image: "/Product-Technology.webp",
-      description: "Technical specifications, product roadmaps, architecture documentation, and development resources.",
+      description: "Technical specifications, product and feature roadmap and competitor analysis.",
       files: ["Feature Roadmap", "Feature Usecases", "Feature Competitor Comparison", "Unique selling points"]
     },
     { 

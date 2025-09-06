@@ -185,7 +185,7 @@ async function sendAccessRequestConfirmation(requestingEmail: string): Promise<v
             <h3 style="color: #1E40AF; margin-top: 0;">What happens next?</h3>
             <ul style="color: #374151; padding-left: 20px;">
               <li style="margin-bottom: 8px;">Your access request has been forwarded to our team</li>
-              <li style="margin-bottom: 8px;">We will review your request within 1-2 business days</li>
+              <li style="margin-bottom: 8px;">We will review your request as soon as possible</li>
               <li style="margin-bottom: 8px;">You'll receive an email notification once access is granted</li>
               <li>If approved, you'll be able to access the Data Room immediately</li>
             </ul>
@@ -206,7 +206,7 @@ async function sendAccessRequestConfirmation(requestingEmail: string): Promise<v
           </div>
         </div>
       `,
-      text: `Access Request Received\n\nThank you for your interest in accessing the Tiquo Data Room.\n\nWhat happens next?\n- Your access request has been forwarded to our team\n- We will review your request within 1-2 business days\n- You'll receive an email notification once access is granted\n- If approved, you'll be able to access the Data Room immediately\n\nRequest Details:\nEmail: ${requestingEmail}\nDate: ${new Date().toLocaleString('en-US', { timeZone: 'UTC' })} UTC\n\nIf you have questions, contact us at hello@tiquo.co`,
+      text: `Access Request Received\n\nThank you for your interest in accessing the Tiquo Data Room.\n\nWhat happens next?\n- Your access request has been forwarded to our team\n- We will review your request as soon as possible\n- You'll receive an email notification once access is granted\n- If approved, you'll be able to access the Data Room immediately\n\nRequest Details:\nEmail: ${requestingEmail}\nDate: ${new Date().toLocaleString('en-US', { timeZone: 'UTC' })} UTC\n\nIf you have questions, contact us at hello@tiquo.co`,
     });
     
     console.log(`[AUTH] Access request confirmation sent to: ${requestingEmail}`);
@@ -602,7 +602,7 @@ export async function sendAccessRequestNotifications(userEmail: string): Promise
           
           <ul style="color: #666; line-height: 1.8; margin-bottom: 25px; padding-left: 20px;">
             <li>Your access request has been forwarded to our team</li>
-            <li>We will review your request within 1-2 business days</li>
+            <li>We will review your request as soon as possible</li>
             <li>You'll receive an email notification once access is granted</li>
             <li>If approved, you'll be able to access the Data Room immediately</li>
           </ul>
