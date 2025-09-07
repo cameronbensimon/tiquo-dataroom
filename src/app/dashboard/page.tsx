@@ -511,7 +511,16 @@ export default function DashboardPage() {
                              const rowSpacing = isTablet ? 200 : 140; 
                              // Dynamic vertical offset based on screen height
                              const screenHeight = window.innerHeight;
-                             const baseOffset = screenHeight < 700 ? -650 : screenHeight < 900 ? -550 : -700;
+                             let baseOffset;
+                             if (screenHeight < 700) {
+                               baseOffset = -650;
+                             } else if (screenHeight < 900) {
+                               baseOffset = -550;
+                             } else {
+                               baseOffset = -700;
+                             }
+                             // Debug log (remove after testing)
+                             console.log(`Screen height: ${screenHeight}, Base offset: ${baseOffset}`);
                              gridY = gridRow * rowSpacing + baseOffset;
                            } else {
                             // Desktop: single horizontal row
