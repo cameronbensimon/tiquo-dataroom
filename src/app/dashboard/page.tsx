@@ -515,7 +515,7 @@ export default function DashboardPage() {
                              if (screenHeight < 700) {
                                baseOffset = -650;
                              } else if (screenHeight < 900) {
-                               baseOffset = -550;
+                               baseOffset = -700;
                              } else {
                                baseOffset = -700;
                              }
