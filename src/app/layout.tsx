@@ -64,7 +64,7 @@ export const metadata: Metadata = {
   category: 'business',
   manifest: "/manifest.json",
   other: {
-    "theme-color": "#6366f1",
+    "theme-color": "#f2f2f2",
     "color-scheme": "light",
     "HandheldFriendly": "true",
     "MobileOptimized": "width",
