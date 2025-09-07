@@ -509,7 +509,10 @@ export default function DashboardPage() {
                              gridX = (gridCol - 0.5) * 160; // Adjusted spacing
                              // Much larger spacing between rows on tablet
                              const rowSpacing = isTablet ? 200 : 140; 
-                             gridY = gridRow * rowSpacing - 700;
+                             // Dynamic vertical offset based on screen height
+                             const screenHeight = window.innerHeight;
+                             const baseOffset = screenHeight < 700 ? -550 : screenHeight < 900 ? -550 : -700;
+                             gridY = gridRow * rowSpacing + baseOffset;
                            } else {
                             // Desktop: single horizontal row
                             const totalCards = stack.length;
