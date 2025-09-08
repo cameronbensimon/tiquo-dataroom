@@ -68,3 +68,36 @@ export async function getUserByEmail(email: string) {
     return null;
   }
 }
+
+export async function createUser(email: string, accessAllowed: boolean = false) {
+  try {
+    const existingUser = await getUserByEmail(email);
+    if (existingUser) {
+      throw new Error(`User with email ${email} already exists`);
+    }
+
+    const result = await db
+      .insert(users)
+      .values({
+        email: email.toLowerCase().trim(),
+        accessAllowed,
+        emailVerified: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .returning();
+
+    if (result.length === 0) {
+      throw new Error('Failed to create user');
+    }
+
+    return {
+      success: true,
+      message: `User ${email} created successfully`,
+      user: result[0]
+    };
+  } catch (error) {
+    console.error('Error creating user:', error);
+    throw error;
+  }
+}
